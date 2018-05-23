@@ -22,7 +22,7 @@
     <VCProjectVersion>15.0</VCProjectVersion>
     <ProjectGuid>{1C3412E8-71B6-4745-8D6D-EDBCF7D204E1}</ProjectGuid>
     <RootNamespace>EUEnergySubsidiesAndCost</RootNamespace>
-    <WindowsTargetPlatformVersion>10.0.17134.0</WindowsTargetPlatformVersion>
+    <WindowsTargetPlatformVersion>10.0.16299.0</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
@@ -118,11 +118,7 @@
     <None Include="..\README.md" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="..\Test_on_Physical_Quantity.cpp" />
     <ClCompile Include="..\Test_on_Template_Functions.cpp" />
-  </ItemGroup>
-  <ItemGroup>
-    <ClInclude Include="..\LevelisedCostOfPowerAndHeat.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
