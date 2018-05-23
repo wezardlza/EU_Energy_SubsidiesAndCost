@@ -118,7 +118,7 @@
     <None Include="..\README.md" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="..\Test_on_Template_Functions.cpp" />
+    <ClCompile Include="..\Test_on_Physical_Quantity.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

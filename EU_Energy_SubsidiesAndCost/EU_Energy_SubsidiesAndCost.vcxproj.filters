@@ -20,7 +20,7 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="..\Test_on_Template_Functions.cpp">
+    <ClCompile Include="..\Test_on_Physical_Quantity.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
