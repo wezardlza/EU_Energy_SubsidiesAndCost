@@ -10,26 +10,35 @@ namespace eu_subsidies_and_cost_ns {
 	class Physical_Quantity
 	{
 	public:
-		/*
-		m: the maginitude of a physical quantity
-		u: the unit of a physical quantity
-		*/
-		Physical_Quantity(const Type & m, const string &u);
+		Physical_Quantity(const Type & m, const string & u);
 
 	private:
-		const Type magnitude;
-		const string unit;
+		// the maginitude of the physical quantity
+		const Type * magnitude; 
+		// the unit of the physical quantity
+		const string * unit;  
 	};
 
 	class LvlCost_Parameter
 	{
 	public:
-		LvlCost_Parameter(double p);
+		LvlCost_Parameter(double & p);
 	private:
-		double param;
-		const string * notation;
+		// the maginitude of the parameter
+		double * param; 
+		// the notation of the parameter in the "Subsidies and costs of EU energy Final report"
+		const string * notation; 
+		// the physical explanation of the parameter
 		const string * explanantion;
 	};
+	
+	// The interest rate for overnight cost
+	const double interest_rate(0.05);
 
+	// The decomission cost equals 15% capital overnight cost
+	const double decommisioning_cost_rate(0.15);
+
+	// The boiler efficiency
+	const double boiler_efficiency(0.9);
 }
 #endif // !EUSAC_NS
