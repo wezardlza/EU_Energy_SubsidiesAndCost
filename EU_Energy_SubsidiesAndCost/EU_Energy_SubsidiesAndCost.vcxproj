@@ -118,7 +118,11 @@
     <None Include="..\README.md" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="..\Test_on_Physical_Quantity.cpp" />
+    <ClCompile Include="..\Test\Test_on_Physical_Quantity.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\Header_Files\EUSAC_NS.h" />
+    <ClInclude Include="..\Header_Files\LevelisedCostOfPowerAndHeat.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

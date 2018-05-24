@@ -20,8 +20,16 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="..\Test_on_Physical_Quantity.cpp">
+    <ClCompile Include="..\Test\Test_on_Physical_Quantity.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\Header_Files\LevelisedCostOfPowerAndHeat.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Header_Files\EUSAC_NS.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>
