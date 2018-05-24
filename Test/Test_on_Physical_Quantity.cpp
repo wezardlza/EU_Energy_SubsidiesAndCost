@@ -8,7 +8,6 @@ using eu_subsidies_and_cost_ns::interest_rate;
 using eu_subsidies_and_cost_ns::Physical_Quantity;
 using eu_subsidies_and_cost_ns::LvlCost_Parameter;
 
-
 int main(){
 	extern const double interest_rate;
 	int v = 9;
@@ -16,6 +15,7 @@ int main(){
 	const string x = "Hello";
 	Physical_Quantity<int> a(v, x);
 	LvlCost_Parameter b(vv);
+
 	cout << "interest rate is " << interest_rate << endl;
 	system("pause");
 }

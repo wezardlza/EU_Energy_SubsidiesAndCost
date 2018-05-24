@@ -3,7 +3,6 @@
 #define LCOPAH
 #include "EUSAC_NS.h"
 
-
 /*---------------------------------------------------------------------------------------------------------
 * Summary: Construct a physical quantity
 * Parameters:
@@ -26,6 +25,5 @@ eu_subsidies_and_cost_ns::
 eu_subsidies_and_cost_ns::
 	LvlCost_Parameter::LvlCost_Parameter(double & p): 
 		param(& p), notation() {}
-
 
 #endif // !LCOPAH
