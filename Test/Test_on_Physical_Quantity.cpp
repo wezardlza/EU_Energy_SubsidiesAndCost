@@ -14,7 +14,7 @@ int main(){
 	int v = 9;
 	double vv(1.0);
 	const string x = "Hello";
-	const Physical_Quantity<int> a(v, x);
+	Physical_Quantity<int> a(v, x);
 	LvlCost_Parameter b(vv);
 	cout << "interest rate is " << interest_rate << endl;
 	system("pause");
