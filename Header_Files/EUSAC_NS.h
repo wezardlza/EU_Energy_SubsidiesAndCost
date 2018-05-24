@@ -13,7 +13,7 @@ namespace eu_subsidies_and_cost_ns {
 		Physical_Quantity(const Type & m, const string & u);
 
 	private:
-		// The maginitude of the physical quantity
+		// The magnitude of the physical quantity
 		const Type * magnitude; 
 		// The unit of the physical quantity
 		const string * unit;  
@@ -25,7 +25,7 @@ namespace eu_subsidies_and_cost_ns {
 		LvlCost_Parameter(double & p);
 
 	private:
-		// The maginitude of the parameter
+		// The magnitude of the parameter
 		double * param; 
 		// The notation of the parameter in the "Subsidies and costs of EU energy Final report"
 		const string * notation; 

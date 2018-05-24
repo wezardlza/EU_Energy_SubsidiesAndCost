@@ -6,7 +6,7 @@
 /*---------------------------------------------------------------------------------------------------------
 * Summary: Construct a physical quantity
 * Parameters:
-*	m: the maginitude of the physical quantity
+*	m: the magnitude of the physical quantity
 *	u: the unit of the physical quantity
 * Return : void
 ----------------------------------------------------------------------------------------------------------*/
@@ -19,7 +19,7 @@ eu_subsidies_and_cost_ns::
 /*---------------------------------------------------------------------------------------------------------
 * Summary: Construct a parameter related the calculation of some levelised cost of an energy project
 * Parameters:
-*	p: the maginitude of the parameter
+*	p: the magnitude of the parameter
 * Return : void
 ----------------------------------------------------------------------------------------------------------*/
 eu_subsidies_and_cost_ns::
