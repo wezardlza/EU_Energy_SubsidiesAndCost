@@ -31,7 +31,7 @@ static PyMethodDef SpamMethods[] = {
 
 static struct PyModuleDef spammodule = {
 	PyModuleDef_HEAD_INIT,
-	"spam",   /* name of module */
+	"EU_Energy_SubsidiesAndCost",   /* name of module */
 	NULL,     /* module documentation, may be NULL */
 	-1,       /* size of per-interpreter state of the module,
 			  or -1 if the module keeps state in global variables. */
@@ -39,7 +39,7 @@ static struct PyModuleDef spammodule = {
 };
 
 PyMODINIT_FUNC
-PyInit_spam(void)
+PyInit_EU_Energy_SubsidiesAndCost(void)
 {
 	PyObject *m;
 
@@ -62,7 +62,7 @@ int main(int argc, char *argv[])
 	}
 
 	/* Add a built-in module, before Py_Initialize */
-	PyImport_AppendInittab("spam", PyInit_spam);
+	PyImport_AppendInittab("spam", PyInit_EU_Energy_SubsidiesAndCost);
 
 	/* Pass argv[0] to the Python interpreter */
 	Py_SetProgramName(program);
