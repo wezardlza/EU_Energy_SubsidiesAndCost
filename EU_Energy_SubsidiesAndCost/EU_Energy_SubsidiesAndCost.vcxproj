@@ -134,9 +134,6 @@
     <ClInclude Include="..\Header_Files\EUSAC_NS.h" />
     <ClInclude Include="..\Header_Files\LevelisedCostOfPowerAndHeat.h" />
   </ItemGroup>
-  <ItemGroup>
-    <ClCompile Include="..\Test\spammodule.cpp" />
-  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>
