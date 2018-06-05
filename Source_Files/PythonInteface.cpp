@@ -14,6 +14,6 @@ PYBIND11_MODULE(LevelisedCostOfPowerAndHeat, m) {
 
 		// Constructor
 		.def(py::init<const double &, const std::string &>(),
-			"Define a pet instance.");
+			"Define a physical quantity.");
 
 }
