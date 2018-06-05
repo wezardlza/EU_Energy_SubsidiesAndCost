@@ -72,8 +72,8 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <IncludePath>C:\Program Files\Python35\include;$(IncludePath)</IncludePath>
     <LibraryPath>C:\Program Files\Python35\libs;$(LibraryPath)</LibraryPath>
-    <TargetName>$(ProjectName)_d</TargetName>
-    <TargetExt>.pyd</TargetExt>
+    <TargetName>$(ProjectName)</TargetName>
+    <TargetExt>.exe</TargetExt>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <IncludePath>C:\Program Files\Python35\include;$(IncludePath)</IncludePath>
@@ -132,10 +132,10 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\Header_Files\EUSAC_NS.h" />
-    <ClInclude Include="..\Header_Files\LevelisedCostOfPowerAndHeat.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="..\Test\spammodule.cpp" />
+    <ClCompile Include="..\Source_Files\LevelisedCostOfPowerAndHeat.cpp" />
+    <ClCompile Include="..\Source_Files\Test_on_Physical_Quantity.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
