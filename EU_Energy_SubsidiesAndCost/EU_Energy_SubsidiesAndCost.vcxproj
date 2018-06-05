@@ -69,7 +69,20 @@
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
-  <PropertyGroup />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <IncludePath>C:\Program Files\Python35\include;$(IncludePath)</IncludePath>
+    <LibraryPath>C:\Program Files\Python35\libs;$(LibraryPath)</LibraryPath>
+    <TargetName>$(ProjectName)_d</TargetName>
+    <TargetExt>.pyd</TargetExt>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <IncludePath>C:\Program Files\Python35\include;$(IncludePath)</IncludePath>
+    <LibraryPath>C:\Program Files\Python35\libs;$(LibraryPath)</LibraryPath>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <TargetName>$(ProjectName)_d</TargetName>
+    <TargetExt>.pyd</TargetExt>
+  </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
       <WarningLevel>Level3</WarningLevel>
@@ -119,10 +132,10 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\Header_Files\EUSAC_NS.h" />
+    <ClInclude Include="..\Header_Files\LevelisedCostOfPowerAndHeat.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="..\Source_Files\LevelisedCostOfPowerAndHeat.cpp" />
-    <ClCompile Include="..\Source_Files\Test_on_Physical_Quantity.cpp" />
+    <ClCompile Include="..\Test\spammodule.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
