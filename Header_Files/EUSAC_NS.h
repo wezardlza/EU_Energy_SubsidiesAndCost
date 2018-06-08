@@ -12,7 +12,7 @@ namespace eu_subsidies_and_cost_ns {
 		// magnitude: the magnitude of the physical quantity.
 		// unit: the unit of the physical quantity.
 		// Return: void.
-		Physical_Quantity(const double & magnitude = 0.0, const std::string & unit = "unitless");
+		Physical_Quantity(const std::string & term = "", const double & magnitude = 0.0, const std::string & unit = "unitless");
 
 		// Summary: Construct a parameter related the calculation of some levelised cost of an energy project. This is 
 		// a copy constructor.
@@ -25,23 +25,29 @@ namespace eu_subsidies_and_cost_ns {
 		// Return: void.
 		~Physical_Quantity();
 
+		// Summary: Get the name of the physical quantity
+		const std::string get_term() const;
+
 		// Summary: Get the magnitude of the physical quantity.
 		const double get_magnitude() const;
 
 		// Summary: Get the unit of the physical quantity.
 		const std::string get_unit() const;
 
-		// Summary: Get the number of the class objects.
+		// Summary: Get the number of the <class 'Physical_Quantity'> objects.
 		static int get_count();
 
 	private:
+		// The name of the physical quantity
+		const std::string term;
+		
 		// The magnitude of the physical quantity.
 		const double magnitude; 
 
 		// The unit of the physical quantity.
 		const std::string unit;  
 
-		// The number of the class objects.
+		// The number of the <class 'Physical_Quantity'> objects.
 		static int count;
 	};
 
@@ -74,7 +80,7 @@ namespace eu_subsidies_and_cost_ns {
 		// Summary: Get the physical explanation of the levelised-cost parameter
 		const std::string get_explanation() const;
 
-		// Summary: Get the number of the class objects.
+		// Summary: Get the number of the <class 'LvlCost_Parameter'> objects.
 		static int get_count();
 
 	private:
@@ -87,10 +93,60 @@ namespace eu_subsidies_and_cost_ns {
 		// The physical explanation of the levelised-cost parameter
 		const std::string explanation;
 
-		// The number of the class objects.
+		// The number of the <class 'LvlCost_Parameter'> objects.
 		static int count;
 
 	};
+
+	// Summary: The levelised cost of electricity.
+	// alpha: capital recovery factor.
+	// I: investment cost including finance cost for construction at a predefined interest rate.
+	// OM: the operation and maintainance cost.
+	// F: anual fuel cost.
+	// E: electricity produced annually.
+	double LCOE(const double & alpha, const double & I, const double & OM, const double & F, const double & E);
+	
+	// Summary: The levelised cost of heat.
+	// alpha: capital recovery factor.
+	// I: investment cost including finance cost for construction at a predefined interest rate.
+	// OM: the operation and maintainance cost.
+	// F: anual fuel cost.
+	// H: heat produced annually.
+	double LCOH(const double & alpha, const double & I, const double & OM, const double & F, const double & H);
+
+	// Summary: The levelised cost of electricity for combined heat and power (CHP).
+	// alpha: capital recovery factor.
+	// I: investment cost including finance cost for construction at a predefined interest rate.
+	// OM: the operation and maintainance cost.
+	// F: anual fuel cost.
+	// E: electricity produced annually.
+	// H: heat produced annually.
+	// etaE: conversion efficiency in lower heating value (LHV) of electrcity
+	// etaH: conversion efficiency in lower heating value (LHV) of heat
+	// EP: electricity price a CHP intallation receives for elelctricty production as by-product
+	// HP: heat price a CHP intallation receives for heat production as by-product
+	// FLH_E: equivalent full load hours for electrcity production
+	// FLH_H: equivalent full load hours for heat production
+	double LCOE_CHP(const double & alpha, const double & I, const double & OM, const double & F, 
+		const double & E, const double & H, const double & etaE, const double & etaH, const double & HP, 
+		const double & FLH_E, const double & FLH_H);
+
+	// Summary: The levelised cost of heat for combined heat and power (CHP).
+	// alpha: capital recovery factor.
+	// I: investment cost including finance cost for construction at a predefined interest rate.
+	// OM: the operation and maintainance cost.
+	// F: anual fuel cost.
+	// H: heat produced annually.
+	// E: electricity produced annually.
+	// etaH: conversion efficiency in lower heating value (LHV) of heat
+	// etaE: conversion efficiency in lower heating value (LHV) of electrcity
+	// HP: heat price a CHP intallation receives for heat production as by-product
+	// EP: electricity price a CHP intallation receives for elelctricty production as by-product
+	// FLH_H: equivalent full load hours for heat production
+	// FLH_E: equivalent full load hours for electrcity production
+	double LCOH_CHP(const double & alpha, const double & I, const double & OM, const double & F, 
+		const double & H, const double & E, const double & etaH, const double & etaE, const double & EP, 
+		const double & FLH_H, const double & FLH_E);
 
 	// The decomission cost equals 15% capital overnight cost.
 	extern const double decommisioning_cost_rate;
@@ -102,4 +158,5 @@ namespace eu_subsidies_and_cost_ns {
 	extern const double interest_rate;
 
 }
+
 #endif // !EUSAC_NS
