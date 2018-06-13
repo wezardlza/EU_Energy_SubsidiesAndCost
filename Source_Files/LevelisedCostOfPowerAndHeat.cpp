@@ -79,8 +79,8 @@ double eu_subsidies_and_cost_ns::LCOH::operator()
 }
 
 // Levelised cost of electricity without CHP 
-double eu_subsidies_and_cost_ns::
-LCOE_CHP(const double & alpha, const double & I, const double & OM, const double & F, 
+double eu_subsidies_and_cost_ns::LCOE_CHP::operator()
+(const double & alpha, const double & I, const double & OM, const double & F, 
 	const double & E, const double & H, const double & etaE, const double & etaH, const double & HP, 
 	const double & FLH_E, const double & FLH_H) {
 	return (alpha * I + OM + F) / E - H * HP * etaH * FLH_H / (etaE * FLH_E);
