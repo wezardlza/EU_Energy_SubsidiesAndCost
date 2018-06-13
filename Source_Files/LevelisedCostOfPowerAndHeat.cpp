@@ -34,32 +34,32 @@ eu_subsidies_and_cost_ns::Physical_Quantity::~Physical_Quantity() { --count; }
 
 
 /*######################################################################################################################
-Class 'LvlCost_Parameter'
+Class 'Coefficient'
 ========================================================================================================================
-Construct a levelised-cost parameter
+Construct a coefficient
 ----------------------------------------------------------------------------------------------------------------------*/
-eu_subsidies_and_cost_ns::LvlCost_Parameter::LvlCost_Parameter(
-	const double & param, const std::string & notation, const std::string & explanation) :
-	param(param), notation(notation), explanation(explanation) {
+eu_subsidies_and_cost_ns::Coefficient::Coefficient(
+	const double & maginitude, const std::string & notation, const std::string & explanation) :
+	maginitude(maginitude), notation(notation), explanation(explanation) {
 	++count;
 }
 
-eu_subsidies_and_cost_ns::LvlCost_Parameter::LvlCost_Parameter(
-	const eu_subsidies_and_cost_ns::LvlCost_Parameter & orig) :
-	param(orig.param), notation(orig.notation), explanation(orig.explanation) {
+eu_subsidies_and_cost_ns::Coefficient::Coefficient(
+	const eu_subsidies_and_cost_ns::Coefficient & orig) :
+	maginitude(orig.maginitude), notation(orig.notation), explanation(orig.explanation) {
 	++count;
 }
 
 /*======================================================================================================================
 Read_only value definitions
 ----------------------------------------------------------------------------------------------------------------------*/
-const double eu_subsidies_and_cost_ns::LvlCost_Parameter::get_param() const { return param; }
+const double eu_subsidies_and_cost_ns::Coefficient::get_magnitude() const { return maginitude; }
 
-const std::string eu_subsidies_and_cost_ns::LvlCost_Parameter::get_notation() const { return notation; }
+const std::string eu_subsidies_and_cost_ns::Coefficient::get_notation() const { return notation; }
 
-const std::string eu_subsidies_and_cost_ns::LvlCost_Parameter::get_explanation() const { return explanation; }
+const std::string eu_subsidies_and_cost_ns::Coefficient::get_explanation() const { return explanation; }
 
-int eu_subsidies_and_cost_ns::LvlCost_Parameter::get_count() { return count; }
+int eu_subsidies_and_cost_ns::Coefficient::get_count() { return count; }
 
 
 /*######################################################################################################################
@@ -67,14 +67,14 @@ Levelised cost of electricity/heat
 ======================================================================================================================*/
 
 // Levelised cost of electricity without CHP 
-double eu_subsidies_and_cost_ns::
-LCOE(const double & alpha, const double & I, const double & OM, const double & F, const double & E) {
+double eu_subsidies_and_cost_ns::LCOE::operator()
+(const double & alpha, const double & I, const double & OM, const double & F, const double & E) {
 	return (alpha * I + OM + F) / E;
 }
 
 // Levelised cost of heat without CHP
-double eu_subsidies_and_cost_ns::
-LCOH(const double & alpha, const double & I, const double & OM, const double & F, const double & H) {
+double eu_subsidies_and_cost_ns::LCOH::operator()
+(const double & alpha, const double & I, const double & OM, const double & F, const double & H) {
 	return (alpha * I + OM + F) / H;
 }
 
@@ -102,13 +102,13 @@ Static counters of each classes
 int eu_subsidies_and_cost_ns::Physical_Quantity::count(0);
 
 // The number of Physical_Quantity objects
-int eu_subsidies_and_cost_ns::LvlCost_Parameter::count(0);
+int eu_subsidies_and_cost_ns::Coefficient::count(0);
 
 /*######################################################################################################################
 Cosntant values
 ======================================================================================================================*/
 
-extern const double eu_subsidies_and_cost_ns::decommisioning_cost_rate(0.15);
+extern const double eu_subsidies_and_cost_ns::decommisioning_cost_factor(0.15);
 
 extern const double eu_subsidies_and_cost_ns::boiler_efficiency(0.9);
 
