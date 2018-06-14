@@ -2,6 +2,7 @@
 #ifndef EUSAC_NS
 #define EUSAC_NS
 #include <string>
+#include <cmath>
 
 namespace eu_subsidies_and_cost_ns {
 
@@ -311,8 +312,17 @@ inline double eu_subsidies_and_cost_ns::LCOH::F(Physical_Quantity & FC, Coeffici
 	return FC.get_magnitude() * EH / eta.get_magnitude();
 }
 inline double eu_subsidies_and_cost_ns::LCOH::I(Physical_Quantity & C, Physical_Quantity & LB, Coefficient & i) {
-	double p(1.0);
-	for (int temp = 0; temp < LB.get_magnitude(); ++temp) { p *= (1 + i.get_magnitude()); }
-	return C.get_magnitude() / LB.get_magnitude() * p;
+	double s(0.0);
+	double base(1.0 + i.get_magnitude());
+	for (int temp = 0; temp < LB.get_magnitude(); ++temp) { 
+		s += std::pow(base, temp + 1);
+	}
+	return C.get_magnitude() / LB.get_magnitude() * s;
+}
+inline double eu_subsidies_and_cost_ns::LCOH::OM(Physical_Quantity & FOM, Physical_Quantity & VOM, const double & EH) {
+
+}
+inline double eu_subsidies_and_cost_ns::LCOH::F(Physical_Quantity & FC, Coefficient & eta, const double & EH) {
+
 }
 #endif // !EUSAC_NS
