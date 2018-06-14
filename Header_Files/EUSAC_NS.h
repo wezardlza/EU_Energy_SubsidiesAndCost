@@ -65,8 +65,7 @@ namespace eu_subsidies_and_cost_ns {
 		// notation: the symbol or abbrevation of the object.
 		// explanation: the additional explantions of the object.
 		// Return : void
-		Coefficient(const double & maginitude = 0.0, const std::string & notation = "",
-			const std::string & explanation = "");
+		Coefficient(const double & maginitude = 0.0, const std::string & explanation = "");
 
 		// Summary: Construct a coefficient.This is a copy constructor.
 		// Parameters:
@@ -76,9 +75,6 @@ namespace eu_subsidies_and_cost_ns {
 
 		// Summary: Get the magnitude of the coefficient.
 		const double get_magnitude() const;
-
-		// Summary: Get the symbol or abbrevation of the coefficient.
-		const std::string get_notation() const;
 
 		// Summary: Get the physical explanation of the coefficient.
 		const std::string get_explanation() const;
@@ -90,9 +86,6 @@ namespace eu_subsidies_and_cost_ns {
 		// The magnitude of the coefficient.
 		double maginitude;
 
-		// The symbol or abbrevation of the coefficient.
-		const std::string notation; 
-
 		// The physical explanation of the coefficient
 		const std::string explanation;
 
@@ -101,292 +94,225 @@ namespace eu_subsidies_and_cost_ns {
 
 	};
 
-	class LCOE
-	{
-	public:
-		LCOE(Physical_Quantity & C, Physical_Quantity & LB, Physical_Quantity & LT, Physical_Quantity & FOM,
-			Physical_Quantity & VOM, Physical_Quantity & REV, Physical_Quantity & P, Physical_Quantity & FLH,
-			Physical_Quantity & FC, Physical_Quantity & dv, Coefficient & r, Coefficient & i, Coefficient & d,
-			Coefficient & etaE);
-		~LCOE();
-
-		// The apital recovery factor.
-		inline static Coefficient alpha(Coefficient & r);
-		// The investment cost including finance cost for construction at a predefined interest rate.
-		inline static Physical_Quantity I(Physical_Quantity & C, Physical_Quantity & LB, Physical_Quantity & LT, 
-			Coefficient & r, Coefficient & i, Coefficient & d);
-		// The operation and maintainance cost.
-		inline static Physical_Quantity OM(Physical_Quantity & FOM, Physical_Quantity & VOM, Physical_Quantity & E, 
-			Physical_Quantity & REV, Physical_Quantity & dv);
-		// The anual fuel cost.
-		inline static Physical_Quantity F(Physical_Quantity & FC, Physical_Quantity & E, Coefficient & etaE);
-		// The electricity produced annually.
-		inline static Physical_Quantity E(Physical_Quantity & P, Physical_Quantity & FLH);
-
-		// Summary: The levelised cost of electricity.
-		// alpha: capital recovery factor.
-		// I: investment cost including finance cost for construction at a predefined interest rate.
-		// OM: the operation and maintainance cost.
-		// F: anual fuel cost.
-		// E: electricity produced annually.
-		double operator () (const double & alpha, const double & I, const double & OM, const double & F,
-			const double & E);
-
-	private:
-		// The captial cost.
-		Physical_Quantity & C;
-		// The cosntruction period.
-		Physical_Quantity & LB;
-		// The project duration.
-		Physical_Quantity & LT;
-		// The fixed OM cost.
-		Physical_Quantity & FOM;
-		// The variable OM cost
-		Physical_Quantity & VOM;
-		// The variable by-product revenue.
-		Physical_Quantity & REV;
-		// The electrical capacity.
-		Physical_Quantity & P;
-		// The full load hours.
-		Physical_Quantity & FLH;
-		// The fuel costs per unit of enengy input.
-		Physical_Quantity & FC;
-		// Not sure the physicial meaning yet.
-		Physical_Quantity & dv;
-		// The weighted average cost of capital (WACC).
-		Coefficient & r;
-		// The interest rate over the construction loan.
-		Coefficient & i;
-		// The decommisioning cost factor.
-		Coefficient & d;
-		// The conversion efficiency in lower heating value (LHV) of electrcity.
-		Coefficient & etaE;
-
-	};
-
 	class LCOH
 	{
 	public:
-		LCOH(Physical_Quantity & C, Physical_Quantity & LB, Physical_Quantity & FOM, Physical_Quantity & VOM, 
-			Physical_Quantity & P, Physical_Quantity & FLH, Physical_Quantity & FC, Coefficient & r, Coefficient & i, 
-			Coefficient & etaH);
+		// Summary: Construct an object to manage the calculation of the LCOH
+		// C: captial cost
+		// LB: cosntruction period
+		// FOM: fixed OM cost
+		// VOM: variable OM cost
+		// P: heat capacity
+		// FC: fuel costs per unit of enengy input
+		// r: weighted average cost of capital (WACC)
+		// i: interest rate over the construction loan
+		// FLH_H: equivalent full load hours for heat production
+		// etaH: conversion efficiency in lower heating value (LHV) of heat
+		LCOH(Physical_Quantity & C, Physical_Quantity & LB, Physical_Quantity & FOM, Physical_Quantity & VOM,
+			Physical_Quantity & P, Physical_Quantity & FC, Coefficient & r, Coefficient & i,
+			const Physical_Quantity & FLH_H = Physical_Quantity("Full load hours of heat", 0.0, "h"),
+			const Coefficient & etaH = Coefficient(1.0, "Conversion efficiency in LHV of heat"));
 		~LCOH();
-		// The apital recovery factor.
-		inline static Coefficient alpha(Coefficient & r);
-		// The investment cost including finance cost for construction at a predefined interest rate.
-		inline static Physical_Quantity I(Physical_Quantity & C, Physical_Quantity & LB, Coefficient & i);
-		// The operation and maintainance cost.
-		inline static Physical_Quantity OM(Physical_Quantity & FOM, Physical_Quantity & VOM, Physical_Quantity & H);
-		// The anual fuel cost.
-		inline static Physical_Quantity F(Physical_Quantity & FC, Physical_Quantity & H, Coefficient & etaH);
-		// The heat produced annually.
-		inline static Physical_Quantity H(Physical_Quantity & P, Physical_Quantity & FLH);
+		
+		// Summary: Capital recovery factor
+		inline static double alpha(Coefficient & r);
+		// Summary: Electricity or heat produced annually.
+		inline static double EH(Physical_Quantity & P, Physical_Quantity & FLH);
 
-		// Summary: The levelised cost of heat.
-		// alpha: capital recovery factor.
-		// I: investment cost including finance cost for construction at a predefined interest rate.
-		// OM: the operation and maintainance cost.
-		// F: anual fuel cost.
-		// H: heat produced annually.
-		double operator () (const double & alpha, const double & I, const double & OM, const double & F, 
-			const double & H);
+		/*Methods possibly hidden*/
+		// Summary: Investment cost including finance cost for construction at a predefined interest rate
+		inline static double I(Physical_Quantity & C, Physical_Quantity & LB, Coefficient & i);
+		// Summary: Operation and maintainance cost
+		inline static double OM(Physical_Quantity & FOM, Physical_Quantity & VOM, const double & EH);
+		// Summary: Anual fuel cost
+		inline static double F(Physical_Quantity & FC, Coefficient & eta, const double & EH);
+
+		// Summary: Levelised cost of heat
+		// alpha: capital recovery factor
+		// I: investment cost including finance cost for construction at a predefined interest rate
+		// OM: the operation and maintainance cost
+		// F: anual fuel cost
+		// EH: for LCOE object, EH is the electricity produced annually;
+		//	for LCOH object, EH is the heat produced annually
+		double operator () (const double & alpha, const double & I, const double & OM, const double & F,
+			const double & EH);
+
+	protected:
+		Physical_Quantity & C;
+		Physical_Quantity & LB;
+		Physical_Quantity & FOM;
+		Physical_Quantity & VOM;
+		Physical_Quantity & P;
+		Physical_Quantity & FC;
+		Coefficient & r;
+		Coefficient & i;
 
 	private:
-		// The captial cost.
-		Physical_Quantity & C;
-		// The cosntruction period.
-		Physical_Quantity & LB;
-		// The fixed OM cost.
-		Physical_Quantity & FOM;
-		// The variable OM cost
-		Physical_Quantity & VOM;
-		// The heat capacity.
-		Physical_Quantity & P;
-		// The full load hours.
-		Physical_Quantity & FLH;
-		// The fuel costs per unit of enengy input.
-		Physical_Quantity & FC;
-		// The weighted average cost of capital (WACC).
-		Coefficient & r;
-		// The interest rate over the construction loan.
-		Coefficient & i;
-		// The conversion efficiency in lower heating value (LHV) of heat.
+		// The full load hours of electricity
+		Physical_Quantity & FLH_H;
+		// The conversion efficiency in lower heating value (LHV) of heat
 		Coefficient & etaH;
 
 	};
 
-
-	class LCOE_CHP
+	class LCOE : public LCOH
 	{
 	public:
-		LCOE_CHP(Physical_Quantity & C, Physical_Quantity & LB, Physical_Quantity & FOM, Physical_Quantity & VOM, 
-			Physical_Quantity & P, Physical_Quantity & FLH_E, Physical_Quantity & FLH_H, Physical_Quantity & FC, 
-			Physical_Quantity & HP, Coefficient & r, Coefficient & i, Coefficient & etaE, Coefficient & etaH);
-		~LCOE_CHP();
-		// The apital recovery factor.
-		inline static Coefficient alpha(Coefficient & r);
-		// The investment cost including finance cost for construction at a predefined interest rate.
-		inline static Physical_Quantity I(Physical_Quantity & C, Physical_Quantity & LB, Coefficient & i);
-		// The operation and maintainance cost.
-		inline static Physical_Quantity OM(Physical_Quantity & FOM, Physical_Quantity & VOM, Physical_Quantity & E);
-		// The anual fuel cost.
-		inline static Physical_Quantity F(Physical_Quantity & FC, Physical_Quantity & E, Physical_Quantity & H, 
-			Coefficient & etaE, Coefficient & etaH);
-		// The electricity produced annually.
-		inline static Physical_Quantity E(Physical_Quantity & P, Physical_Quantity & FLH_E);
-		// The heat produced annually.
-		inline static Physical_Quantity H(Physical_Quantity & P, Physical_Quantity & FLH_H);
-		// The revenue of the by-product
-		inline static Physical_Quantity revenue_bp(Physical_Quantity & H, Physical_Quantity & HP,
-			Physical_Quantity & FLH_E, Physical_Quantity & FLH_H, Coefficient & etaE, Coefficient & etaH);
-
-		// Summary: The levelised cost of electricity for combined heat and power (CHP).
-		// alpha: capital recovery factor.
-		// I: investment cost including finance cost for construction at a predefined interest rate.
-		// OM: the operation and maintainance cost.
-		// F: anual fuel cost.
-		// E: electricity produced annually.
-		// H: heat produced annually.
+		// Summary: Construct an object to manage the calculation of the LCOE
+		// C: captial cost
+		// LB: cosntruction period
+		// FOM: fixed OM cost
+		// VOM: variable OM cost
+		// P: heat capacity
+		// FC: fuel costs per unit of enengy input
+		// r: weighted average cost of capital (WACC)
+		// i: interest rate over the construction loan
+		// LT: project duration
+		// REV: variable by-product revenue
+		// dv: not sure the physicial meaning yet
+		// d: decommisioning cost factor
+		// FLH_E: equivalent full load hours for electrcity production
 		// etaE: conversion efficiency in lower heating value (LHV) of electrcity
-		// etaH: conversion efficiency in lower heating value (LHV) of heat
-		// HP: heat price a CHP intallation receives for heat production as by-product
+		LCOE(Physical_Quantity & C, Physical_Quantity & LB, Physical_Quantity & FOM, Physical_Quantity & VOM, 
+			Physical_Quantity & P, Physical_Quantity & FC, Coefficient & r, Coefficient & i, 
+			Physical_Quantity & LT, Physical_Quantity & REV, Physical_Quantity & dv, Coefficient & d,
+			const Physical_Quantity & FLH_E = Physical_Quantity("Full load hours of electrcity", 0.0, "h"),
+			const Coefficient & etaE = Coefficient(1.0, "Conversion efficiency in LHV of electricity"));
+		~LCOE();
+
+		/*Methods rewritten*/
+		// Summary: Investment cost including finance cost for construction at a predefined interest rate.
+		inline static double I(Physical_Quantity & C, Physical_Quantity & LB, Physical_Quantity & LT, 
+			Coefficient & r, Coefficient & i, Coefficient & d);
+		// Summary: Operation and maintainance cost
+		inline static double OM(Physical_Quantity & FOM, Physical_Quantity & VOM, 
+			Physical_Quantity & REV, Physical_Quantity & dv, const double & EH);
+
+	protected:
+		Physical_Quantity & LT;
+		Physical_Quantity & REV;
+		Physical_Quantity & dv;
+		Coefficient & d;
+
+	private:
+		Physical_Quantity & FLH_E;
+		Coefficient & etaE;
+
+	};
+
+	class LCOH_CHP : public LCOH
+	{
+	public:
+		// Summary: Construct an object to manage the calculation of the LCOH of CHP
+		// C: captial cost
+		// LB: cosntruction period
+		// FOM: fixed OM cost
+		// VOM: variable OM cost
+		// P: heat capacity
+		// FC: fuel costs per unit of enengy input
+		// r: weighted average cost of capital (WACC)
+		// i: interest rate over the construction loan
 		// FLH_E: equivalent full load hours for electrcity production
 		// FLH_H: equivalent full load hours for heat production
-		double operator () (const double & alpha, const double & I, const double & OM, const double & F,
-			const double & E, const double & H, const double & etaE, const double & etaH, const double & HP,
-			const double & FLH_E, const double & FLH_H);
-
-	protected:
-		// The captial cost.
-		Physical_Quantity & C;
-		// The cosntruction period.
-		Physical_Quantity & LB;
-		// The fixed OM cost.
-		Physical_Quantity & FOM;
-		// The variable OM cost
-		Physical_Quantity & VOM;
-		// The heat capacity.
-		Physical_Quantity & P;
-		// The equivalent full load hours for electrcity production.
-		Physical_Quantity & FLH_E;
-		// The equivalent full load hours for electrcity production.
-		Physical_Quantity & FLH_H;
-		// The fuel costs per unit of enengy input.
-		Physical_Quantity & FC;
-		// The weighted average cost of capital (WACC).
-		Coefficient & r;
-		// The interest rate over the construction loan.
-		Coefficient & i;
-		// The conversion efficiency in lower heating value (LHV) of electrcity.
-		Coefficient & etaE;
-		// The conversion efficiency in lower heating value (LHV) of heat.
-		Coefficient & etaH;
-
-	private:
-		// The heat price a CHP intallation receives for heat production as by-product
-		Physical_Quantity & HP;
-
-	};
-
-	class LCOH_CHP
-	{
-	public:
+		// etaE: conversion efficiency in lower heating value (LHV) of electrcity
+		// etaH: conversion efficiency in lower heating value (LHV) of heat
+		// EP: electricity price a CHP intallation receives for electricity production as by-product
 		LCOH_CHP(Physical_Quantity & C, Physical_Quantity & LB, Physical_Quantity & FOM, Physical_Quantity & VOM,
-			Physical_Quantity & P, Physical_Quantity & FLH_E, Physical_Quantity & FLH_H, Physical_Quantity & FC, 
-			Physical_Quantity & EP, Coefficient & r, Coefficient & i, Coefficient & etaE, Coefficient & etaH);
+			Physical_Quantity & P, Physical_Quantity & FC, Coefficient & r, Coefficient & i, 
+			Physical_Quantity & FLH_E, Physical_Quantity & FLH_H, Coefficient & etaE, Coefficient & etaH, 
+			const Physical_Quantity & EP = Physical_Quantity("Wholesale electricity price", 0.0, "Euros/MWh"));
 		~LCOH_CHP();
-		// The apital recovery factor.
-		inline static Coefficient alpha(Coefficient & r);
-		// The investment cost including finance cost for construction at a predefined interest rate.
-		inline static Physical_Quantity I(Physical_Quantity & C, Physical_Quantity & LB, Coefficient & i);
-		// The operation and maintainance cost.
-		inline static Physical_Quantity OM(Physical_Quantity & FOM, Physical_Quantity & VOM, Physical_Quantity & E);
-		// The anual fuel cost.
-		inline static Physical_Quantity F(Physical_Quantity & FC, Physical_Quantity & E, Physical_Quantity & H,
+
+		/*Methods rewritten*/
+		// Anual fuel cost
+		inline static double F(Physical_Quantity & FC, Physical_Quantity & E, Physical_Quantity & H, 
 			Coefficient & etaE, Coefficient & etaH);
-		// The electricity produced annually.
-		inline static Physical_Quantity E(Physical_Quantity & P, Physical_Quantity & FLH_E);
-		// The heat produced annually.
-		inline static Physical_Quantity H(Physical_Quantity & P, Physical_Quantity & FLH_H);
-		// The revenue of the by-product.
-		inline static Physical_Quantity revenue_bp(Physical_Quantity & H, Physical_Quantity & EP,
+
+		// Summary: Revenue of the by-product
+		// HE: for LCOE_CHP object, HE is the heat produced annually (H);
+		//	for LCOH_CHP object, HE is the electricity produced annually (E)
+		// HE_P: for LCOE_CHP object, HE_P is the heat (HP) price; 
+		//	for LOCH_CHP object, HE_P is the electricity (EP) price
+		inline static double bp_revenue(Physical_Quantity & HE, Physical_Quantity & HE_P,
 			Physical_Quantity & FLH_E, Physical_Quantity & FLH_H, Coefficient & etaE, Coefficient & etaH);
 
-		// Summary: The levelised cost of electricity for combined heat and power (CHP).
-		// alpha: capital recovery factor.
-		// I: investment cost including finance cost for construction at a predefined interest rate.
-		// OM: the operation and maintainance cost.
-		// F: anual fuel cost.
-		// E: electricity produced annually.
-		// H: heat produced annually.
-		// etaE: conversion efficiency in lower heating value (LHV) of electrcity.
-		// etaH: conversion efficiency in lower heating value (LHV) of heat.
-		// EP: electricity price a CHP intallation receives for elelctricty production as by-product.
-		// FLH_E: equivalent full load hours for electrcity production.
-		// FLH_H: equivalent full load hours for heat production.
+		// Summary: Levelised cost of heat for combined heat and power (CHP)
+		// alpha: capital recovery factor
+		// I: investment cost including finance cost for construction at a predefined interest rate
+		// OM: the operation and maintainance cost
+		// F: anual fuel cost
+		// EH: for LCOE_CHP object, EH is the electricity produced annually (E);
+		//	for LCOH_CHP object, EH is the heat produced annually (H)
+		// bp_revenue: revenue of the by-product
 		double operator () (const double & alpha, const double & I, const double & OM, const double & F,
-			const double & E, const double & H, const double & etaE, const double & etaH, const double & EP,
-			const double & FLH_E, const double & FLH_H);
+			const double & EH, const double bp_revenue);
 
 	protected:
-		// The captial cost.
-		Physical_Quantity & C;
-		// The cosntruction period.
-		Physical_Quantity & LB;
-		// The fixed OM cost.
-		Physical_Quantity & FOM;
-		// The variable OM cost.
-		Physical_Quantity & VOM;
-		// The heat capacity.
-		Physical_Quantity & P;
-		// The equivalent full load hours for electrcity production.
 		Physical_Quantity & FLH_E;
-		// The equivalent full load hours for electrcity production.
 		Physical_Quantity & FLH_H;
-		// The fuel costs per unit of enengy input.
-		Physical_Quantity & FC;
-		// The weighted average cost of capital (WACC).
-		Coefficient & r;
-		// The interest rate over the construction loan.
-		Coefficient & i;
-		// The conversion efficiency in lower heating value (LHV) of electrcity.
 		Coefficient & etaE;
-		// The conversion efficiency in lower heating value (LHV) of heat.
 		Coefficient & etaH;
 
 	private:
-		// The electricity price a CHP intallation receives for elelctricty production as by-product.
 		Physical_Quantity & EP;
 
 	};
 
-	// Summary: The levelised cost of heat for combined heat and power (CHP).
-	// alpha: capital recovery factor.
-	// I: investment cost including finance cost for construction at a predefined interest rate.
-	// OM: the operation and maintainance cost.
-	// F: anual fuel cost.
-	// H: heat produced annually.
-	// E: electricity produced annually.
-	// etaH: conversion efficiency in lower heating value (LHV) of heat.
-	// etaE: conversion efficiency in lower heating value (LHV) of electrcity.
-	// HP: heat price a CHP intallation receives for heat production as by-product.
-	// EP: electricity price a CHP intallation receives for elelctricty production as by-product.
-	// FLH_H: equivalent full load hours for heat production.
-	// FLH_E: equivalent full load hours for electrcity production.
-	double LCOH_CHP(const double & alpha, const double & I, const double & OM, const double & F, 
-		const double & H, const double & E, const double & etaH, const double & etaE, const double & EP, 
-		const double & FLH_H, const double & FLH_E);
+	class LCOE_CHP : public LCOH_CHP
+	{
+	public:
+		// Summary: Construct an object to manage the calculation of the LCOE of CHP
+		// C: captial cost
+		// LB: cosntruction period
+		// FOM: fixed OM cost
+		// VOM: variable OM cost
+		// P: heat capacity
+		// FC: fuel costs per unit of enengy input
+		// r: weighted average cost of capital (WACC)
+		// i: interest rate over the construction loan
+		// FLH_E: equivalent full load hours for electrcity production
+		// FLH_H: equivalent full load hours for heat production
+		// etaE: conversion efficiency in lower heating value (LHV) of electrcity
+		// etaH: conversion efficiency in lower heating value (LHV) of heat
+		// HP: heat price a CHP intallation receives for heat production as by-product
+		LCOE_CHP(Physical_Quantity & C, Physical_Quantity & LB, Physical_Quantity & FOM, Physical_Quantity & VOM,
+			Physical_Quantity & P, Physical_Quantity & FC, Coefficient & r, Coefficient & i,
+			Physical_Quantity & FLH_E, Physical_Quantity & FLH_H, Coefficient & etaE, Coefficient & etaH,
+			const Physical_Quantity & HP = Physical_Quantity("Wholesale heat price", 0.0, "Euros/MWh"));
+		~LCOE_CHP();
+	
+	private:
+		Physical_Quantity & HP;
+
+	};
 
 
-	// The decomission cost equals 15% capital overnight cost.
+	// Decomission cost equals 15% capital overnight cost
 	extern const double decommisioning_cost_factor;
 
-	// The boiler efficiency.
+	// Boiler efficiency
 	extern const double boiler_efficiency;
 
-	// The interest rate for overnight cost.
+	// Interest rate for overnight cost
 	extern const double interest_rate;
 
 }
 
+inline double eu_subsidies_and_cost_ns::LCOH::alpha(Coefficient & r) {
+	return r.get_magnitude() / (1 - (1 + r.get_magnitude()));
+}
+inline double eu_subsidies_and_cost_ns::LCOH::EH(Physical_Quantity & P, Physical_Quantity & FLH) {
+	return P.get_magnitude() * FLH.get_magnitude();
+}
+inline double eu_subsidies_and_cost_ns::LCOH::OM(Physical_Quantity & FOM, Physical_Quantity & VOM, const double & EH) {
+	return FOM.get_magnitude() + VOM.get_magnitude() * EH;
+}
+inline double eu_subsidies_and_cost_ns::LCOH::F(Physical_Quantity & FC, Coefficient & eta, const double & EH) {
+	return FC.get_magnitude() * EH / eta.get_magnitude();
+}
+inline double eu_subsidies_and_cost_ns::LCOH::I(Physical_Quantity & C, Physical_Quantity & LB, Coefficient & i) {
+	double p(1.0);
+	for (int temp = 0; temp < LB.get_magnitude(); ++temp) { p *= (1 + i.get_magnitude()); }
+	return C.get_magnitude() / LB.get_magnitude() * p;
+}
 #endif // !EUSAC_NS

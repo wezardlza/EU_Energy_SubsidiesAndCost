@@ -39,14 +39,14 @@ Class 'Coefficient'
 Construct a coefficient
 ----------------------------------------------------------------------------------------------------------------------*/
 eu_subsidies_and_cost_ns::Coefficient::Coefficient(
-	const double & maginitude, const std::string & notation, const std::string & explanation) :
-	maginitude(maginitude), notation(notation), explanation(explanation) {
+	const double & maginitude, const std::string & explanation) :
+	maginitude(maginitude), explanation(explanation) {
 	++count;
 }
 
 eu_subsidies_and_cost_ns::Coefficient::Coefficient(
 	const eu_subsidies_and_cost_ns::Coefficient & orig) :
-	maginitude(orig.maginitude), notation(orig.notation), explanation(orig.explanation) {
+	maginitude(orig.maginitude), explanation(orig.explanation) {
 	++count;
 }
 
