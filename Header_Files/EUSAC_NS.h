@@ -70,7 +70,6 @@ namespace eu_subsidies_and_cost_ns {
 		// Summary: Construct a coefficient.This is a copy constructor
 		// Parameters:
 		// const Coefficient &: an object of the same class
-
 		Coefficient(const Coefficient &);
 
 		// Summary: Destruct a cefficient
@@ -240,7 +239,7 @@ namespace eu_subsidies_and_cost_ns {
 		~LCOH_CHP();
 
 		/*Methods rewritten*/
-		// Anual fuel cost
+		// Summary: Anual fuel cost
 		inline static double F(Physical_Quantity & FC, Physical_Quantity & E, Physical_Quantity & H, 
 			Coefficient & etaE, Coefficient & etaH);
 
