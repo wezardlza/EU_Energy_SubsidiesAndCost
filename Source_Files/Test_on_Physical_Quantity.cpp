@@ -4,7 +4,17 @@
 namespace escn = eu_subsidies_and_cost_ns;
 
 int main(){
-	
+	escn::Physical_Quantity C();
+	escn::Physical_Quantity LB;
+	escn::Physical_Quantity LT;
+	escn::Physical_Quantity FOM;
+	escn::Physical_Quantity VOM;
+	escn::Physical_Quantity P;
+	escn::Physical_Quantity FC;
+	escn::Coefficient r;
+	escn::Coefficient i;
+	const escn::Physical_Quantity FLH_H("Full load hours of heat", 0.0, "h");
+	const escn::Coefficient etaH(1.0, "Conversion efficiency in LHV of heat");
 	extern const double escn::decommisioning_cost_factor;
 	extern const double escn::boiler_efficiency;
 	extern const double escn::interest_rate;

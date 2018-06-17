@@ -1,7 +1,6 @@
 #pragma once
 #ifndef EUSAC_NS
 #define EUSAC_NS
-#ifndef DEBUG
 #define DEBUG
 
 #include <string>
@@ -383,5 +382,4 @@ namespace eu_subsidies_and_cost_ns {
 
 }
 
-#endif // !DEBUG
 #endif // !EUSAC_NS
