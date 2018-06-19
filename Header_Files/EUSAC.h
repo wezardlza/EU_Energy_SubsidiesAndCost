@@ -1,17 +1,18 @@
 #pragma once
-#ifndef EUSAC_NS
-#define EUSAC_NS
+#ifndef EUSAC
+#define EUSAC
 #define DEBUG
 
 #include <string>
 #include <cmath>
 
-namespace eu_subsidies_and_cost_ns {
+namespace eu_subsidies_and_cost {
 
 	// A Physical_Quantity has a unit
 	class Physical_Quantity
 	{
 	public:
+
 		// Summary: Construct a physical quantity
 		// Parameters:
 		// term: name of the physical quantity
@@ -57,6 +58,7 @@ namespace eu_subsidies_and_cost_ns {
 	class Coefficient
 	{
 	public:
+
 		// Summary: Construct a coefficient, related the calculation of some levelised cost of an 
 		// energy project.
 		// Parameters:
@@ -96,43 +98,44 @@ namespace eu_subsidies_and_cost_ns {
 	class LCOH
 	{
 	public:
+
 		// Summary: Construct an object to manage the calculation of the LCOH
 		// C: captial cost
 		// LB: cosntruction period
 		// LT: project duration
 		// FOM: fixed OM cost
 		// VOM: variable OM cost
-		// P: heat capacity
+		// P_H: heat capacity
 		// FC: fuel costs per unit of enengy input
 		// r: weighted average cost of capital (WACC)
 		// i: interest rate over the construction loan
 		// FLH_H: equivalent full load hours for heat production
 		// etaH: conversion efficiency in lower heating value (LHV) of heat
 		LCOH(Physical_Quantity & C, Physical_Quantity & LB, Physical_Quantity & LT,Physical_Quantity & FOM, 
-			Physical_Quantity & VOM, Physical_Quantity & P, Physical_Quantity & FC, Coefficient & r, Coefficient & i,
-			const Physical_Quantity & FLH_H = Physical_Quantity("Full load hours of heat", 0.0, "h"),
-			const Coefficient & etaH = Coefficient(1.0, "Conversion efficiency in LHV of heat"));
+			Physical_Quantity & VOM, Physical_Quantity & FC, Coefficient & r, Coefficient & i,
+			const Physical_Quantity & P_H = Physical_Quantity("heat capacity", 650, "MW"),
+			const Physical_Quantity & FLH_H = Physical_Quantity("full load hours of heat", 0.0, "h"),
+			const Coefficient & etaH = Coefficient(1.0, "conversion efficiency in LHV of heat"));
 		LCOH(const LCOH &);
 		~LCOH();
 		
-		// Summary: Capital recovery factor
 		inline static double alpha(Physical_Quantity & LT, Coefficient & r);
-		// Summary: Electricity or heat produced annually
-		inline static double EH(Physical_Quantity & P, Physical_Quantity & FLH);
+
+		inline static double EH(Physical_Quantity & P_EH, Physical_Quantity & FLH);
+
 
 		/*Methods possibly hidden*/
-		// Summary: Investment cost including finance cost for construction at a predefined interest rate
 		inline static double I(Physical_Quantity & C, Physical_Quantity & LB, Coefficient & i);
-		// Summary: Operation and maintainance cost
+
 		inline static double OM(Physical_Quantity & FOM, Physical_Quantity & VOM, const double & EH);
-		// Summary: Anual fuel cost
+
 		inline static double F(Physical_Quantity & FC, Coefficient & eta, const double & EH);
 
 		// Summary: Levelised cost of heat
 		// alpha: capital recovery factor
 		// I: investment cost including finance cost for construction at a predefined interest rate
 		// OM: the operation and maintainance cost
-		// F: anual fuel cost
+		// F: annual fuel cost
 		// EH: for LCOE object, EH is the electricity produced annually (E);
 		//	for LCOH object, EH is the heat produced annually (H)
 		double operator () (const double & alpha, const double & I, const double & OM, const double & F,
@@ -147,12 +150,12 @@ namespace eu_subsidies_and_cost_ns {
 		Physical_Quantity LT;
 		Physical_Quantity FOM;
 		Physical_Quantity VOM;
-		Physical_Quantity P;
 		Physical_Quantity FC;
 		Coefficient r;
 		Coefficient i;
 
 	private:
+		Physical_Quantity P_H;
 		Physical_Quantity FLH_H;
 		Coefficient etaH;
 
@@ -164,13 +167,14 @@ namespace eu_subsidies_and_cost_ns {
 	class LCOE : public LCOH
 	{
 	public:
+
 		// Summary: Construct an object to manage the calculation of the LCOE
 		// C: captial cost
 		// LT: project duration
 		// LB: cosntruction period
 		// FOM: fixed OM cost
 		// VOM: variable OM cost
-		// P: heat capacity
+		// P_E: electricity capacity
 		// FC: fuel costs per unit of enengy input
 		// r: weighted average cost of capital (WACC)
 		// i: interest rate over the construction loan
@@ -180,18 +184,19 @@ namespace eu_subsidies_and_cost_ns {
 		// FLH_E: equivalent full load hours for electrcity production
 		// etaE: conversion efficiency in lower heating value (LHV) of electrcity
 		LCOE(Physical_Quantity & C, Physical_Quantity & LB, Physical_Quantity & LT, Physical_Quantity & FOM, 
-			Physical_Quantity & VOM, Physical_Quantity & P, Physical_Quantity & FC, Coefficient & r, Coefficient & i,
+			Physical_Quantity & VOM, Physical_Quantity & FC, Coefficient & r, Coefficient & i,
 			Physical_Quantity & REV, Physical_Quantity & dv, Coefficient & d,
-			const Physical_Quantity & FLH_E = Physical_Quantity("Full load hours of electrcity", 0.0, "h"),
-			const Coefficient & etaE = Coefficient(1.0, "Conversion efficiency in LHV of electricity"));
+			const Physical_Quantity & P_E = Physical_Quantity("electricity capacity", 650, "MW"),
+			const Physical_Quantity & FLH_E = Physical_Quantity("full load hours of electrcity", 0.0, "h"),
+			const Coefficient & etaE = Coefficient(1.0, "conversion efficiency in LHV of electricity"));
 		LCOE(const LCOE &);
 		~LCOE();
 
+
 		/*Methods rewritten*/
-		// Summary: Investment cost including finance cost for construction at a predefined interest rate.
 		inline static double I(Physical_Quantity & C, Physical_Quantity & LB, Coefficient & i, 
 			Physical_Quantity & LT, Coefficient & r, Coefficient & d);
-		// Summary: Operation and maintainance cost
+
 		inline static double OM(Physical_Quantity & FOM, Physical_Quantity & VOM, const double & EH, 
 			Physical_Quantity & REV, Physical_Quantity & dv);
 
@@ -204,6 +209,7 @@ namespace eu_subsidies_and_cost_ns {
 		Coefficient d;
 
 	private:
+		Physical_Quantity P_E;
 		Physical_Quantity FLH_E;
 		Coefficient etaE;
 
@@ -215,13 +221,15 @@ namespace eu_subsidies_and_cost_ns {
 	class LCOH_CHP : public LCOH
 	{
 	public:
+
 		// Summary: Construct an object to manage the calculation of the LCOH of CHP
 		// C: captial cost
 		// LB: cosntruction period
 		// LT: project duration
 		// FOM: fixed OM cost
 		// VOM: variable OM cost
-		// P: heat capacity
+		// P_E: electricity capacity
+		// P_H: heat capacity
 		// FC: fuel costs per unit of enengy input
 		// r: weighted average cost of capital (WACC)
 		// i: interest rate over the construction loan
@@ -231,30 +239,18 @@ namespace eu_subsidies_and_cost_ns {
 		// etaH: conversion efficiency in lower heating value (LHV) of heat
 		// EP: electricity price a CHP intallation receives for electricity production as by-product
 		LCOH_CHP(Physical_Quantity & C, Physical_Quantity & LB, Physical_Quantity & LT, Physical_Quantity & FOM, 
-			Physical_Quantity & VOM, Physical_Quantity & P, Physical_Quantity & FC, Coefficient & r, Coefficient & i, 
-			Physical_Quantity & FLH_E, Physical_Quantity & FLH_H, Coefficient & etaE, Coefficient & etaH, 
-			const Physical_Quantity & EP = Physical_Quantity("Wholesale electricity price", 0.0, "Euros/MWh"));
+			Physical_Quantity & VOM, Physical_Quantity & FC, Coefficient & r, Coefficient & i, Physical_Quantity & P_E,
+			Physical_Quantity & P_H, Physical_Quantity & FLH_E, Physical_Quantity & FLH_H, Coefficient & etaE, 
+			Coefficient & etaH, 
+			const Physical_Quantity & EP = Physical_Quantity("wholesale electricity price", 0.0, "Euros/MWh"));
 		LCOH_CHP(const LCOH_CHP &);
 		~LCOH_CHP();
 
+
 		/*Methods rewritten*/
-		// Summary: Anual fuel cost
 		inline static double F(Physical_Quantity & FC, Physical_Quantity & E, Physical_Quantity & H, 
 			Coefficient & etaE, Coefficient & etaH);
 
-		// Summary: Revenue of the by-product
-		// HE: for LCOE_CHP object, HE is the heat produced annually (H);
-		//	for LCOH_CHP object, HE is the electricity produced annually (E)
-		// HE_P: for LCOE_CHP object, HE_P is the heat (HP) price; 
-		//	for LOCH_CHP object, HE_P is the electricity (EP) price
-		// FLH_EH: for LCOE_CHP object, FLH_EH is the equivalent full load hours for electrcity production (FLH_E); 
-		//	for LOCH_CHP object, FLH_EH is the equivalent full load hours for heat production (FLH_H)
-		// FLH_HE: for LCOE_CHP object, FLH_HE is the equivalent full load hours for heat production (FLH_H); 
-		//	for LOCH_CHP object, FLH_HE is the equivalent full load hours for electricity production (FLH_E)
-		// etaEH: for LCOE_CHP object, conversion efficiency in lower heating value (LHV) of electrcity (etaE)£»
-		//	for LCOH_CHP object, conversion efficiency in lower heating value (LHV) of heat (etaH)
-		// etaHE: for LCOE_CHP object, conversion efficiency in lower heating value (LHV) of heat (etaH);
-		//	for LCOH_CHP object, conversion efficiency in lower heating value (LHV) of electrcity (etaE)
 		inline static double bp_revenue(Physical_Quantity & HE, Physical_Quantity & HE_P,
 			Physical_Quantity & FLH_EH, Physical_Quantity & FLH_HE, Coefficient & etaEH, Coefficient & etaHE);
 
@@ -262,7 +258,7 @@ namespace eu_subsidies_and_cost_ns {
 		// alpha: capital recovery factor
 		// I: investment cost including finance cost for construction at a predefined interest rate
 		// OM: the operation and maintainance cost
-		// F: anual fuel cost
+		// F: annual fuel cost
 		// EH: for LCOE_CHP object, EH is the electricity produced annually (E);
 		//	for LCOH_CHP object, EH is the heat produced annually (H)
 		// bp_revenue: revenue of the by-product
@@ -273,6 +269,8 @@ namespace eu_subsidies_and_cost_ns {
 		static const int & get_count();
 
 	protected:
+		Physical_Quantity P_E;
+		Physical_Quantity P_H;
 		Physical_Quantity FLH_E;
 		Physical_Quantity FLH_H;
 		Coefficient etaE;
@@ -289,12 +287,14 @@ namespace eu_subsidies_and_cost_ns {
 	class LCOE_CHP : public LCOH_CHP
 	{
 	public:
+
 		// Summary: Construct an object to manage the calculation of the LCOE of CHP
 		// C: captial cost
 		// LB: cosntruction period
 		// FOM: fixed OM cost
 		// VOM: variable OM cost
-		// P: heat capacity
+		// P_E: electricity capacity
+		// P_H: heat capacity
 		// FC: fuel costs per unit of enengy input
 		// r: weighted average cost of capital (WACC)
 		// i: interest rate over the construction loan
@@ -304,9 +304,11 @@ namespace eu_subsidies_and_cost_ns {
 		// etaH: conversion efficiency in lower heating value (LHV) of heat
 		// HP: heat price a CHP intallation receives for heat production as by-product
 		LCOE_CHP(Physical_Quantity & C, Physical_Quantity & LB, Physical_Quantity & LT, Physical_Quantity & FOM, 
-			Physical_Quantity & VOM, Physical_Quantity & P, Physical_Quantity & FC, Coefficient & r, Coefficient & i,
-			Physical_Quantity & FLH_E, Physical_Quantity & FLH_H, Coefficient & etaE, Coefficient & etaH,
-			const Physical_Quantity & HP = Physical_Quantity("Wholesale heat price", 0.0, "Euros/MWh"));
+			Physical_Quantity & VOM, Physical_Quantity & FC, Coefficient & r, Coefficient & i, Physical_Quantity & P_E,
+			Physical_Quantity & P_H, Physical_Quantity & FLH_E, Physical_Quantity & FLH_H, Coefficient & etaE, 
+			Coefficient & etaH, 
+			const Physical_Quantity & HP = Physical_Quantity("wholesale heat price", 0.0, "Euros/MWh"));
+		LCOE_CHP(const LCOE_CHP &);
 		~LCOE_CHP();
 
 		// Summary: Get the number of the class objects
@@ -330,19 +332,19 @@ namespace eu_subsidies_and_cost_ns {
 	// Interest rate for overnight cost
 	extern const double interest_rate;
 
-	// Inline functions of LCOH
+	/* Inline functions of LCOH */
+
+	// Summary: Capital recovery factor
 	inline double LCOH::alpha(Physical_Quantity & LT, Coefficient & r) {
 		return r.get_magnitude() / (1 - std::pow(1 + r.get_magnitude(), -LT.get_magnitude()));
 	}
-	inline double LCOH::EH(Physical_Quantity & P, Physical_Quantity & FLH) {
-		return P.get_magnitude() * FLH.get_magnitude();
+
+	// Summary: Electricity or heat produced annually
+	inline double LCOH::EH(Physical_Quantity & P_EH, Physical_Quantity & FLH) {
+		return P_EH.get_magnitude() * FLH.get_magnitude();
 	}
-	inline double LCOH::OM(Physical_Quantity & FOM, Physical_Quantity & VOM, const double & EH) {
-		return FOM.get_magnitude() + VOM.get_magnitude() * EH;
-	}
-	inline double LCOH::F(Physical_Quantity & FC, Coefficient & eta, const double & EH) {
-		return FC.get_magnitude() * EH / eta.get_magnitude();
-	}
+
+	// Summary: Investment cost including finance cost for construction at a predefined interest rate
 	inline double LCOH::I(Physical_Quantity & C, Physical_Quantity & LB, Coefficient & i) {
 		double s(0.0);
 		double base(1.0 + i.get_magnitude());
@@ -351,29 +353,55 @@ namespace eu_subsidies_and_cost_ns {
 		}
 		return C.get_magnitude() / LB.get_magnitude() * s;
 	}
+
+	// Summary: Operation and maintainance cost
 	inline double LCOH::OM(Physical_Quantity & FOM, Physical_Quantity & VOM, const double & EH) {
-		return FOM.get_magnitude() + VOM.get_magnitude()*EH;
+		return FOM.get_magnitude() + VOM.get_magnitude() * EH;
 	}
+
+	// Summary: Annual fuel cost
 	inline double LCOH::F(Physical_Quantity & FC, Coefficient & eta, const double & EH) {
 		return FC.get_magnitude() * EH / eta.get_magnitude();
 	}
 
-	// Inline functions of LCOE
+
+	/* Inline functions of LCOE */
+
+	// Summary: Investment cost including finance cost for construction at a predefined interest rate
 	inline double LCOE::I(Physical_Quantity & C, Physical_Quantity & LB, Coefficient & i,
 		Physical_Quantity & LT, Coefficient & r, Coefficient & d) {
 		return LCOH::I(C, LB, i) * (1 + d.get_magnitude() / std::pow(1.0 + r.get_magnitude(), LT.get_magnitude()));
 	}
+
+	// Summary: Operation and maintainance cost
 	inline double LCOE::OM(Physical_Quantity & FOM, Physical_Quantity & VOM, const double & EH,
 		Physical_Quantity & REV, Physical_Quantity & dv) {
 		return FOM.get_magnitude() + (VOM.get_magnitude() - REV.get_magnitude() + dv.get_magnitude())* EH;
 	}
 
-	// Inline functions of LCOH_CHP
+
+	/* Inline functions of LCOH_CHP */
+
+	// Summary: Annual fuel cost
 	inline double LCOH_CHP::F(Physical_Quantity & FC, Physical_Quantity & E, Physical_Quantity & H,
 		Coefficient & etaE, Coefficient & etaH) {
 		return FC.get_magnitude() * (E.get_magnitude() + H.get_magnitude()) / 
 			(etaE.get_magnitude() + etaH.get_magnitude());
 	}
+
+	// Summary: Revenue of the by-product
+	// HE: for LCOE_CHP object, HE is the heat produced annually (H);
+	//	for LCOH_CHP object, HE is the electricity produced annually (E)
+	// HE_P: for LCOE_CHP object, HE_P is the heat (HP) price; 
+	//	for LOCH_CHP object, HE_P is the electricity (EP) price
+	// FLH_EH: for LCOE_CHP object, FLH_EH is the equivalent full load hours for electrcity production (FLH_E); 
+	//	for LOCH_CHP object, FLH_EH is the equivalent full load hours for heat production (FLH_H)
+	// FLH_HE: for LCOE_CHP object, FLH_HE is the equivalent full load hours for heat production (FLH_H); 
+	//	for LOCH_CHP object, FLH_HE is the equivalent full load hours for electricity production (FLH_E)
+	// etaEH: for LCOE_CHP object, conversion efficiency in lower heating value (LHV) of electrcity (etaE)£»
+	//	for LCOH_CHP object, conversion efficiency in lower heating value (LHV) of heat (etaH)
+	// etaHE: for LCOE_CHP object, conversion efficiency in lower heating value (LHV) of heat (etaH);
+	//	for LCOH_CHP object, conversion efficiency in lower heating value (LHV) of electrcity (etaE)
 	inline double LCOH_CHP::bp_revenue(Physical_Quantity & HE, Physical_Quantity & HE_P,
 		Physical_Quantity & FLH_EH, Physical_Quantity & FLH_HE, Coefficient & etaEH, Coefficient & etaHE) {
 		return HE.get_magnitude() * HE_P.get_magnitude() * etaHE.get_magnitude() * 
@@ -382,4 +410,4 @@ namespace eu_subsidies_and_cost_ns {
 
 }
 
-#endif // !EUSAC_NS
+#endif // !EUSAC

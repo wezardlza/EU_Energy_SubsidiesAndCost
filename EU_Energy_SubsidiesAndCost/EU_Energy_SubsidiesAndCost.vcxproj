@@ -131,11 +131,11 @@
     <None Include="..\README.md" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\Header_Files\EUSAC_NS.h" />
-  </ItemGroup>
-  <ItemGroup>
     <ClCompile Include="..\Source_Files\LevelisedCostOfPowerAndHeat.cpp" />
     <ClCompile Include="..\Source_Files\Test_on_Physical_Quantity.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\Header_Files\EUSAC.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

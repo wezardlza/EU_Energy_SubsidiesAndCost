@@ -1,6 +1,6 @@
-#include "../Header_Files/EUSAC_NS.h"
+#include "../Header_Files/EUSAC.h"
 
-namespace eu_subsidies_and_cost_ns {
+namespace eu_subsidies_and_cost {
 
 	/*##################################################################################################################
 	Class 'Physical_Quantity' 
@@ -46,7 +46,7 @@ namespace eu_subsidies_and_cost_ns {
 		++count;
 	}
 
-	Coefficient::Coefficient(const eu_subsidies_and_cost_ns::Coefficient & orig) :
+	Coefficient::Coefficient(const Coefficient & orig) :
 		maginitude(orig.maginitude), explanation(orig.explanation) {
 		++count;
 	}
@@ -68,15 +68,14 @@ namespace eu_subsidies_and_cost_ns {
 
 	// Constructor
 	LCOH::LCOH(Physical_Quantity & C, Physical_Quantity & LB, Physical_Quantity & LT, Physical_Quantity & FOM, 
-		Physical_Quantity & VOM, Physical_Quantity & P, Physical_Quantity & FC, Coefficient & r, Coefficient & i,
-		const Physical_Quantity & FLH_H = Physical_Quantity("Full load hours of heat", 0.0, "h"),
-		const Coefficient & etaH = Coefficient(1.0, "Conversion efficiency in LHV of heat")) : 
-		C(C), LB(LB), LT(LT), FOM(FOM), VOM(VOM), P(P), FC(FC), r(r), i(i), FLH_H(FLH_H), etaH(etaH){
+		Physical_Quantity & VOM, Physical_Quantity & FC, Coefficient & r, Coefficient & i, 
+		const Physical_Quantity & P_H, const Physical_Quantity & FLH_H, const Coefficient & etaH) : 
+		C(C), LB(LB), LT(LT), FOM(FOM), VOM(VOM), FC(FC), r(r), i(i), P_H(P_H), FLH_H(FLH_H), etaH(etaH){
 		++count;
 	}
 	LCOH::LCOH(const LCOH & orig) :
-		C(orig.C), LB(orig.LB), LT(orig.LT), FOM(orig.FOM), VOM(orig.VOM), P(orig.P), FC(orig.FC), r(orig.r), i(orig.i),
-		FLH_H(orig.FLH_H), etaH(orig.etaH) {
+		C(orig.C), LB(orig.LB), LT(orig.LT), FOM(orig.FOM), VOM(orig.VOM), FC(orig.FC), r(orig.r), 
+		i(orig.i), P_H(orig.P_H), FLH_H(orig.FLH_H), etaH(orig.etaH) {
 		++count;
 	}
 
@@ -92,15 +91,14 @@ namespace eu_subsidies_and_cost_ns {
 
 	// Constructor
 	LCOE::LCOE(Physical_Quantity & C, Physical_Quantity & LB, Physical_Quantity & LT, Physical_Quantity & FOM, 
-		Physical_Quantity & VOM, Physical_Quantity & P, Physical_Quantity & FC, Coefficient & r, Coefficient & i,
-		Physical_Quantity & REV, Physical_Quantity & dv, Coefficient & d,
-		const Physical_Quantity & FLH_E = Physical_Quantity("Full load hours of electrcity", 0.0, "h"),
-		const Coefficient & etaE = Coefficient(1.0, "Conversion efficiency in LHV of electricity")) :
-		LCOH::LCOH(C, LB, LT, FOM, VOM, P, FC, r, i), REV(REV), dv(dv), d(d), FLH_E(FLH_E), etaE(etaE){
+		Physical_Quantity & VOM, Physical_Quantity & FC, Coefficient & r, Coefficient & i,
+		Physical_Quantity & REV, Physical_Quantity & dv, Coefficient & d, const Physical_Quantity & P_E, 
+		const Physical_Quantity & FLH_E , const Coefficient & etaE) :
+		LCOH::LCOH(C, LB, LT, FOM, VOM, FC, r, i), REV(REV), dv(dv), d(d), P_E(P_E), FLH_E(FLH_E), etaE(etaE) {
 		++count;
 	}
 	LCOE::LCOE(const LCOE & orig) :
-		LCOH::LCOH(orig), REV(orig.REV), dv(orig.dv), d(orig.d), FLH_E(orig.FLH_E), etaE(orig.etaE){
+		LCOH::LCOH(orig), REV(orig.REV), dv(orig.dv), d(orig.d), FLH_E(orig.FLH_E), etaE(orig.etaE) {
 		++count;
 	}
 
@@ -119,14 +117,16 @@ namespace eu_subsidies_and_cost_ns {
 
 	// Constructor
 	LCOH_CHP::LCOH_CHP(Physical_Quantity & C, Physical_Quantity & LB, Physical_Quantity & LT, Physical_Quantity & FOM, 
-		Physical_Quantity & VOM, Physical_Quantity & P, Physical_Quantity & FC, Coefficient & r, Coefficient & i,
-		Physical_Quantity & FLH_E, Physical_Quantity & FLH_H, Coefficient & etaE, Coefficient & etaH,
-		const Physical_Quantity & EP = Physical_Quantity("Wholesale electricity price", 0.0, "Euros/MWh")) :
-		LCOH::LCOH(C, LB, LT, FOM, VOM, P, FC, r, i), FLH_E(FLH_E), FLH_H(FLH_H), etaE(etaE), etaH(etaH), EP(EP) {
+		Physical_Quantity & VOM, Physical_Quantity & FC, Coefficient & r, Coefficient & i, Physical_Quantity & P_E,
+		Physical_Quantity & P_H, Physical_Quantity & FLH_E, Physical_Quantity & FLH_H, Coefficient & etaE, 
+		Coefficient & etaH, const Physical_Quantity & EP) :
+		LCOH::LCOH(C, LB, LT, FOM, VOM, FC, r, i), P_E(P_E), P_H(P_H), FLH_E(FLH_E), FLH_H(FLH_H), etaE(etaE), 
+		etaH(etaH), EP(EP) {
 		++count;
 	}
 	LCOH_CHP::LCOH_CHP(const LCOH_CHP & orig) : 
-		LCOH::LCOH(orig), FLH_E(orig.FLH_E), FLH_H(orig.FLH_H), etaE(orig.etaE), etaH(orig.etaH), EP(orig.EP) {
+		LCOH::LCOH(orig), P_E(orig.P_E), P_H(orig.P_H), FLH_E(orig.FLH_E), FLH_H(orig.FLH_H), etaE(orig.etaE), 
+		etaH(orig.etaH), EP(orig.EP) {
 		++count; 
 	}
 
@@ -141,10 +141,10 @@ namespace eu_subsidies_and_cost_ns {
 
 	// Constructor
 	LCOE_CHP::LCOE_CHP(Physical_Quantity & C, Physical_Quantity & LB, Physical_Quantity & LT, Physical_Quantity & FOM,
-		Physical_Quantity & VOM, Physical_Quantity & P, Physical_Quantity & FC, Coefficient & r, Coefficient & i,
-		Physical_Quantity & FLH_E, Physical_Quantity & FLH_H, Coefficient & etaE, Coefficient & etaH,
-		const Physical_Quantity & HP = Physical_Quantity("Wholesale heat price", 0.0, "Euros/MWh")) :
-		LCOH_CHP::LCOH_CHP(C, LB, LT, FOM, VOM, P, FC, r, i, FLH_E, FLH_H, etaE, etaH), HP(HP) {
+		Physical_Quantity & VOM, Physical_Quantity & FC, Coefficient & r, Coefficient & i, Physical_Quantity & P_E, 
+		Physical_Quantity & P_H, Physical_Quantity & FLH_E, Physical_Quantity & FLH_H, Coefficient & etaE, 
+		Coefficient & etaH, const Physical_Quantity & HP) :
+		LCOH_CHP::LCOH_CHP(C, LB, LT, FOM, VOM, FC, r, i, P_E, P_H, FLH_E, FLH_H, etaE, etaH), HP(HP) {
 		++count;
 	}
 	LCOE_CHP::LCOE_CHP(const LCOE_CHP & orig) : LCOH_CHP::LCOH_CHP(orig), HP(orig.HP) {
@@ -154,24 +154,36 @@ namespace eu_subsidies_and_cost_ns {
 	// Destructor
 	LCOE_CHP::~LCOE_CHP() { --count; }
 
+	/*##################################################################################################################
+	Static counters of each class
+	==================================================================================================================*/
+
+	// The number of Physical_Quantity objects
+	int Physical_Quantity::count(0);
+
+	// The number of Coeffcient objects
+	int Coefficient::count(0);
+
+	// The number of LCOH objects
+	int LCOH::count(0);
+
+	// The number of LCOE objects
+	int LCOE::count(0);
+
+	// The number of LCOH_CHP objects
+	int LCOH_CHP::count(0);
+
+	// The number of LCOE_CHP objects
+	int LCOE_CHP::count(0);
+
+	/*##################################################################################################################
+	Cosntant values
+	==================================================================================================================*/
+
+	extern const double decommisioning_cost_factor(0.15);
+
+	extern const double boiler_efficiency(0.9);
+
+	extern const double interest_rate(0.05);
+
 }
-
-/*######################################################################################################################
-Static counters of each classes
-======================================================================================================================*/
-
-// The number of Physical_Quantity objects
-int eu_subsidies_and_cost_ns::Physical_Quantity::count(0);
-
-// The number of Physical_Quantity objects
-int eu_subsidies_and_cost_ns::Coefficient::count(0);
-
-/*######################################################################################################################
-Cosntant values
-======================================================================================================================*/
-
-extern const double eu_subsidies_and_cost_ns::decommisioning_cost_factor(0.15);
-
-extern const double eu_subsidies_and_cost_ns::boiler_efficiency(0.9);
-
-extern const double eu_subsidies_and_cost_ns::interest_rate(0.05);
