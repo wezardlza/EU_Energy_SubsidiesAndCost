@@ -1,0 +1,15 @@
+Item,Value,Unit,Notation
+capitial cost,  287000,kGBP,C
+construction period,5,yr,LB
+project duration,20,yr,LT
+fixed OM cost ,0,kGBP/yr,FOM
+variable OM cost,0.0002038,kGBP/MWh,VOM
+electrcity capacity,700,MW,P_E
+fuel cost,0.008,kGBP/MWh,FC
+variable by-product revenue,0,kGBP/MWh,REV
+,0,kGBP/MWh,dv
+decommisioning cost factor,0,unitless,d
+weighted average cost of capital,0.075,unitless,r
+interest rate over the construction loan,0,unitless,i
+full load hours of electricity,7008,h,FLH_E
+conversion efficiency in LHV of electricity,0.55,unitless,etaE

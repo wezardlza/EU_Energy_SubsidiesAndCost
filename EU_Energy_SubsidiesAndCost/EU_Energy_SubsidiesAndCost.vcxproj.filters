@@ -23,7 +23,7 @@
     <ClCompile Include="..\Source_Files\LevelisedCostOfPowerAndHeat.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\Source_Files\Test_on_Physical_Quantity.cpp">
+    <ClCompile Include="..\Source_Files\Test_on_Save_Read_Files.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

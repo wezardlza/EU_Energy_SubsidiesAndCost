@@ -1,3 +1,11 @@
+/***********************************************************************************************************************
+Author: Ziang Li
+Institution: Control Group, UOM
+
+	This file defines the classes of LCOH, LCOE, LCOH_CHP and LCOE_CHP which are used for the levelised cost of 
+	heat/electricty with/without the combined heat and power plant.  
+***********************************************************************************************************************/
+
 #pragma once
 #ifndef EUSAC
 #define EUSAC

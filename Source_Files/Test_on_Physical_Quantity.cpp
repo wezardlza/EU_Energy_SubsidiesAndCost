@@ -1,3 +1,9 @@
+/***********************************************************************************************************************
+Author: Ziang Li
+Institution: Control Group, UOM
+
+	Tests of methods in EUSAC.h.
+***********************************************************************************************************************/
 #include "..\Header_Files\EUSAC.h"
 #include <iostream>
 
@@ -46,11 +52,11 @@ int main(){
 	double F = escn::LCOE::F(FC, etaE, EH_A);
 
 	std::cout << "Plant A Investment Data:" << std::endl;
-	std::cout << "Capital recovery factor:\t\t" << alpha_A << std::endl;
-	std::cout << "Annual electricity produced:\t\t" << EH_A << std::endl;
-	std::cout << "Investment cost I:\t\t\t" << I_A << std::endl;
-	std::cout << "Operation and maintenance cost OM:\t" << OM << std::endl;
-	std::cout << "Annual fuel cost:\t\t\t" << F << std::endl;
+	std::cout << "Capital recovery factor\t\talpha\t" << alpha_A << std::endl;
+	std::cout << "Annual electricity produced\t\tE\t" << EH_A << std::endl;
+	std::cout << "Investment cost\t\t\tI\t" << I_A << std::endl;
+	std::cout << "Operation and maintenance cost\tOM\t" << OM << std::endl;
+	std::cout << "Annual fuel cost\t\tF\t" << F << std::endl;
 
 	std::cout << "Interest rate:\t\t\t\t" << escn::interest_rate << std::endl;
 	system("pause");

@@ -132,7 +132,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\Source_Files\LevelisedCostOfPowerAndHeat.cpp" />
-    <ClCompile Include="..\Source_Files\Test_on_Physical_Quantity.cpp" />
+    <ClCompile Include="..\Source_Files\Test_on_Save_Read_Files.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\Header_Files\EUSAC.h" />
