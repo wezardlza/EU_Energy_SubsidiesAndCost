@@ -2,42 +2,82 @@
 Author: Ziang Li
 Institution: Control Group, UOM
 
-	This file defines the saving and reading methods of .csv document.
+	This file declares the saving and reading methods of .csv document.
 ***********************************************************************************************************************/
+#pragma once
+#ifndef SRF
+#define SRF
+
+#include "../Header_Files/ZAMATH.h"
 
 #include <iostream>  
 #include <fstream>  
 #include <sstream>  
 #include <string>  
-#include <vector>  
+#include <vector> 
 
-//删除字符串中空格，制表符tab等无效字符  
-std::string Trim(std::string& str)
-{
-	//str.find_first_not_of(" \t\r\n"),在字符串str中从索引0开始，返回首次不匹配"\t\r\n"的位置  
-	str.erase(0, str.find_first_not_of(" \t\r\n"));
-	str.erase(str.find_last_not_of(" \t\r\n") + 1);
-	return str;
-}
+typedef std::string                                  CELL;
+typedef T_ROW<CELL>                                  ROW;
+typedef T_TABLE<CELL>							     TABLE;
 
-int main()
+
+typedef T_ROW_INDEX<CELL>                            ROW_INDEX;
+typedef T_ROW_SIZE<CELL>                             ROW_SIZE;
+typedef T_ROWS_SIZES_VEC<CELL>                       ROWS_SIZES_VEC;
+typedef T_CELLS_SIZES_VEC<CELL>                      CELLS_SIZES_VEC;
+
+/*----------------------------------------------------------------------------------------------------------------------
+These two should be the same for a single ROW object 
+----------------------------------------------------------------------------------------------------------------------*/
+typedef T_ROWS_SIZES_VEC_INDEX<CELL>                 ROWS_SIZES_VEC_INDEX;
+typedef T_TABLE_INDEX<CELL>                          TABLE_INDEX;
+/*--------------------------------------------------------------------------------------------------------------------*/
+
+typedef T_TABLE_SIZE<CELL>                           TABLE_SIZE;
+typedef T_TABLE_INDEXES_VEC<CELL>                    TABLE_INDEXES_VEC;
+typedef T_TABLE_INDEXES_VEC_INDEX<CELL>              TABLE_INDEXES_VEC_INDEX;
+
+// Open the input file and form a table of the data
+class Read_CSV_File
 {
-	std::ifstream fin("../Data_Files/TEST_1_LCOE.csv"); //打开文件流操作  
-	std::string line;
-	while (std::getline(fin, line))   //整行读取，换行符“\n”区分，遇到文件尾标志eof终止读取  
-	{
-		std::cout << "原始字符串：" << line << std::endl; //整行输出  
-		std::istringstream sin(line); //将整行字符串line读入到字符串流istringstream中  
-		std::vector<std::string> fields; //声明一个字符串向量  
-		std::string field;
-		while (std::getline(sin, field, ',')) //将字符串流sin中的字符读入到field字符串中，以逗号为分隔符  
-		{
-			fields.push_back(field); //将刚刚读取的字符串添加到向量fields中  
-		}
-		std::string name = Trim(fields[0]); //清除掉向量fields中第一个元素的无效字符，并赋值给变量name  
-		std::string age = Trim(fields[1]); //清除掉向量fields中第二个元素的无效字符，并赋值给变量age  
-		std::string birthday = Trim(fields[2]); //清除掉向量fields中第三个元素的无效字符，并赋值给变量birthday  
-		std::cout << "处理之后的字符串：" << name << "\t" << age << "\t" << birthday << std::endl;
-	}
-	return EXIT_SUCCESS;
-}
+public:
+	Read_CSV_File(const std::string & file_address);
+	~Read_CSV_File();
+
+	// Summary: Trim the string 
+	static void Trim(std::string &);
+
+	// Summary: Initialize 'table' and 'tiv'
+	void table_init();
+
+	// Summary: Print the table
+	void print_table();
+
+protected:
+
+	// a input file stream based on the input .csv file 
+	std::ifstream infile;
+
+	// a table based on the input .csv file
+	// a template has the original .csv file as
+	// 333,22,1,4444,666666,55555
+	// 22, 1, 333, 55555, 22, 4444, 333
+	// 1, 333, 4444, 22, 66666
+	// 333, 22, 1
+	// 333, 4444, 1, 22, 55555
+	// 22, 7777777, 55555, 333
+	// 999999999, 55555, 1, 22, 333
+	// 22, 333
+	TABLE table;
+
+	// table indexes of each row sequenced by the row sizes in the asceding order
+	TABLE_INDEXES_VEC tiv; // {7, 3, 5, 2, 4, 6, 0, 1}
+
+	// sizes of each ROW in original 'table'	
+	ROWS_SIZES_VEC rsv; // {6, 7, 5, 3, 5, 4, 5, 2}	
+
+private:
+	static std::size_t count;
+};
+
+#endif // !SRF
