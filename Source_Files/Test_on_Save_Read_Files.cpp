@@ -123,9 +123,8 @@ template <typename T> void Basic_Maths::swap(T & v1, T & v2) {
 }
 
 template <typename T> T Basic_Maths::max(std::vector<T> & vec) {
-	T m0(0);
-	T *m = & m0;
-	for (typename std::vector<T>::size_type i = 0; i != vec.size(); ++i) {
+	T *m = & vec[0];
+	for (typename std::vector<T>::size_type i = 1; i != vec.size(); ++i) {
 		if (compare(vec[i], *m)) {
 			m = & vec[i];
 		}
@@ -226,7 +225,7 @@ void Read_CSV_File::print_table() {
 			CELL::size_type cs(0);
 			TABLE_INDEXES_VEC_INDEX n(m);
 			while (n != tiv.size()) {
-				CELL::size_type && cs_temp = table[tiv[n]][k].size();
+				const CELL::size_type & cs_temp = table[tiv[n]][k].size();
 				if (cs < cs_temp) { cs = std::move(cs_temp); }
 				++n;
 			}
@@ -240,8 +239,10 @@ void Read_CSV_File::print_table() {
 	CELL::size_type x(Basic_Maths::max<CELL::size_type>(cs_vec));
 	for (TABLE_INDEX i = 0; i != table.size(); ++i) {
 		for (ROW_INDEX j = 0; j != table[i].size(); j++) {
-			// std::cout.width(cs_vec[j]);
-			std::cout.width(x);
+
+			std::cout.width(cs_vec[j]);
+			// std::cout.width(x);
+
 			std::cout << table[i][j] << " ";
 		}
 		std::cout << std::endl;
