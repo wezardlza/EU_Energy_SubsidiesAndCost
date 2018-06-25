@@ -2,10 +2,11 @@
 Author: Ziang Li
 Institution: Control Group, UOM
 
-This file defines the saving and reading methods of .csv document.
+This file defines the math methods of .csv document.
 ***********************************************************************************************************************/
 
 #include "../Header_Files/ZAMATH.h"
+
 
 template <typename T> T Basic_Maths::max(T_ROW<T> & vec) {
 	T *m = &vec[0];
@@ -46,3 +47,12 @@ T_TABLE_INDEXES_VEC<T> Basic_Maths::ascending(T_ROWS_SIZES_VEC<T> rsv) {
 	}
 	return tiv_x;
 }
+
+
+/*######################################################################################################################
+Instantiate of the Class Template
+======================================================================================================================*/
+
+template std::string::size_type Basic_Maths::max<std::string::size_type>(T_ROW<std::string::size_type> & vec);
+template T_ROWS_SIZES_VEC<std::string> Basic_Maths::rows_sizes_vec<std::string>(T_TABLE<std::string> & table);
+template T_TABLE_INDEXES_VEC<std::string> Basic_Maths::ascending<std::string>(T_ROWS_SIZES_VEC<std::string> rsv);

@@ -7,9 +7,9 @@ Institution: Control Group, UOM
 ***********************************************************************************************************************/
 
 #pragma once
-#ifndef EUSAC
-#define EUSAC
-#define DEBUG
+#ifndef __EUSAC__
+#define __EUSAC__
+#define __DEBUG__
 
 #include <string>
 #include <cmath>
@@ -418,4 +418,4 @@ namespace eu_subsidies_and_cost {
 
 }
 
-#endif // !EUSAC
+#endif // !__EUSAC__

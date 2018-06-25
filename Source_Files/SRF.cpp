@@ -6,6 +6,7 @@ This file defines the saving and reading methods of .csv document.
 ***********************************************************************************************************************/
  
 #include "../Header_Files/SRF.h"
+#include "../Header_Files/EUSAC.h"
 
 /*######################################################################################################################
 Class 'Read_CSV_File'
@@ -19,7 +20,7 @@ void Read_CSV_File::Trim(std::string & str)
 }
 
 Read_CSV_File::Read_CSV_File(const std::string & file_address) : infile(file_address) {
-	if (!infile) { std::cerr << "error: unable to open the input file." << std::endl; }
+	if (!infile) { std::cerr << "Error: unable to open the input file." << std::endl; }
 	// initialize table, rsv and tiv
 	table_init();
 	rsv = Basic_Maths::rows_sizes_vec(table);
@@ -35,6 +36,8 @@ void Read_CSV_File::table_init() {
 
 	// declare a string for the storage of one row of data in 'infile' read from .csv file
 	std::string line;	
+	// define a input string-based stream (ins) from line
+	std::istringstream ins;
 
 	while (std::getline(infile, line))
 	{
@@ -48,8 +51,8 @@ void Read_CSV_File::table_init() {
 		/* 999999999, 55555, 1, 22, 333 */
 		/* 22, 333 */
 
-		// define a input string-based stream (ins) from line
-		std::istringstream ins(line);
+		ins.clear();
+		ins.str(line);
 
 		ROW row;
 		CELL cell;
@@ -105,3 +108,24 @@ void Read_CSV_File::print_table() {
 }
 
 std::size_t Read_CSV_File::count(0);
+
+template <typename T> std::ifstream & Save_CSV_File<T>::open_file_check(std::ifstream & file,
+	const std::string & file_address) {
+	file.close();
+	file.clear();
+	file.open(file_address.c_str());
+	return file;
+}
+
+template <typename T> void Save_CSV_File<T>::write_table(std::vector<T> table, const std::string & file_address) {
+	std::fstream file;
+	file.open(file_address, std::ifstream::in);
+	
+	if (!file) {
+		std::cout << "Warning: The written file already exists." << std::endl;
+	}
+
+}
+
+template class Save_CSV_File<eu_subsidies_and_cost::Physical_Quantity>;
+template class Save_CSV_File<eu_subsidies_and_cost::Coefficient>;

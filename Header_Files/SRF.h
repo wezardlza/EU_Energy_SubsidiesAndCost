@@ -9,6 +9,7 @@ Institution: Control Group, UOM
 #define SRF
 
 #include "../Header_Files/ZAMATH.h"
+#include "../Header_Files/SRF_ALIAS.h"
 
 #include <iostream>  
 #include <fstream>  
@@ -16,31 +17,12 @@ Institution: Control Group, UOM
 #include <string>  
 #include <vector> 
 
-typedef std::string                                  CELL;
-typedef T_ROW<CELL>                                  ROW;
-typedef T_TABLE<CELL>							     TABLE;
-
-
-typedef T_ROW_INDEX<CELL>                            ROW_INDEX;
-typedef T_ROW_SIZE<CELL>                             ROW_SIZE;
-typedef T_ROWS_SIZES_VEC<CELL>                       ROWS_SIZES_VEC;
-typedef T_CELLS_SIZES_VEC<CELL>                      CELLS_SIZES_VEC;
-
-/*----------------------------------------------------------------------------------------------------------------------
-These two should be the same for a single ROW object 
-----------------------------------------------------------------------------------------------------------------------*/
-typedef T_ROWS_SIZES_VEC_INDEX<CELL>                 ROWS_SIZES_VEC_INDEX;
-typedef T_TABLE_INDEX<CELL>                          TABLE_INDEX;
-/*--------------------------------------------------------------------------------------------------------------------*/
-
-typedef T_TABLE_SIZE<CELL>                           TABLE_SIZE;
-typedef T_TABLE_INDEXES_VEC<CELL>                    TABLE_INDEXES_VEC;
-typedef T_TABLE_INDEXES_VEC_INDEX<CELL>              TABLE_INDEXES_VEC_INDEX;
 
 // Open the input file and form a table of the data
 class Read_CSV_File
 {
 public:
+
 	Read_CSV_File(const std::string & file_address);
 	~Read_CSV_File();
 
@@ -79,5 +61,19 @@ protected:
 private:
 	static std::size_t count;
 };
+
+
+template <typename T>
+class Save_CSV_File 
+{
+public:
+	std::ifstream & open_file_check(std::ifstream & in, const std::string & file_address);
+	void write_table(std::vector<T> table, const std::string & file_address);
+
+protected:
+	std::fstream file;
+
+};
+
 
 #endif // !SRF

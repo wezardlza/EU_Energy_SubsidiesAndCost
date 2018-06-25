@@ -131,13 +131,15 @@
     <None Include="..\README.md" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="..\Source_Files\EUSAC_Basics.cpp" />
+    <ClCompile Include="..\Source_Files\EUSAC.cpp" />
     <ClCompile Include="..\Source_Files\Test_on_Save_Read_Files.cpp" />
-    <ClCompile Include="..\Source_Files\SRF_Basics.cpp" />
-    <ClCompile Include="..\Source_Files\ZAMATH_Basics.cpp" />
+    <ClCompile Include="..\Source_Files\SRF.cpp" />
+    <ClCompile Include="..\Source_Files\ZAMATH.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="..\Header_Files\ZAMATH_ALIAS.h" />
     <ClInclude Include="..\Header_Files\EUSAC.h" />
+    <ClInclude Include="..\Header_Files\SRF_ALIAS.h" />
     <ClInclude Include="..\Header_Files\SRF.h" />
     <ClInclude Include="..\Header_Files\ZAMATH.h" />
   </ItemGroup>
