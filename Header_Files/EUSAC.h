@@ -13,6 +13,7 @@ Institution: Control Group, UOM
 
 #include <string>
 #include <cmath>
+#include <fstream>
 
 namespace eu_subsidies_and_cost {
 
@@ -27,8 +28,8 @@ namespace eu_subsidies_and_cost {
 		// magnitude: magnitude of the physical quantity
 		// unit: unit of the physical quantity
 		// Return: void
-		Physical_Quantity(const std::string & term = "", const double & magnitude = 0.0, 
-			const std::string & unit = "unitless");
+		Physical_Quantity(const std::string & symbol = "", const std::string & term = "",
+			const double & magnitude = 0.0, const std::string & unit = "unspecified!");
 
 		// Summary: Construct a parameter related the calculation of some levelised cost of an energy project. This is 
 		// a copy constructor
@@ -41,6 +42,9 @@ namespace eu_subsidies_and_cost {
 		// Return: void.
 		~Physical_Quantity();
 
+		// Summary: Get the symbol of the physical quantity
+		const std::string & get_symbol() const;
+
 		// Summary: Get the name of the physical quantity
 		const std::string & get_term() const;
 
@@ -50,6 +54,9 @@ namespace eu_subsidies_and_cost {
 		// Summary: Get the unit of the physical quantity
 		const std::string & get_unit() const;
 
+		// Summary: record the class object as a row of data in .csv file 
+		void record_row(std::ofstream & ofile);
+
 		// Summary: Get the number of the class objects
 		static const int & get_count();
 
@@ -57,6 +64,7 @@ namespace eu_subsidies_and_cost {
 		const std::string term;
 		double magnitude; 
 		const std::string unit;  
+		const std::string symbol;
 
 		// The number of the class objects
 		static int count;
@@ -72,9 +80,9 @@ namespace eu_subsidies_and_cost {
 		// Parameters:
 		// param: the magnitude of the object.
 		// notation: the symbol or abbrevation of the object.
-		// explanation: the additional explantions of the object.
+		// term: the additional explantions of the object.
 		// Return : void
-		Coefficient(const double & maginitude = 0.0, const std::string & explanation = "");
+		Coefficient(const std::string & symbol = "", const std::string & term = "", const double & magnitude = 0.0);
 
 		// Summary: Construct a coefficient.This is a copy constructor
 		// Parameters:
@@ -84,19 +92,26 @@ namespace eu_subsidies_and_cost {
 		// Summary: Destruct a cefficient
 		// Return: void
 		~Coefficient();
+		
+		// Summary: Get the symbol of the physical quantity
+		const std::string & get_symbol() const;
+
+		// Summary: Get the physical explanation of the coefficient.
+		const std::string & get_term() const;
 
 		// Summary: Get the magnitude of the coefficient.
 		const double & get_magnitude() const;
 
-		// Summary: Get the physical explanation of the coefficient.
-		const std::string & get_explanation() const;
+		// Summary: record the class object as a row of data in .csv file 
+		void record_row(std::ofstream & ofile);
 
 		// Summary: Get the number of the class objects
 		static const int & get_count();
 
 	private:
-		double maginitude;
-		const std::string explanation;
+		const std::string term;
+		const std::string symbol;
+		double magnitude;
 
 		// The number of the class objects
 		static int count;
@@ -121,9 +136,9 @@ namespace eu_subsidies_and_cost {
 		// etaH: conversion efficiency in lower heating value (LHV) of heat
 		LCOH(Physical_Quantity & C, Physical_Quantity & LB, Physical_Quantity & LT,Physical_Quantity & FOM, 
 			Physical_Quantity & VOM, Physical_Quantity & FC, Coefficient & r, Coefficient & i,
-			const Physical_Quantity & P_H = Physical_Quantity("heat capacity", 650, "MW"),
-			const Physical_Quantity & FLH_H = Physical_Quantity("full load hours of heat", 0.0, "h"),
-			const Coefficient & etaH = Coefficient(1.0, "conversion efficiency in LHV of heat"));
+			const Physical_Quantity & P_H = Physical_Quantity("PH", "heat capacity", 650, "MW"),
+			const Physical_Quantity & FLH_H = Physical_Quantity("FLH_H", "full load hours of heat", 0.0, "h"),
+			const Coefficient & etaH = Coefficient("etaH", "conversion efficiency in LHV of heat", 1.0));
 		LCOH(const LCOH &);
 		~LCOH();
 		
@@ -194,9 +209,9 @@ namespace eu_subsidies_and_cost {
 		LCOE(Physical_Quantity & C, Physical_Quantity & LB, Physical_Quantity & LT, Physical_Quantity & FOM, 
 			Physical_Quantity & VOM, Physical_Quantity & FC, Coefficient & r, Coefficient & i,
 			Physical_Quantity & REV, Physical_Quantity & dv, Coefficient & d,
-			const Physical_Quantity & P_E = Physical_Quantity("electricity capacity", 650, "MW"),
-			const Physical_Quantity & FLH_E = Physical_Quantity("full load hours of electrcity", 0.0, "h"),
-			const Coefficient & etaE = Coefficient(1.0, "conversion efficiency in LHV of electricity"));
+			const Physical_Quantity & P_E = Physical_Quantity("P_E", "electricity capacity", 650, "MW"),
+			const Physical_Quantity & FLH_E = Physical_Quantity("FLH_E", "full load hours of electrcity", 0.0, "h"),
+			const Coefficient & etaE = Coefficient("etaE", "conversion efficiency in LHV of electricity", 1.0));
 		LCOE(const LCOE &);
 		~LCOE();
 
@@ -250,7 +265,7 @@ namespace eu_subsidies_and_cost {
 			Physical_Quantity & VOM, Physical_Quantity & FC, Coefficient & r, Coefficient & i, Physical_Quantity & P_E,
 			Physical_Quantity & P_H, Physical_Quantity & FLH_E, Physical_Quantity & FLH_H, Coefficient & etaE, 
 			Coefficient & etaH, 
-			const Physical_Quantity & EP = Physical_Quantity("wholesale electricity price", 0.0, "Euros/MWh"));
+			const Physical_Quantity & EP = Physical_Quantity("EP", "wholesale electricity price", 0.0, "Euros/MWh"));
 		LCOH_CHP(const LCOH_CHP &);
 		~LCOH_CHP();
 
@@ -315,7 +330,7 @@ namespace eu_subsidies_and_cost {
 			Physical_Quantity & VOM, Physical_Quantity & FC, Coefficient & r, Coefficient & i, Physical_Quantity & P_E,
 			Physical_Quantity & P_H, Physical_Quantity & FLH_E, Physical_Quantity & FLH_H, Coefficient & etaE, 
 			Coefficient & etaH, 
-			const Physical_Quantity & HP = Physical_Quantity("wholesale heat price", 0.0, "Euros/MWh"));
+			const Physical_Quantity & HP = Physical_Quantity("HP", "wholesale heat price", 0.0, "Euros/MWh"));
 		LCOE_CHP(const LCOE_CHP &);
 		~LCOE_CHP();
 

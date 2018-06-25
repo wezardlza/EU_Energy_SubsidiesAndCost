@@ -13,6 +13,8 @@ namespace eu_subsidies_and_cost {
 	Class 'Physical_Quantity' 
 	==================================================================================================================*/
 	// Get the readonly property of the class object
+	const std::string & Physical_Quantity::get_symbol() const { return symbol; }
+	
 	const std::string & Physical_Quantity::get_term() const { return term; }
 
 	const double & Physical_Quantity::get_magnitude() const { return magnitude; }
@@ -21,15 +23,20 @@ namespace eu_subsidies_and_cost {
 
 	const int & Physical_Quantity::get_count() { return count; }
 
+	void Physical_Quantity::record_row(std::ofstream & ofile) {
+		ofile.seekp(0, std::ofstream::end);
+		ofile << term << "," << magnitude << "," << unit << std::endl;
+	}
+
 	// Constructor
 	Physical_Quantity::Physical_Quantity(
-		const std::string & term, const double & magnitude, const std::string & unit) :
-		term(term), magnitude(magnitude), unit(unit) {
+		const std::string & symbol, const std::string & term, const double & magnitude, const std::string & unit) :
+		symbol(symbol), term(term), magnitude(magnitude), unit(unit) {
 		++count;
 	}
 
 	Physical_Quantity::Physical_Quantity(const Physical_Quantity & orig) :
-		term(orig.term), magnitude(orig.magnitude), unit(orig.unit) {
+		symbol(orig.symbol), term(orig.term), magnitude(orig.magnitude), unit(orig.unit) {
 		++count;
 	}
 
@@ -41,20 +48,27 @@ namespace eu_subsidies_and_cost {
 	Class 'Coefficient' 
 	==================================================================================================================*/
 	// Read_only value definitions
-	const double & Coefficient::get_magnitude() const { return maginitude; }
+	const std::string & Coefficient::get_symbol() const { return symbol; }
 
-	const std::string & Coefficient::get_explanation() const { return explanation; }
+	const std::string & Coefficient::get_term() const { return term; }
+
+	const double & Coefficient::get_magnitude() const { return magnitude; }
 
 	const int & Coefficient::get_count() { return count; }
 
+	void Coefficient::record_row(std::ofstream & ofile) {
+		ofile.seekp(0, std::ofstream::end);
+		ofile << term << "," << magnitude << "," << "unitless" << std::endl;
+	}
+
 	// Constructor
-	Coefficient::Coefficient(const double & maginitude, const std::string & explanation) :
-		maginitude(maginitude), explanation(explanation) {
+	Coefficient::Coefficient(const std::string & symbol, const std::string & term, const double & maginitude) :
+		symbol(symbol), term(term), magnitude(maginitude) {
 		++count;
 	}
 
 	Coefficient::Coefficient(const Coefficient & orig) :
-		maginitude(orig.maginitude), explanation(orig.explanation) {
+		symbol(orig.symbol), term(orig.term), magnitude(orig.magnitude) {
 		++count;
 	}
 
