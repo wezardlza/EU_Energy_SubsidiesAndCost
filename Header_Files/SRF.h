@@ -63,15 +63,31 @@ private:
 };
 
 
-template <typename T>
 class Save_CSV_File 
 {
 public:
-	std::ifstream & open_file_check(std::ifstream & in, const std::string & file_address);
-	void write_table(std::vector<T> table, const std::string & file_address);
+
+	Save_CSV_File(const std::string & file_address);
+	~Save_CSV_File();
+
+	// Summary: Check if the file already exists
+	static bool open_file_check(const std::string & file_address);
+
+	// Summary: Record the record in a row
+	void save_row(ROW & row, const std::string & file_address);
+
+	// Summary£º Record the records in the table
+	void save_table(TABLE table, const std::string & file_address);
+
 
 protected:
-	std::fstream file;
+	std::ofstream outfile;
+
+	// Summary: Record the record in a row
+	void _save_row(ROW & row);
+
+private:
+	static std::size_t count;
 
 };
 

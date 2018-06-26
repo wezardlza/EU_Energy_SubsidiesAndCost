@@ -5,61 +5,59 @@ Institution: Control Group, UOM
 	This file defines the members of the classes of LCOH, LCOE, LCOH_CHP and LCOE_CHP which are used for the levelised 
 	cost of heat/electricty with/without the combined heat and power plant.
 ***********************************************************************************************************************/
+
 #include "../Header_Files/EUSAC.h"
+#include "../Header_Files/SRF.h"
+#include "../Header_Files/ZAMATH.h"
+#include <typeinfo.h>
 
 namespace eu_subsidies_and_cost {
-
-	/*##################################################################################################################
-	Class 'Physical_Quantity' 
-	==================================================================================================================*/
-	// Get the readonly property of the class object
-	const std::string & Physical_Quantity::get_symbol() const { return symbol; }
-	
-	const std::string & Physical_Quantity::get_term() const { return term; }
-
-	const double & Physical_Quantity::get_magnitude() const { return magnitude; }
-
-	const std::string & Physical_Quantity::get_unit() const { return unit; }
-
-	const int & Physical_Quantity::get_count() { return count; }
-
-	void Physical_Quantity::record_row(std::ofstream & ofile) {
-		ofile.seekp(0, std::ofstream::end);
-		ofile << term << "," << magnitude << "," << unit << std::endl;
-	}
-
-	// Constructor
-	Physical_Quantity::Physical_Quantity(
-		const std::string & symbol, const std::string & term, const double & magnitude, const std::string & unit) :
-		symbol(symbol), term(term), magnitude(magnitude), unit(unit) {
-		++count;
-	}
-
-	Physical_Quantity::Physical_Quantity(const Physical_Quantity & orig) :
-		symbol(orig.symbol), term(orig.term), magnitude(orig.magnitude), unit(orig.unit) {
-		++count;
-	}
-
-	// Destructor
-	Physical_Quantity::~Physical_Quantity() { --count; }
 
 	
 	/*##################################################################################################################
 	Class 'Coefficient' 
 	==================================================================================================================*/
-	// Read_only value definitions
+	// Friend
+	std::ostream & operator <<(std::ostream & outfile, const Coefficient & object) {
+		outfile << object.symbol << ", ";
+		outfile << object.term << ", ";
+		outfile << Basic_Maths::string_cast<double>(object.magnitude) << ", ";
+		outfile << "unitless";
+		return outfile;
+	}
+	std::istream & operator >>(std::istream & infile, Coefficient & object) {
+		std::string str;
+		ROW row;
+		infile.clear();
+		while (std::getline(infile, str, '\n')) {
+			object.change_magnitude(Basic_Maths::num_cast<double>(str));
+		}
+		std::cout << object;
+		return infile;
+	}
+
+	// Member functions
 	const std::string & Coefficient::get_symbol() const { return symbol; }
 
 	const std::string & Coefficient::get_term() const { return term; }
 
 	const double & Coefficient::get_magnitude() const { return magnitude; }
 
-	const int & Coefficient::get_count() { return count; }
-
-	void Coefficient::record_row(std::ofstream & ofile) {
-		ofile.seekp(0, std::ofstream::end);
-		ofile << term << "," << magnitude << "," << "unitless" << std::endl;
+	double & Coefficient::change_magnitude(const double & magnitude_new) {
+		magnitude = magnitude_new;
+		return magnitude;
 	}
+
+	ROW Coefficient::_record() const {
+		ROW record;
+		record.push_back(symbol);
+		record.push_back(term);
+		record.push_back(Basic_Maths::string_cast<double>(magnitude));
+		record.push_back("unitless");
+		return record;
+	}
+
+	const int & Coefficient::get_count() { return count; }
 
 	// Constructor
 	Coefficient::Coefficient(const std::string & symbol, const std::string & term, const double & maginitude) :
@@ -76,6 +74,45 @@ namespace eu_subsidies_and_cost {
 	Coefficient::~Coefficient() { --count; }
 
 	/*##################################################################################################################
+	Class 'Physical_Quantity'
+	==================================================================================================================*/
+	// Friend
+	std::ostream & operator <<(std::ostream & outfile, const Physical_Quantity & object) {
+		outfile << object.symbol << ", ";
+		outfile << object.term << ", ";
+		outfile << Basic_Maths::string_cast<double>(object.magnitude) << ", ";
+		outfile << object.unit;
+		return outfile;
+	}
+
+	// Member functions
+	const std::string & Physical_Quantity::get_unit() const { return unit; }
+
+	ROW Physical_Quantity::_record() const {
+		ROW record;
+		record.push_back(symbol);
+		record.push_back(term);
+		record.push_back(Basic_Maths::string_cast<double>(magnitude));
+		record.push_back(unit);
+		return record;
+	}
+
+	// Constructor
+	Physical_Quantity::Physical_Quantity(
+		const std::string & symbol, const std::string & term, const double & magnitude, const std::string & unit) :
+		Coefficient::Coefficient(symbol, term, magnitude), unit(unit) {
+		++count;
+	}
+
+	Physical_Quantity::Physical_Quantity(const Physical_Quantity & orig) :
+		Coefficient::Coefficient(orig), unit(orig.unit) {
+		++count;
+	}
+
+	// Destructor
+	Physical_Quantity::~Physical_Quantity() { --count; }
+
+	/*##################################################################################################################
 	Class 'LCOH' 
 	==================================================================================================================*/
 
@@ -85,6 +122,39 @@ namespace eu_subsidies_and_cost {
 		return (alpha * I + OM + F) / EH;
 	}
 
+	std::ostream & LCOH::_save(std::ostream & outfile) {
+		outfile << C << std::endl;
+		outfile << LB << std::endl;
+		outfile << LT << std::endl;
+		outfile << FOM << std::endl;
+		outfile << VOM << std::endl;
+		outfile << FC << std::endl;
+		outfile << r << std::endl;
+		outfile << i << std::endl;
+		return outfile;
+	}
+
+	std::ostream & LCOH::__save(std::ostream & outfile) {
+		outfile << P_H << std::endl;
+		outfile << FLH_H << std::endl;
+		outfile << etaH << std::endl;
+		return outfile;
+	}
+
+	std::ostream & LCOH::save(std::ostream & outfile) {
+		outfile << "****************************************************************************" << std::endl;
+		outfile << "# " << typeid(*this).name()<< std::endl;
+		outfile << "****************************************************************************" << std::endl;
+		_save(outfile);
+		__save(outfile);
+		return outfile;
+	}
+
+	/*LCOH & LCOH::read(const std::string & file_address) {
+		LCOH x;
+		return ;
+	}
+*/
 	const int & LCOH::get_count() { return count; }
 
 	// Constructor
@@ -110,6 +180,21 @@ namespace eu_subsidies_and_cost {
 	// Member functions
 	const int & LCOE::get_count() { return count; }
 
+	std::ostream & LCOE::_save(std::ostream & outfile) {
+		LCOH::_save(outfile);
+		outfile << REV << std::endl;
+		outfile << dv << std::endl;
+		outfile << d << std::endl;
+		return outfile;
+	}
+
+	std::ostream & LCOE::__save(std::ostream & outfile) {
+		outfile << P_E << std::endl;
+		outfile << FLH_E << std::endl;
+		outfile << etaE << std::endl;
+		return outfile;
+	}
+
 	// Constructor
 	LCOE::LCOE(Physical_Quantity & C, Physical_Quantity & LB, Physical_Quantity & LT, Physical_Quantity & FOM, 
 		Physical_Quantity & VOM, Physical_Quantity & FC, Coefficient & r, Coefficient & i,
@@ -134,6 +219,23 @@ namespace eu_subsidies_and_cost {
 		const double & EH, const double bp_revenue) {
 		return (alpha * I + OM + F) / EH - bp_revenue;
 	}
+
+	std::ostream & LCOH_CHP::_save(std::ostream & outfile) {
+		LCOH::_save(outfile);
+		outfile << P_E << std::endl;
+		outfile << P_H << std::endl;
+		outfile << FLH_E << std::endl;
+		outfile << FLH_H << std::endl;
+		outfile << etaE << std::endl;
+		outfile << etaH << std::endl;
+		return outfile;
+	}
+
+	std::ostream & LCOH_CHP::__save(std::ostream & outfile) {
+		outfile << EP << std::endl;
+		return outfile;
+	}
+
 	const int & LCOH_CHP::get_count() { return count; }
 
 	// Constructor
@@ -160,6 +262,11 @@ namespace eu_subsidies_and_cost {
 	// Member functions
 	const int & LCOE_CHP::get_count() { return count; }
 
+	std::ostream & LCOE_CHP::__save(std::ostream & outfile) {
+		outfile << HP << std::endl;
+		return outfile;
+	}
+
 	// Constructor
 	LCOE_CHP::LCOE_CHP(Physical_Quantity & C, Physical_Quantity & LB, Physical_Quantity & LT, Physical_Quantity & FOM,
 		Physical_Quantity & VOM, Physical_Quantity & FC, Coefficient & r, Coefficient & i, Physical_Quantity & P_E, 
@@ -178,6 +285,11 @@ namespace eu_subsidies_and_cost {
 	/*##################################################################################################################
 	Static counters of each class
 	==================================================================================================================*/
+	// The number of attributes determining the class object
+	std::size_t Coefficient::n_attributes(3);
+	
+	// The number of attributes determining the class object
+	std::size_t Physical_Quantity::n_attributes(4);
 
 	// The number of Physical_Quantity objects
 	int Physical_Quantity::count(0);

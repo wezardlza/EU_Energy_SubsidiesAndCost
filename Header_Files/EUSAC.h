@@ -11,68 +11,22 @@ Institution: Control Group, UOM
 #define __EUSAC__
 #define __DEBUG__
 
+#include "../Header_Files/SRF_ALIAS.h"
 #include <string>
 #include <cmath>
 #include <fstream>
 
 namespace eu_subsidies_and_cost {
-
-	// A Physical_Quantity has a unit
-	class Physical_Quantity
-	{
-	public:
-
-		// Summary: Construct a physical quantity
-		// Parameters:
-		// term: name of the physical quantity
-		// magnitude: magnitude of the physical quantity
-		// unit: unit of the physical quantity
-		// Return: void
-		Physical_Quantity(const std::string & symbol = "", const std::string & term = "",
-			const double & magnitude = 0.0, const std::string & unit = "unspecified!");
-
-		// Summary: Construct a parameter related the calculation of some levelised cost of an energy project. This is 
-		// a copy constructor
-		// Parameters:
-		// const Physical_Quantity &: an object of the same class
-		// Return : void
-		Physical_Quantity(const Physical_Quantity &);
-
-		// Summary: Destruct a physical quantity
-		// Return: void.
-		~Physical_Quantity();
-
-		// Summary: Get the symbol of the physical quantity
-		const std::string & get_symbol() const;
-
-		// Summary: Get the name of the physical quantity
-		const std::string & get_term() const;
-
-		// Summary: Get the magnitude of the physical quantity
-		const double & get_magnitude() const;
-
-		// Summary: Get the unit of the physical quantity
-		const std::string & get_unit() const;
-
-		// Summary: record the class object as a row of data in .csv file 
-		void record_row(std::ofstream & ofile);
-
-		// Summary: Get the number of the class objects
-		static const int & get_count();
-
-	private:
-		const std::string term;
-		double magnitude; 
-		const std::string unit;  
-		const std::string symbol;
-
-		// The number of the class objects
-		static int count;
-	};
-
+	
 	// A coefficient has no unit
 	class Coefficient
 	{
+		// Summary: cout the coefficient
+		friend std::ostream & operator <<(std::ostream & outfile, const Coefficient & object);
+
+		// Summary: cout the coefficient
+		friend std::istream & operator >>(std::istream & infile, const Coefficient & object);
+
 	public:
 
 		// Summary: Construct a coefficient, related the calculation of some levelised cost of an 
@@ -102,21 +56,72 @@ namespace eu_subsidies_and_cost {
 		// Summary: Get the magnitude of the coefficient.
 		const double & get_magnitude() const;
 
-		// Summary: record the class object as a row of data in .csv file 
-		void record_row(std::ofstream & ofile);
+		// Summary: Rewrite the magnitude
+		double & change_magnitude(const double & magnitude);
 
 		// Summary: Get the number of the class objects
 		static const int & get_count();
 
-	private:
+	protected:
 		const std::string term;
 		const std::string symbol;
 		double magnitude;
 
+	private:
+		//Summary: Form a record of the coefficient in a ROW object 
+		ROW _record() const;
+
+		// The number of attributes determining the class object
+		static std::size_t n_attributes;
+		
 		// The number of the class objects
 		static int count;
-
 	};
+
+	// A Physical_Quantity has a unit
+	class Physical_Quantity : public Coefficient
+	{
+		// Summary: print the physical qunatity
+		friend std::ostream & operator <<(std::ostream & outfile, const Physical_Quantity & object);
+
+	public:
+		// Summary: Construct a physical quantity
+		// Parameters:
+		// term: name of the physical quantity
+		// magnitude: magnitude of the physical quantity
+		// unit: unit of the physical quantity
+		// Return: void
+		Physical_Quantity(const std::string & symbol = "", const std::string & term = "",
+			const double & magnitude = 0.0, const std::string & unit = "unspecified!");
+
+		// Summary: Construct a parameter related the calculation of some levelised cost of an energy project. This is 
+		// a copy constructor
+		// Parameters:
+		// const Physical_Quantity &: an object of the same class
+		// Return : void
+		Physical_Quantity(const Physical_Quantity &);
+
+		// Summary: Destruct a physical quantity
+		// Return: void.
+		~Physical_Quantity();
+
+		// Summary: Get the unit of the physical quantity
+		const std::string & get_unit() const;
+
+	protected:
+		const std::string unit;
+
+	private:
+		//Summary: Form a record of the coefficient in a ROW object 
+		ROW _record() const;
+
+		// The number of attributes determining the class object
+		static std::size_t n_attributes;
+
+		// The number of the class objects
+		static int count;
+	};
+
 
 	class LCOH
 	{
@@ -167,6 +172,12 @@ namespace eu_subsidies_and_cost {
 		// Summary: Get the number of the class objects
 		static const int & get_count();
 
+		// Summary: Save the object initialization arguments
+		std::ostream & save(std::ostream & outfile);
+
+		// Summary:: Read the data file to construct the class instance
+		static LCOH & read(const std::string & file_address);
+
 	protected:
 		Physical_Quantity C;
 		Physical_Quantity LB;
@@ -177,10 +188,16 @@ namespace eu_subsidies_and_cost {
 		Coefficient r;
 		Coefficient i;
 
+		// Summary: Save the protected object initialization arguments
+		virtual std::ostream & _save(std::ostream & outfile);
+
 	private:
 		Physical_Quantity P_H;
 		Physical_Quantity FLH_H;
 		Coefficient etaH;
+
+		// Summary: Save the protected object initialization arguments
+		virtual std::ostream & __save(std::ostream & outfile);
 
 		// The number of the class objects
 		static int count;
@@ -231,10 +248,16 @@ namespace eu_subsidies_and_cost {
 		Physical_Quantity dv;
 		Coefficient d;
 
+		// Summary: Save the protected object initialization arguments
+		std::ostream & _save(std::ostream & outfile) override;
+
 	private:
 		Physical_Quantity P_E;
 		Physical_Quantity FLH_E;
 		Coefficient etaE;
+
+		// Summary: Save the protected object initialization arguments
+		std::ostream & __save(std::ostream & outfile) override;
 
 		// The number of the class objects
 		static int count;
@@ -299,8 +322,14 @@ namespace eu_subsidies_and_cost {
 		Coefficient etaE;
 		Coefficient etaH;
 
+		// Summary: Save the protected object initialization arguments
+		virtual std::ostream & _save(std::ostream & outfile) override;
+
 	private:
 		Physical_Quantity EP;
+
+		// Summary: Save the protected object initialization arguments
+		virtual std::ostream & __save(std::ostream & outfile) override;
 
 		// The number of the class objects
 		static int count;
@@ -340,11 +369,13 @@ namespace eu_subsidies_and_cost {
 	private:
 		Physical_Quantity HP;
 
+		// Summary: Save the protected object initialization arguments
+		std::ostream & __save(std::ostream & outfile);
+
 		// The number of the class objects
 		static int count;
 
 	};
-
 
 	// Decomission cost equals 15% capital overnight cost
 	extern const double decommisioning_cost_factor;

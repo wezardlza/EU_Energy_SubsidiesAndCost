@@ -6,19 +6,14 @@ This file defines the saving and reading methods of .csv document.
 ***********************************************************************************************************************/
  
 #include "../Header_Files/SRF.h"
-#include "../Header_Files/EUSAC.h"
+#include <io.h>
+
 
 /*######################################################################################################################
 Class 'Read_CSV_File'
 ======================================================================================================================*/
-// Summary: trim the string 
-void Read_CSV_File::Trim(std::string & str)
-{
-	//str.find_first_not_of(" \t\r\n"),在字符串str中从索引0开始，返回首次不匹配"\t\r\n"的位置  
-	str.erase(0, str.find_first_not_of(" \t\r\n"));
-	str.erase(str.find_last_not_of(" \t\r\n") + 1);
-}
 
+// Constructors
 Read_CSV_File::Read_CSV_File(const std::string & file_address) : infile(file_address) {
 	if (!infile) { std::cerr << "Error: unable to open the input file." << std::endl; }
 	// initialize table, rsv and tiv
@@ -32,6 +27,15 @@ Read_CSV_File::~Read_CSV_File() {
 	--count;
 }
 
+// Static function
+void Read_CSV_File::Trim(std::string & str)
+{
+	//str.find_first_not_of(" \t\r\n"),在字符串str中从索引0开始，返回首次不匹配"\t\r\n"的位置  
+	str.erase(0, str.find_first_not_of(" \t\r\n"));
+	str.erase(str.find_last_not_of(" \t\r\n") + 1);
+}
+
+// Meember fucntions
 void Read_CSV_File::table_init() {
 
 	// declare a string for the storage of one row of data in 'infile' read from .csv file
@@ -109,23 +113,53 @@ void Read_CSV_File::print_table() {
 
 std::size_t Read_CSV_File::count(0);
 
-template <typename T> std::ifstream & Save_CSV_File<T>::open_file_check(std::ifstream & file,
-	const std::string & file_address) {
-	file.close();
-	file.clear();
-	file.open(file_address.c_str());
-	return file;
+
+/*######################################################################################################################
+Class 'Save_CSV_File'
+======================================================================================================================*/
+// Constructors
+Save_CSV_File::Save_CSV_File(const std::string & file_address) { ++count; }
+Save_CSV_File::~Save_CSV_File() { --count; }
+
+// Member functions
+bool Save_CSV_File::open_file_check(const std::string & file_address) {
+	bool b(_access(file_address.c_str(), 0) != -1);
+	if (b) {
+		std::cout << "Warning: The file " << file_address << " is overwritten." << std::endl;
+	}
+	else {
+		std::cout << "The file " << file_address << " is created." << std::endl;
+	}
+	return b;
 }
 
-template <typename T> void Save_CSV_File<T>::write_table(std::vector<T> table, const std::string & file_address) {
-	std::fstream file;
-	file.open(file_address, std::ifstream::in);
-	
-	if (!file) {
-		std::cout << "Warning: The written file already exists." << std::endl;
+void Save_CSV_File::_save_row(ROW & row) {
+	ROW_SIZE n(row.size() - 1);
+	for (ROW_INDEX i = 0; i < n; ++i) {
+		outfile << row[i]<< ",";
+	}
+	outfile << row[n] << std::endl;
+}
+
+void Save_CSV_File::save_row(ROW & row, const std::string & file_address) {
+	outfile.close();
+	outfile.clear();
+	if (Save_CSV_File::open_file_check(file_address));
+	outfile.open(file_address.c_str(), std::fstream::out);
+	Save_CSV_File::_save_row(row);
+}
+
+void Save_CSV_File::save_table(TABLE table, const std::string & file_address) {
+	outfile.close();
+	outfile.clear();
+	Save_CSV_File::open_file_check(file_address);
+	outfile.open(file_address.c_str(), std::fstream::out);
+	TABLE_SIZE n(table.size());
+	for (TABLE_INDEX i = 0; i != n; ++i) {
+		Save_CSV_File::_save_row(table[i]);
 	}
 
 }
 
-template class Save_CSV_File<eu_subsidies_and_cost::Physical_Quantity>;
-template class Save_CSV_File<eu_subsidies_and_cost::Coefficient>;
+
+std::size_t Save_CSV_File::count(0);

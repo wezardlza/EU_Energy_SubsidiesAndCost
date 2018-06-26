@@ -56,3 +56,4 @@ Instantiate of the Class Template
 template std::string::size_type Basic_Maths::max<std::string::size_type>(T_ROW<std::string::size_type> & vec);
 template T_ROWS_SIZES_VEC<std::string> Basic_Maths::rows_sizes_vec<std::string>(T_TABLE<std::string> & table);
 template T_TABLE_INDEXES_VEC<std::string> Basic_Maths::ascending<std::string>(T_ROWS_SIZES_VEC<std::string> rsv);
+template double Basic_Maths::num_cast<double>(const std::string & str);
