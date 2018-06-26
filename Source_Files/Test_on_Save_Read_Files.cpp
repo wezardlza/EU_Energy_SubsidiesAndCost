@@ -72,6 +72,7 @@ int main()
 	escn::LCOE plantB(C, LB, LT, FOM, VOM, FC, r, i, REV, dv, d, P_E, FLH_E, etaE);
 	const std::string file_address1 = "../Data_Files/TEST_on_Save_Read_Files/LCOH.csv";
 	const std::string file_address2 = "../Data_Files/TEST_on_Save_Read_Files/LCOE.csv";
+	const std::string file_address3 = "../Data_Files/TEST_1_LCOE.csv";
 
 	Save_CSV_File::open_file_check(file_address1);
 	outfile.open(file_address1, std::ofstream::out);
@@ -79,11 +80,17 @@ int main()
 	outfile.close();
 
 	Save_CSV_File::open_file_check(file_address2);
-	outfile.open("../Data_Files/TEST_on_Save_Read_Files/LCOE.csv", std::ofstream::out);
+	outfile.open(file_address2, std::ofstream::out);
 	plantB.save(outfile);
 	outfile.close();
 
-	// Read_CSV_File csv("../Data_Files/TEST_1_LCOE.csv");
-	// csv.print_table();
+
+	Read_CSV_File csv1(file_address1);
+	Read_CSV_File csv2(file_address2);
+	Read_CSV_File csv3(file_address3);
+	csv1.print_table();
+	csv2.print_table();
+	csv3.print_table();
+
 	system("pause");
 }
