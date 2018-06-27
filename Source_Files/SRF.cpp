@@ -6,29 +6,78 @@ This file defines the saving and reading methods of .csv document.
 ***********************************************************************************************************************/
  
 #include "../Header_Files/SRF.h"
-#include <io.h>
+#include <sys/types.h>
+#include <sys/stat.h>
+#include <direct.h> 
+#include <io.h> 
+#include <stdexcept>
 
 
 /*######################################################################################################################
-Class 'Read_CSV_File'
+Class 'File_Adress'
 ======================================================================================================================*/
 
 // Constructors
-Read_CSV_File::Read_CSV_File(const std::string & file_address) : infile(file_address) {
-	if (!infile) { std::cerr << "Error: unable to open the input file." << std::endl; }
-	// initialize table, rsv and tiv
-	table_init();
-	rsv = Basic_Maths::rows_sizes_vec(table);
-	tiv = Basic_Maths::ascending<CELL>(rsv);
+File_Address::File_Address(const std::string & name) : name(name) { ++count; }
+
+File_Address::~File_Address() {
+	--count;
+}
+
+// Member functions
+std::string File_Address::file_address() {
+	struct _stat fileStat;
+	if ((_stat(directory.c_str(), & fileStat) == 0) && (fileStat.st_mode & _S_IFDIR))
+	{
+		std::cout << "The directory: \"" << directory << "\" already exists." << std::endl;;
+	}
+	else
+	{
+		int i = _mkdir(directory.c_str());
+		if (i = 1) {
+			std::cout << "The directory: \"" << directory << "\" is created." << std::endl;
+		}
+		else
+		{
+			throw std::runtime_error("Fail to create the directory: \""  + directory + "\" is created.");
+		}
+	}
+	return directory + name + "." + format;	
+}
+
+std::size_t File_Address::count(0);
+std::string File_Address::directory("./");
+std::string File_Address::format("csv");
+
+/*######################################################################################################################
+Class 'Read_File'
+======================================================================================================================*/
+
+// Constructors
+Read_File::Read_File(const std::string & file_name, const std::string & directory, const std::string & format) {
+	File_Address::directory = directory;
+	File_Address::format = format;
+	File_Address file_loc(file_name);
+	const std::string file_address = file_loc.file_address();
+	infile.open(file_address);
+	if (!infile) { std::cerr << "Error: Unable to open the input file \"" << file_address << "/\"." << std::endl; }
 	++count;
 }
 
-Read_CSV_File::~Read_CSV_File() {
+Read_File::Read_File(const std::string & file_name) {
+	File_Address file_loc(file_name);
+	const std::string file_address = file_loc.file_address();
+	infile.open(file_address);
+	if (!infile) { std::cerr << "Error: Unable to open the input file \"" << file_address << "/\"." << std::endl; }
+	++count;
+}
+
+Read_File::~Read_File() {
 	--count;
 }
 
 // Static function
-void Read_CSV_File::Trim(std::string & str)
+void Read_File::Trim(std::string & str)
 {
 	//str.find_first_not_of(" \t\r\n"),在字符串str中从索引0开始，返回首次不匹配"\t\r\n"的位置  
 	str.erase(0, str.find_first_not_of(" \t\r\n"));
@@ -36,7 +85,7 @@ void Read_CSV_File::Trim(std::string & str)
 }
 
 // Meember fucntions
-void Read_CSV_File::table_init() {
+void Read_File::table_init() {
 
 	// declare a string for the storage of one row of data in 'infile' read from .csv file
 	std::string line;	
@@ -73,7 +122,14 @@ void Read_CSV_File::table_init() {
 	}
 }
 
-void Read_CSV_File::print_table() {
+void Read_File::print_table() {
+
+	// sizes of each ROW in original 'table'	
+	rsv = Basic_Maths::rows_sizes_vec(table);
+
+	// table indexes of each row sequenced by the row sizes in the asceding order
+	tiv = Basic_Maths::ascending<CELL>(rsv);
+	
 	// loop the column 
 	TABLE_INDEXES_VEC_INDEX m(0); // index for 'tiv'
 	ROW_INDEX k(0);
@@ -111,55 +167,58 @@ void Read_CSV_File::print_table() {
 	}
 }
 
-std::size_t Read_CSV_File::count(0);
+std::size_t Read_File::count(0);
 
 
 /*######################################################################################################################
-Class 'Save_CSV_File'
+Class 'Save_File'
 ======================================================================================================================*/
 // Constructors
-Save_CSV_File::Save_CSV_File(const std::string & file_address) { ++count; }
-Save_CSV_File::~Save_CSV_File() { --count; }
+Save_File::Save_File(const std::string & file_address) : std::ofstream::basic_ofstream(file_address) {
+	Save_File::open_file_check(file_address);
+	++count; 
+}
+Save_File::~Save_File() { --count; }
 
 // Member functions
-bool Save_CSV_File::open_file_check(const std::string & file_address) {
+bool Save_File::open_file_check(const std::string & file_address) {
 	bool b(_access(file_address.c_str(), 0) != -1);
 	if (b) {
-		std::cout << "Warning: The file " << file_address << " is overwritten." << std::endl;
+		std::cout << "Warning: The file: \"" << file_address << "\" is overwritten." << std::endl;
 	}
 	else {
-		std::cout << "The file " << file_address << " is created." << std::endl;
+		std::cout << "The file: \"" << file_address << "\" is created." << std::endl;
 	}
 	return b;
 }
 
-void Save_CSV_File::_save_row(ROW & row) {
+void Save_File::_save_row(ROW & row) {
 	ROW_SIZE n(row.size() - 1);
 	for (ROW_INDEX i = 0; i < n; ++i) {
-		outfile << row[i]<< ",";
+		*this << row[i]<< ",";
 	}
-	outfile << row[n] << std::endl;
+	*this << row[n] << std::endl;
 }
 
-void Save_CSV_File::save_row(ROW & row, const std::string & file_address) {
-	outfile.close();
-	outfile.clear();
-	if (Save_CSV_File::open_file_check(file_address));
-	outfile.open(file_address.c_str(), std::fstream::out);
-	Save_CSV_File::_save_row(row);
+void Save_File::save_row(ROW & row, const std::string & file_address) {
+	this->close();
+	this->clear();
+	Save_File::open_file_check(file_address);
+	this->open(file_address.c_str(), std::fstream::out);
+	Save_File::_save_row(row);
 }
 
-void Save_CSV_File::save_table(TABLE table, const std::string & file_address) {
-	outfile.close();
-	outfile.clear();
-	Save_CSV_File::open_file_check(file_address);
-	outfile.open(file_address.c_str(), std::fstream::out);
+void Save_File::save_table(TABLE table, const std::string & file_address) {
+	this->close();
+	this->clear();
+	Save_File::open_file_check(file_address);
+	this->open(file_address.c_str(), std::fstream::out);
 	TABLE_SIZE n(table.size());
 	for (TABLE_INDEX i = 0; i != n; ++i) {
-		Save_CSV_File::_save_row(table[i]);
+		Save_File::_save_row(table[i]);
 	}
 
 }
 
 
-std::size_t Save_CSV_File::count(0);
+std::size_t Save_File::count(0);

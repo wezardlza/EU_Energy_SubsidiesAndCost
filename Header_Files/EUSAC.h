@@ -17,14 +17,14 @@ Institution: Control Group, UOM
 #include <fstream>
 
 namespace eu_subsidies_and_cost {
-	
+		
 	// A coefficient has no unit
 	class Coefficient
 	{
 		// Summary: cout the coefficient
 		friend std::ostream & operator <<(std::ostream & outfile, const Coefficient & object);
 
-		// Summary: cout the coefficient
+		// Summary: cin the coefficient
 		friend std::istream & operator >>(std::istream & infile, const Coefficient & object);
 
 	public:
@@ -122,11 +122,32 @@ namespace eu_subsidies_and_cost {
 		static int count;
 	};
 
+	extern const Physical_Quantity & C0;
+	extern const Physical_Quantity & LB0;
+	extern const Physical_Quantity & LT0;
+	extern const Physical_Quantity & FOM0;
+	extern const Physical_Quantity & VOM0;
+	extern const Physical_Quantity & FC0;
+	extern const Physical_Quantity & REV0;
+	extern const Physical_Quantity & dv0;
+	extern const Physical_Quantity & P_E0;
+	extern const Physical_Quantity & P_H0;
+	extern const Physical_Quantity & FLH_E0;
+	extern const Physical_Quantity & FLH_H0;
+	extern const Physical_Quantity & EP0;
+	extern const Coefficient & r0;
+	extern const Coefficient & i0;
+	extern const Coefficient & d0;
+	extern const Coefficient & etaE0;
+	extern const Coefficient & etaH0;
+	extern const Physical_Quantity & HP0;
 
 	class LCOH
 	{
-	public:
+		// Summary: Save the object initialization arguments
+		friend Save_File & operator <<(Save_File & save_file, const LCOH & object);
 
+	public:
 		// Summary: Construct an object to manage the calculation of the LCOH
 		// C: captial cost
 		// LB: cosntruction period
@@ -137,13 +158,20 @@ namespace eu_subsidies_and_cost {
 		// FC: fuel costs per unit of enengy input
 		// r: weighted average cost of capital (WACC)
 		// i: interest rate over the construction loan
+		// P_H: heat capacity
 		// FLH_H: equivalent full load hours for heat production
 		// etaH: conversion efficiency in lower heating value (LHV) of heat
-		LCOH(Physical_Quantity & C, Physical_Quantity & LB, Physical_Quantity & LT,Physical_Quantity & FOM, 
-			Physical_Quantity & VOM, Physical_Quantity & FC, Coefficient & r, Coefficient & i,
-			const Physical_Quantity & P_H = Physical_Quantity("PH", "heat capacity", 650, "MW"),
-			const Physical_Quantity & FLH_H = Physical_Quantity("FLH_H", "full load hours of heat", 0.0, "h"),
-			const Coefficient & etaH = Coefficient("etaH", "conversion efficiency in LHV of heat", 1.0));
+		LCOH(const Physical_Quantity & C = C0,
+			const Physical_Quantity & LB = LB0,
+			const Physical_Quantity & LT = LT0,
+			const Physical_Quantity & FOM = FOM0,
+			const Physical_Quantity & VOM = VOM0,
+			const Physical_Quantity & FC = FC0,
+			const Coefficient & r = r0,
+			const Coefficient & i = i0,
+			const Physical_Quantity & P_H = P_H0,
+			const Physical_Quantity & FLH_H = FLH_H0,
+			const Coefficient & etaH = etaH0);
 		LCOH(const LCOH &);
 		~LCOH();
 		
@@ -172,12 +200,6 @@ namespace eu_subsidies_and_cost {
 		// Summary: Get the number of the class objects
 		static const int & get_count();
 
-		// Summary: Save the object initialization arguments
-		std::ostream & save(std::ostream & outfile);
-
-		// Summary:: Read the data file to construct the class instance
-		static LCOH & read(const std::string & file_address);
-
 	protected:
 		Physical_Quantity C;
 		Physical_Quantity LB;
@@ -189,7 +211,7 @@ namespace eu_subsidies_and_cost {
 		Coefficient i;
 
 		// Summary: Save the protected object initialization arguments
-		virtual std::ostream & _save(std::ostream & outfile);
+		virtual std::ofstream & _save(std::ofstream & outfile) const;
 
 	private:
 		Physical_Quantity P_H;
@@ -197,7 +219,7 @@ namespace eu_subsidies_and_cost {
 		Coefficient etaH;
 
 		// Summary: Save the protected object initialization arguments
-		virtual std::ostream & __save(std::ostream & outfile);
+		virtual std::ofstream & __save(std::ofstream & outfile) const;
 
 		// The number of the class objects
 		static int count;
@@ -206,6 +228,7 @@ namespace eu_subsidies_and_cost {
 
 	class LCOE : public LCOH
 	{
+
 	public:
 
 		// Summary: Construct an object to manage the calculation of the LCOE
@@ -221,14 +244,23 @@ namespace eu_subsidies_and_cost {
 		// REV: variable by-product revenue
 		// dv: not sure the physicial meaning yet
 		// d: decommisioning cost factor
+		// P_E: electricity capacity
 		// FLH_E: equivalent full load hours for electrcity production
 		// etaE: conversion efficiency in lower heating value (LHV) of electrcity
-		LCOE(Physical_Quantity & C, Physical_Quantity & LB, Physical_Quantity & LT, Physical_Quantity & FOM, 
-			Physical_Quantity & VOM, Physical_Quantity & FC, Coefficient & r, Coefficient & i,
-			Physical_Quantity & REV, Physical_Quantity & dv, Coefficient & d,
-			const Physical_Quantity & P_E = Physical_Quantity("P_E", "electricity capacity", 650, "MW"),
-			const Physical_Quantity & FLH_E = Physical_Quantity("FLH_E", "full load hours of electrcity", 0.0, "h"),
-			const Coefficient & etaE = Coefficient("etaE", "conversion efficiency in LHV of electricity", 1.0));
+		LCOE(const Physical_Quantity & C = C0,
+			const Physical_Quantity & LB = LB0,
+			const Physical_Quantity & LT = LT0,
+			const Physical_Quantity & FOM = FOM0,
+			const Physical_Quantity & VOM = VOM0,
+			const Physical_Quantity & FC = FC0,
+			const Coefficient & r = r0,
+			const Coefficient & i = i0,
+			const Physical_Quantity & REV = REV0,
+			const Physical_Quantity & dv = dv0,
+			const Coefficient & d = d0,
+			const Physical_Quantity & P_E = P_E0,
+			const Physical_Quantity & FLH_E = FLH_E0,
+			const Coefficient & etaE = etaE0);
 		LCOE(const LCOE &);
 		~LCOE();
 
@@ -249,7 +281,7 @@ namespace eu_subsidies_and_cost {
 		Coefficient d;
 
 		// Summary: Save the protected object initialization arguments
-		std::ostream & _save(std::ostream & outfile) override;
+		std::ofstream & _save(std::ofstream & outfile) const override;
 
 	private:
 		Physical_Quantity P_E;
@@ -257,7 +289,7 @@ namespace eu_subsidies_and_cost {
 		Coefficient etaE;
 
 		// Summary: Save the protected object initialization arguments
-		std::ostream & __save(std::ostream & outfile) override;
+		std::ofstream & __save(std::ofstream & outfile) const override;
 
 		// The number of the class objects
 		static int count;
@@ -266,6 +298,7 @@ namespace eu_subsidies_and_cost {
 
 	class LCOH_CHP : public LCOH
 	{
+
 	public:
 
 		// Summary: Construct an object to manage the calculation of the LCOH of CHP
@@ -284,11 +317,21 @@ namespace eu_subsidies_and_cost {
 		// etaE: conversion efficiency in lower heating value (LHV) of electrcity
 		// etaH: conversion efficiency in lower heating value (LHV) of heat
 		// EP: electricity price a CHP intallation receives for electricity production as by-product
-		LCOH_CHP(Physical_Quantity & C, Physical_Quantity & LB, Physical_Quantity & LT, Physical_Quantity & FOM, 
-			Physical_Quantity & VOM, Physical_Quantity & FC, Coefficient & r, Coefficient & i, Physical_Quantity & P_E,
-			Physical_Quantity & P_H, Physical_Quantity & FLH_E, Physical_Quantity & FLH_H, Coefficient & etaE, 
-			Coefficient & etaH, 
-			const Physical_Quantity & EP = Physical_Quantity("EP", "wholesale electricity price", 0.0, "Euros/MWh"));
+		LCOH_CHP(const Physical_Quantity & C = C0,
+			const Physical_Quantity & LB = LB0,
+			const Physical_Quantity & LT = LT0,
+			const Physical_Quantity & FOM = FOM0,
+			const Physical_Quantity & VOM = VOM0,
+			const Physical_Quantity & FC = FC0,
+			const Coefficient & r = r0,
+			const Coefficient & i = i0,
+			const Physical_Quantity & P_E = P_E0,
+			const Physical_Quantity & P_H = P_H0,
+			const Physical_Quantity & FLH_E = FLH_E0,
+			const Physical_Quantity & FLH_H = FLH_H0,
+			const Coefficient & etaE = etaE0,
+			const Coefficient & etaH = etaH0,
+			const Physical_Quantity & EP = EP0);
 		LCOH_CHP(const LCOH_CHP &);
 		~LCOH_CHP();
 
@@ -323,13 +366,13 @@ namespace eu_subsidies_and_cost {
 		Coefficient etaH;
 
 		// Summary: Save the protected object initialization arguments
-		virtual std::ostream & _save(std::ostream & outfile) override;
+		virtual std::ofstream & _save(std::ofstream & outfile) const override;
 
 	private:
 		Physical_Quantity EP;
 
 		// Summary: Save the protected object initialization arguments
-		virtual std::ostream & __save(std::ostream & outfile) override;
+		virtual std::ofstream & __save(std::ofstream & outfile) const override;
 
 		// The number of the class objects
 		static int count;
@@ -355,11 +398,21 @@ namespace eu_subsidies_and_cost {
 		// etaE: conversion efficiency in lower heating value (LHV) of electrcity
 		// etaH: conversion efficiency in lower heating value (LHV) of heat
 		// HP: heat price a CHP intallation receives for heat production as by-product
-		LCOE_CHP(Physical_Quantity & C, Physical_Quantity & LB, Physical_Quantity & LT, Physical_Quantity & FOM, 
-			Physical_Quantity & VOM, Physical_Quantity & FC, Coefficient & r, Coefficient & i, Physical_Quantity & P_E,
-			Physical_Quantity & P_H, Physical_Quantity & FLH_E, Physical_Quantity & FLH_H, Coefficient & etaE, 
-			Coefficient & etaH, 
-			const Physical_Quantity & HP = Physical_Quantity("HP", "wholesale heat price", 0.0, "Euros/MWh"));
+		LCOE_CHP(const Physical_Quantity & C = C0, 
+			const Physical_Quantity & LB = LB0, 
+			const Physical_Quantity & LT = LT0, 
+			const Physical_Quantity & FOM = FOM0, 
+			const Physical_Quantity & VOM = VOM0, 
+			const Physical_Quantity & FC = FC0, 
+			const Coefficient & r = r0, 
+			const Coefficient & i = i0, 
+			const Physical_Quantity & P_E = P_E0,
+			const Physical_Quantity & P_H = P_H0, 
+			const Physical_Quantity & FLH_E = FLH_E0, 
+			const Physical_Quantity & FLH_H = FLH_H0, 
+			const Coefficient & etaE = etaE0, 
+			const Coefficient & etaH = etaH0, 
+			const Physical_Quantity & HP = HP0);
 		LCOE_CHP(const LCOE_CHP &);
 		~LCOE_CHP();
 
@@ -370,21 +423,14 @@ namespace eu_subsidies_and_cost {
 		Physical_Quantity HP;
 
 		// Summary: Save the protected object initialization arguments
-		std::ostream & __save(std::ostream & outfile);
+		std::ostream & __save(std::ostream & outfile) const;
 
 		// The number of the class objects
 		static int count;
 
 	};
 
-	// Decomission cost equals 15% capital overnight cost
-	extern const double decommisioning_cost_factor;
-
-	// Boiler efficiency
-	extern const double boiler_efficiency;
-
-	// Interest rate for overnight cost
-	extern const double interest_rate;
+	
 
 	/* Inline functions of LCOH */
 

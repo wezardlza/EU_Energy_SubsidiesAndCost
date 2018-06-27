@@ -115,6 +115,14 @@ namespace eu_subsidies_and_cost {
 	/*##################################################################################################################
 	Class 'LCOH' 
 	==================================================================================================================*/
+	// Friend
+	/*Save_File & operator << (Save_File & outfile, const LCOH & object)
+	{
+		outfile << "# " << typeid(object).name() << std::endl;
+		object._save(outfile);
+		object.__save(outfile);
+		return outfile;
+	}*/
 
 	// Member functions
 	double LCOH::operator()
@@ -122,7 +130,7 @@ namespace eu_subsidies_and_cost {
 		return (alpha * I + OM + F) / EH;
 	}
 
-	std::ostream & LCOH::_save(std::ostream & outfile) {
+	std::ofstream & LCOH::_save(std::ofstream & outfile) const {
 		outfile << C << std::endl;
 		outfile << LB << std::endl;
 		outfile << LT << std::endl;
@@ -134,22 +142,13 @@ namespace eu_subsidies_and_cost {
 		return outfile;
 	}
 
-	std::ostream & LCOH::__save(std::ostream & outfile) {
+	std::ofstream & LCOH::__save(std::ofstream & outfile) const {
 		outfile << P_H << std::endl;
 		outfile << FLH_H << std::endl;
 		outfile << etaH << std::endl;
 		return outfile;
 	}
-
-	std::ostream & LCOH::save(std::ostream & outfile) {
-		outfile << "****************************************************************************" << std::endl;
-		outfile << "# " << typeid(*this).name()<< std::endl;
-		outfile << "****************************************************************************" << std::endl;
-		_save(outfile);
-		__save(outfile);
-		return outfile;
-	}
-
+	
 	/*LCOH & LCOH::read(const std::string & file_address) {
 		LCOH x;
 		return ;
@@ -158,12 +157,14 @@ namespace eu_subsidies_and_cost {
 	const int & LCOH::get_count() { return count; }
 
 	// Constructor
-	LCOH::LCOH(Physical_Quantity & C, Physical_Quantity & LB, Physical_Quantity & LT, Physical_Quantity & FOM, 
-		Physical_Quantity & VOM, Physical_Quantity & FC, Coefficient & r, Coefficient & i, 
-		const Physical_Quantity & P_H, const Physical_Quantity & FLH_H, const Coefficient & etaH) : 
+	LCOH::LCOH(const Physical_Quantity & C, const Physical_Quantity & LB, const Physical_Quantity & LT, 
+		const Physical_Quantity & FOM, const Physical_Quantity & VOM, const Physical_Quantity & FC, 
+		const Coefficient & r, const Coefficient & i, const Physical_Quantity & P_H, const Physical_Quantity & FLH_H, 
+		const Coefficient & etaH) : 
 		C(C), LB(LB), LT(LT), FOM(FOM), VOM(VOM), FC(FC), r(r), i(i), P_H(P_H), FLH_H(FLH_H), etaH(etaH){
 		++count;
 	}
+
 	LCOH::LCOH(const LCOH & orig) :
 		C(orig.C), LB(orig.LB), LT(orig.LT), FOM(orig.FOM), VOM(orig.VOM), FC(orig.FC), r(orig.r), 
 		i(orig.i), P_H(orig.P_H), FLH_H(orig.FLH_H), etaH(orig.etaH) {
@@ -180,7 +181,7 @@ namespace eu_subsidies_and_cost {
 	// Member functions
 	const int & LCOE::get_count() { return count; }
 
-	std::ostream & LCOE::_save(std::ostream & outfile) {
+	std::ofstream & LCOE::_save(std::ofstream & outfile) const {
 		LCOH::_save(outfile);
 		outfile << REV << std::endl;
 		outfile << dv << std::endl;
@@ -188,7 +189,7 @@ namespace eu_subsidies_and_cost {
 		return outfile;
 	}
 
-	std::ostream & LCOE::__save(std::ostream & outfile) {
+	std::ofstream & LCOE::__save(std::ofstream & outfile) const {
 		outfile << P_E << std::endl;
 		outfile << FLH_E << std::endl;
 		outfile << etaE << std::endl;
@@ -196,10 +197,11 @@ namespace eu_subsidies_and_cost {
 	}
 
 	// Constructor
-	LCOE::LCOE(Physical_Quantity & C, Physical_Quantity & LB, Physical_Quantity & LT, Physical_Quantity & FOM, 
-		Physical_Quantity & VOM, Physical_Quantity & FC, Coefficient & r, Coefficient & i,
-		Physical_Quantity & REV, Physical_Quantity & dv, Coefficient & d, const Physical_Quantity & P_E, 
-		const Physical_Quantity & FLH_E , const Coefficient & etaE) :
+	LCOE::LCOE(const Physical_Quantity & C, const Physical_Quantity & LB, const Physical_Quantity & LT, 
+		const Physical_Quantity & FOM, const Physical_Quantity & VOM, const Physical_Quantity & FC, 
+		const Coefficient & r, const Coefficient & i, const Physical_Quantity & REV, const Physical_Quantity & dv, 
+		const Coefficient & d, const Physical_Quantity & P_E, const Physical_Quantity & FLH_E , 
+		const Coefficient & etaE) :
 		LCOH::LCOH(C, LB, LT, FOM, VOM, FC, r, i), REV(REV), dv(dv), d(d), P_E(P_E), FLH_E(FLH_E), etaE(etaE) {
 		++count;
 	}
@@ -220,7 +222,7 @@ namespace eu_subsidies_and_cost {
 		return (alpha * I + OM + F) / EH - bp_revenue;
 	}
 
-	std::ostream & LCOH_CHP::_save(std::ostream & outfile) {
+	std::ofstream & LCOH_CHP::_save(std::ofstream & outfile) const {
 		LCOH::_save(outfile);
 		outfile << P_E << std::endl;
 		outfile << P_H << std::endl;
@@ -231,7 +233,7 @@ namespace eu_subsidies_and_cost {
 		return outfile;
 	}
 
-	std::ostream & LCOH_CHP::__save(std::ostream & outfile) {
+	std::ofstream & LCOH_CHP::__save(std::ofstream & outfile) const {
 		outfile << EP << std::endl;
 		return outfile;
 	}
@@ -239,10 +241,11 @@ namespace eu_subsidies_and_cost {
 	const int & LCOH_CHP::get_count() { return count; }
 
 	// Constructor
-	LCOH_CHP::LCOH_CHP(Physical_Quantity & C, Physical_Quantity & LB, Physical_Quantity & LT, Physical_Quantity & FOM, 
-		Physical_Quantity & VOM, Physical_Quantity & FC, Coefficient & r, Coefficient & i, Physical_Quantity & P_E,
-		Physical_Quantity & P_H, Physical_Quantity & FLH_E, Physical_Quantity & FLH_H, Coefficient & etaE, 
-		Coefficient & etaH, const Physical_Quantity & EP) :
+	LCOH_CHP::LCOH_CHP(const Physical_Quantity & C, const Physical_Quantity & LB, const Physical_Quantity & LT, 
+		const Physical_Quantity & FOM, const Physical_Quantity & VOM, const Physical_Quantity & FC, 
+		const Coefficient & r, const Coefficient & i, const Physical_Quantity & P_E,
+		const Physical_Quantity & P_H, const Physical_Quantity & FLH_E, const Physical_Quantity & FLH_H, 
+		const Coefficient & etaE,  const Coefficient & etaH, const Physical_Quantity & EP) :
 		LCOH::LCOH(C, LB, LT, FOM, VOM, FC, r, i), P_E(P_E), P_H(P_H), FLH_E(FLH_E), FLH_H(FLH_H), etaE(etaE), 
 		etaH(etaH), EP(EP) {
 		++count;
@@ -262,16 +265,27 @@ namespace eu_subsidies_and_cost {
 	// Member functions
 	const int & LCOE_CHP::get_count() { return count; }
 
-	std::ostream & LCOE_CHP::__save(std::ostream & outfile) {
+	std::ostream & LCOE_CHP::__save(std::ostream & outfile) const {
 		outfile << HP << std::endl;
 		return outfile;
 	}
 
 	// Constructor
-	LCOE_CHP::LCOE_CHP(Physical_Quantity & C, Physical_Quantity & LB, Physical_Quantity & LT, Physical_Quantity & FOM,
-		Physical_Quantity & VOM, Physical_Quantity & FC, Coefficient & r, Coefficient & i, Physical_Quantity & P_E, 
-		Physical_Quantity & P_H, Physical_Quantity & FLH_E, Physical_Quantity & FLH_H, Coefficient & etaE, 
-		Coefficient & etaH, const Physical_Quantity & HP) :
+	LCOE_CHP::LCOE_CHP(const Physical_Quantity & C, 
+		const Physical_Quantity & LB, 
+		const Physical_Quantity & LT, 
+		const Physical_Quantity & FOM,
+		const Physical_Quantity & VOM, 
+		const Physical_Quantity & FC, 
+		const Coefficient & r, 
+		const Coefficient & i, 
+		const Physical_Quantity & P_E,
+		const Physical_Quantity & P_H, 
+		const Physical_Quantity & FLH_E, 
+		const Physical_Quantity & FLH_H, 
+		const Coefficient & etaE,
+		const Coefficient & etaH, 
+		const Physical_Quantity & HP) :
 		LCOH_CHP::LCOH_CHP(C, LB, LT, FOM, VOM, FC, r, i, P_E, P_H, FLH_E, FLH_H, etaE, etaH), HP(HP) {
 		++count;
 	}
@@ -312,11 +326,26 @@ namespace eu_subsidies_and_cost {
 	/*##################################################################################################################
 	Cosntant values
 	==================================================================================================================*/
-
-	extern const double decommisioning_cost_factor(0.15);
-
-	extern const double boiler_efficiency(0.9);
-
-	extern const double interest_rate(0.05);
-
+	extern const Physical_Quantity & C0 = Physical_Quantity("C", "capital cost", 287000.0, "kGBP");
+	extern const Physical_Quantity & LB0 = Physical_Quantity("LB", "cosntruction period", 5.0, "yr");
+	extern const Physical_Quantity & LT0 = Physical_Quantity("LT", "project duration", 20.0, "yr");
+	extern const Physical_Quantity & FOM0 = Physical_Quantity("FOM", "fixed OM cost", 0.0, "kGBP/yr");
+	extern const Physical_Quantity & VOM0 = Physical_Quantity("VOM", "variable OM cost", 0.0002038, "kGBP/MWh");
+	extern const Physical_Quantity & FC0 = Physical_Quantity("FC", "fuel costs per unit of enengy input",
+		0.008, "kGBP/MWh");
+	extern const Physical_Quantity & REV0 = Physical_Quantity("REV", "variable by-product revenue", 0.0, "kGBP/MWh");
+	extern const Physical_Quantity & dv0 = Physical_Quantity("dv", "", 0.0, "kGBP/MWh");
+	extern const Physical_Quantity & P_E0 = Physical_Quantity("P_E", "electricity capacity", 650, "MW");
+	extern const Physical_Quantity & P_H0 = Physical_Quantity("P_H", "heat capacity", 650, "MW");
+	extern const Physical_Quantity & FLH_E0 = Physical_Quantity("FLH_E", "full load hours of electrcity", 0.0, "h");
+	extern const Physical_Quantity & FLH_H0 = Physical_Quantity("FLH_H", "full load hours of heat", 8000.0, "h");
+	extern const Physical_Quantity & EP0 = Physical_Quantity("EP", 
+		"electricity price a CHP intallation receives for electricity production as by-product", 0.03, "kGBP/MWh");
+	extern const Coefficient & r0 = Coefficient("r", "weighted average cost of capital (WACC)", 0.075);
+	extern const Coefficient & i0 = Coefficient("i", "interest rate over the construction loan", 0.05);
+	extern const Coefficient & d0 = Coefficient("d", "decommisioning cost factor", 0.15);
+	extern const Coefficient & etaE0 = Coefficient("etaE", "conversion efficiency in LHV of electricity", 1.0);
+	extern const Coefficient & etaH0 = Coefficient("etaH", "conversion efficiency in LHV of heat", 0.90);
+	extern const Physical_Quantity & HP0 = Physical_Quantity("HP",
+		"wholesale heat price", FC0.get_magnitude() / etaH0.get_magnitude(), "Euros/MWh");
 }

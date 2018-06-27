@@ -17,14 +17,28 @@ Institution: Control Group, UOM
 #include <string>  
 #include <vector> 
 
+class File_Address {
+public:
+	File_Address(const std::string & name);
+	~File_Address();
+
+	static std::string directory;
+	static std::string format;
+	std::string name;
+	std::string file_address();
+
+private:
+	static std::size_t count;
+};
 
 // Open the input file and form a table of the data
-class Read_CSV_File
+class Read_File
 {
 public:
 
-	Read_CSV_File(const std::string & file_address);
-	~Read_CSV_File();
+	Read_File(const std::string & file_name, const std::string & directory, const std::string & format = "csv");
+	Read_File(const std::string & file_name);
+	~Read_File();
 
 	// Summary: Trim the string 
 	static void Trim(std::string &);
@@ -63,12 +77,12 @@ private:
 };
 
 
-class Save_CSV_File 
+class Save_File : public std::ofstream
 {
 public:
 
-	Save_CSV_File(const std::string & file_address);
-	~Save_CSV_File();
+	Save_File(const std::string & file_address);
+	~Save_File();
 
 	// Summary: Check if the file already exists
 	static bool open_file_check(const std::string & file_address);
@@ -81,7 +95,6 @@ public:
 
 
 protected:
-	std::ofstream outfile;
 
 	// Summary: Record the record in a row
 	void _save_row(ROW & row);

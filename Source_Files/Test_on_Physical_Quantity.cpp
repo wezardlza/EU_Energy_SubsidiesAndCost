@@ -14,7 +14,6 @@ int main(){
 	extern const double escn::decommisioning_cost_factor;
 	extern const double escn::boiler_efficiency;
 	extern const double escn::interest_rate;
-
 	const double & be = escn::boiler_efficiency;
 
 	escn::Physical_Quantity C("capitial cost", 287000.0, "kGBP");

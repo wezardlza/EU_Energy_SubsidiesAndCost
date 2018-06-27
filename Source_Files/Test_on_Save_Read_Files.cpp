@@ -12,13 +12,8 @@ namespace escn = eu_subsidies_and_cost;
 
 int main()
 {
-	extern const double escn::decommisioning_cost_factor;
-	extern const double escn::boiler_efficiency;
-	extern const double escn::interest_rate;
 
-	const double & be = escn::boiler_efficiency;
-
-	Save_CSV_File save("../Data_Files/TEST_1_LCOE.csv");
+	Save_File save("../Data_Files/TEST_1_LCOE.csv");
 	escn::Physical_Quantity C("C", "capitial cost", 287000.0, "kGBP");
 	escn::Physical_Quantity LB("LB", "construction period", 5.0, "yr");
 	escn::Physical_Quantity LT("LT", "project duration", 20.0, "yr");
@@ -29,7 +24,6 @@ int main()
 
 	// FC is the cost based on the thermal energy input
 	escn::Physical_Quantity FC("FC", "fuel cost", 0.008, "kGBP/MWh");
-
 	escn::Physical_Quantity REV("REV", "variable by-product revenue", 0.0, "kGBP/MWh");
 	escn::Physical_Quantity dv("dv", "", 0.0, "kGBP/MWh");
 
@@ -43,7 +37,7 @@ int main()
 	escn::Coefficient etaH("etaH", "conversion efficiency in LHV of heat", 0.90);
 
 	// heat price is estimated by the cost of fuel and the boiler efficiency
-	const escn::Physical_Quantity HP("HP", "heat price", FC.get_magnitude() / be, "heat price");
+	const escn::Physical_Quantity HP(eu_subsidies_and_cost::HP0);
 
 	/*std::cout << C << std::endl;
 	std::cout << LB << std::endl;
@@ -74,20 +68,31 @@ int main()
 	const std::string file_address2 = "../Data_Files/TEST_on_Save_Read_Files/LCOE.csv";
 	const std::string file_address3 = "../Data_Files/TEST_1_LCOE.csv";
 
-	Save_CSV_File::open_file_check(file_address1);
+	Save_File::open_file_check(file_address1);
 	outfile.open(file_address1, std::ofstream::out);
 	plantA.save(outfile);
 	outfile.close();
 
-	Save_CSV_File::open_file_check(file_address2);
+	Save_File::open_file_check(file_address2);
 	outfile.open(file_address2, std::ofstream::out);
 	plantB.save(outfile);
 	outfile.close();
 
+	const std::string file_name1 = "LCOH";
+	const std::string file_directory1 = "../Data_Files/TEST_on_Save_Read_Files/";
 
-	Read_CSV_File csv1(file_address1);
-	Read_CSV_File csv2(file_address2);
-	Read_CSV_File csv3(file_address3);
+	const std::string file_name2 = "LCOE";
+	const std::string file_directory2 = "../Data_Files/TEST_on_Save_Read_Files/";
+
+	const std::string file_name3 = "TEST_1_LCOE";
+	const std::string file_directory3 = "../Data_Files/";
+
+	Read_File csv1(file_name1, file_directory1);
+	Read_File csv2(file_name2, file_directory2);
+	Read_File csv3(file_name3, file_directory3);
+	csv1.table_init();
+	csv2.table_init();
+	csv3.table_init();
 	csv1.print_table();
 	csv2.print_table();
 	csv3.print_table();

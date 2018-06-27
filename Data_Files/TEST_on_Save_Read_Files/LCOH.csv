@@ -1,6 +1,4 @@
-****************************************************************************
 # class eu_subsidies_and_cost::LCOH
-****************************************************************************
 C, capitial cost, 287000.000000, kGBP
 LB, construction period, 5.000000, yr
 LT, project duration, 20.000000, yr
@@ -10,5 +8,5 @@ FC, fuel cost, 0.008000, kGBP/MWh
 r, weighted average cost of capital, 0.075000, unitless
 i, interest rate over the construction loan, 0.000000, unitless
 P_H, heat capacity, 700.000000, MW
-FLH_H, full load hours of heat, 0.000000, h
-etaH, conversion efficiency in LHV of heat, 1.000000, unitless
+FLH_H, full load hours of heat, 8000.000000, h
+etaH, conversion efficiency in LHV of heat, 0.900000, unitless
