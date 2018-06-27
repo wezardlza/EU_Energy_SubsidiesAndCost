@@ -45,6 +45,18 @@ std::string File_Address::file_address() {
 	return directory + name + "." + format;	
 }
 
+bool File_Address::is_file_acessible(const std::string & file_address) {
+	bool b(_access(file_address.c_str(), 0) != -1);
+	if (b) {
+		std::cout << "Warning: The file: \"" << file_address << "\" is overwritten." << std::endl;
+	}
+	else {
+		std::cout << "The file: \"" << file_address << "\" is created." << std::endl;
+	}
+	return b;
+}
+
+
 std::size_t File_Address::count(0);
 std::string File_Address::directory("./");
 std::string File_Address::format("csv");
@@ -173,52 +185,59 @@ std::size_t Read_File::count(0);
 /*######################################################################################################################
 Class 'Save_File'
 ======================================================================================================================*/
+// Friends
+std::ostream & operator<<(Save_File & log, const ROW & row) {
+	const ROW_SIZE & n = row.size() - 1;
+	for (ROW_INDEX i = 0; i != n; ++i) {
+		*log.outfile << row[i] << ", ";
+	}
+	*log.outfile << row[n];
+	return *log.outfile;
+}
+
+std::ostream & operator<<(Save_File & log, const TABLE & table) {
+	const TABLE_SIZE & n = table.size() - 1;
+	for (TABLE_INDEX i = 0; i != n; ++i) {
+		log << table[i] << std::endl;
+	}
+	log << table[n];
+	return *log.outfile;
+}
 // Constructors
-Save_File::Save_File(const std::string & file_address) : std::ofstream::basic_ofstream(file_address) {
-	Save_File::open_file_check(file_address);
+Save_File::Save_File(std::ostream outfile) : outfile(& outfile){
 	++count; 
 }
+
 Save_File::~Save_File() { --count; }
 
 // Member functions
-bool Save_File::open_file_check(const std::string & file_address) {
-	bool b(_access(file_address.c_str(), 0) != -1);
-	if (b) {
-		std::cout << "Warning: The file: \"" << file_address << "\" is overwritten." << std::endl;
-	}
-	else {
-		std::cout << "The file: \"" << file_address << "\" is created." << std::endl;
-	}
-	return b;
-}
-
-void Save_File::_save_row(ROW & row) {
-	ROW_SIZE n(row.size() - 1);
-	for (ROW_INDEX i = 0; i < n; ++i) {
-		*this << row[i]<< ",";
-	}
-	*this << row[n] << std::endl;
-}
-
-void Save_File::save_row(ROW & row, const std::string & file_address) {
-	this->close();
-	this->clear();
-	Save_File::open_file_check(file_address);
-	this->open(file_address.c_str(), std::fstream::out);
-	Save_File::_save_row(row);
-}
-
-void Save_File::save_table(TABLE table, const std::string & file_address) {
-	this->close();
-	this->clear();
-	Save_File::open_file_check(file_address);
-	this->open(file_address.c_str(), std::fstream::out);
-	TABLE_SIZE n(table.size());
-	for (TABLE_INDEX i = 0; i != n; ++i) {
-		Save_File::_save_row(table[i]);
-	}
-
-}
+//void Save_File::_save_row(ROW & row) {
+//	ROW_SIZE n(row.size() - 1);
+//	for (ROW_INDEX i = 0; i < n; ++i) {
+//		*this << row[i]<< ",";
+//	}
+//	*this << row[n] << std::endl;
+//}
+//
+//void Save_File::save_row(ROW & row, const std::string & file_address) {
+//	this->close();
+//	this->clear();
+//	File_Address::is_file_acessible(file_address);
+//	this->open(file_address.c_str(), std::fstream::out);
+//	Save_File::_save_row(row);
+//}
+//
+//void Save_File::save_table(TABLE table, const std::string & file_address) {
+//	this->close();
+//	this->clear();
+//	File_Address::is_file_acessible(file_address);
+//	this->open(file_address.c_str(), std::fstream::out);
+//	TABLE_SIZE n(table.size());
+//	for (TABLE_INDEX i = 0; i != n; ++i) {
+//		Save_File::_save_row(table[i]);
+//	}
+//
+//}
 
 
 std::size_t Save_File::count(0);

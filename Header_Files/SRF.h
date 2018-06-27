@@ -26,6 +26,8 @@ public:
 	static std::string format;
 	std::string name;
 	std::string file_address();
+	// Summary: Check if the file already exists
+	static bool is_file_acessible(const std::string & file_address);
 
 private:
 	static std::size_t count;
@@ -77,27 +79,31 @@ private:
 };
 
 
-class Save_File : public std::ofstream
+class Save_File 
 {
+	// Summary: Write the ROW in the open file
+	friend std::ostream & operator<<(Save_File & log, const ROW & row);
+	// Summary: Write the ROW in the open file
+	friend std::ostream & operator<<(Save_File & log, const TABLE & table);
+
 public:
 
-	Save_File(const std::string & file_address);
+	Save_File(std::ostream outfile);
 	~Save_File();
 
-	// Summary: Check if the file already exists
-	static bool open_file_check(const std::string & file_address);
+	std::ostream * outfile;
 
 	// Summary: Record the record in a row
-	void save_row(ROW & row, const std::string & file_address);
+	// void save_row(ROW & row, const std::string & file_address);
 
 	// Summary£º Record the records in the table
-	void save_table(TABLE table, const std::string & file_address);
+	// void save_table(TABLE table, const std::string & file_address);
 
 
 protected:
 
 	// Summary: Record the record in a row
-	void _save_row(ROW & row);
+	// void _save_row(ROW & row);
 
 private:
 	static std::size_t count;

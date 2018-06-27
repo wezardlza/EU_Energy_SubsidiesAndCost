@@ -116,13 +116,12 @@ namespace eu_subsidies_and_cost {
 	Class 'LCOH' 
 	==================================================================================================================*/
 	// Friend
-	/*Save_File & operator << (Save_File & outfile, const LCOH & object)
-	{
-		outfile << "# " << typeid(object).name() << std::endl;
-		object._save(outfile);
-		object.__save(outfile);
-		return outfile;
-	}*/
+	std::ostream & operator <<(Save_File & log, const LCOH & object) {
+		* log.outfile << "# " << typeid(object).name() << std::endl;
+		object.save_public(*log.outfile);
+		object.save_private(*log.outfile);
+		return * log.outfile;
+	}
 
 	// Member functions
 	double LCOH::operator()
@@ -130,7 +129,7 @@ namespace eu_subsidies_and_cost {
 		return (alpha * I + OM + F) / EH;
 	}
 
-	std::ofstream & LCOH::_save(std::ofstream & outfile) const {
+	std::ostream & LCOH::save_public(std::ostream & outfile) const {
 		outfile << C << std::endl;
 		outfile << LB << std::endl;
 		outfile << LT << std::endl;
@@ -142,18 +141,13 @@ namespace eu_subsidies_and_cost {
 		return outfile;
 	}
 
-	std::ofstream & LCOH::__save(std::ofstream & outfile) const {
+	std::ostream & LCOH::save_private(std::ostream & outfile) const {
 		outfile << P_H << std::endl;
 		outfile << FLH_H << std::endl;
 		outfile << etaH << std::endl;
 		return outfile;
 	}
 	
-	/*LCOH & LCOH::read(const std::string & file_address) {
-		LCOH x;
-		return ;
-	}
-*/
 	const int & LCOH::get_count() { return count; }
 
 	// Constructor
@@ -177,19 +171,18 @@ namespace eu_subsidies_and_cost {
 	/*##################################################################################################################
 	Class 'LCOE' 
 	==================================================================================================================*/
-
 	// Member functions
 	const int & LCOE::get_count() { return count; }
 
-	std::ofstream & LCOE::_save(std::ofstream & outfile) const {
-		LCOH::_save(outfile);
+	std::ostream & LCOE::save_public(std::ostream & outfile) const {
+		LCOH::save_public(outfile);
 		outfile << REV << std::endl;
 		outfile << dv << std::endl;
 		outfile << d << std::endl;
 		return outfile;
 	}
 
-	std::ofstream & LCOE::__save(std::ofstream & outfile) const {
+	std::ostream & LCOE::save_private(std::ostream & outfile) const {
 		outfile << P_E << std::endl;
 		outfile << FLH_E << std::endl;
 		outfile << etaE << std::endl;
@@ -222,8 +215,8 @@ namespace eu_subsidies_and_cost {
 		return (alpha * I + OM + F) / EH - bp_revenue;
 	}
 
-	std::ofstream & LCOH_CHP::_save(std::ofstream & outfile) const {
-		LCOH::_save(outfile);
+	std::ostream & LCOH_CHP::save_public(std::ostream & outfile) const {
+		LCOH::save_public(outfile);
 		outfile << P_E << std::endl;
 		outfile << P_H << std::endl;
 		outfile << FLH_E << std::endl;
@@ -233,7 +226,7 @@ namespace eu_subsidies_and_cost {
 		return outfile;
 	}
 
-	std::ofstream & LCOH_CHP::__save(std::ofstream & outfile) const {
+	std::ostream & LCOH_CHP::save_private(std::ostream & outfile) const {
 		outfile << EP << std::endl;
 		return outfile;
 	}

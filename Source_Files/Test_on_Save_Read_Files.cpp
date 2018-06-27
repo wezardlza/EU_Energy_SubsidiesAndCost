@@ -13,7 +13,7 @@ namespace escn = eu_subsidies_and_cost;
 int main()
 {
 
-	Save_File save("../Data_Files/TEST_1_LCOE.csv");
+	Save_File save();
 	escn::Physical_Quantity C("C", "capitial cost", 287000.0, "kGBP");
 	escn::Physical_Quantity LB("LB", "construction period", 5.0, "yr");
 	escn::Physical_Quantity LT("LT", "project duration", 20.0, "yr");
@@ -68,12 +68,12 @@ int main()
 	const std::string file_address2 = "../Data_Files/TEST_on_Save_Read_Files/LCOE.csv";
 	const std::string file_address3 = "../Data_Files/TEST_1_LCOE.csv";
 
-	Save_File::open_file_check(file_address1);
+	File_Address::is_file_acessible(file_address1);
 	outfile.open(file_address1, std::ofstream::out);
 	plantA.save(outfile);
 	outfile.close();
 
-	Save_File::open_file_check(file_address2);
+	File_Address::is_file_acessible(file_address2);
 	outfile.open(file_address2, std::ofstream::out);
 	plantB.save(outfile);
 	outfile.close();
