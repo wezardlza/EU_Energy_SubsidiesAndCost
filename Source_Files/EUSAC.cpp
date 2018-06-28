@@ -91,6 +91,17 @@ namespace eu_subsidies_and_cost {
 		return outfile;
 	}
 
+	/*std::istream & operator >>(std::istream & infile, Physical_Quantity & object) {
+		std::string str;
+		ROW row;
+		infile.clear();
+		while (std::getline(infile, str, '\n')) {
+			object.change_magnitude(Basic_Maths::num_cast<double>(str));
+		}
+		std::cout << object;
+		return infile;
+	}*/
+
 	/* Member functions */
 	const std::string & Physical_Quantity::get_unit() const { return unit; }
 
@@ -130,6 +141,35 @@ namespace eu_subsidies_and_cost {
 		object.save_private(*log.outfile);
 		return *log.outfile;
 	}
+	
+	std::istream & operator >>(Read_File & log, LCOH & object) {
+		std::string str;
+		while (std::getline(*log.infile, str)) {
+			if (object.find_class_id(str)) {
+				if (typeid(object).name() == str) {
+					log.table_init();
+				}
+			}
+		}
+		std::vector<double> vec;
+		const TABLE & table = log.get_table();
+		for (TABLE_INDEX i = 0; i != table.size(); ++i) {
+			// note the second column in the "table" is the magnitude of each input arguments of LCOH object
+			vec.push_back(std::move(Basic_Maths::num_cast<double>(table[i][2])));
+		}
+		object.C.change_magnitude(vec[0]);
+		object.LB.change_magnitude(vec[1]);
+		object.LT.change_magnitude(vec[2]);
+		object.FOM.change_magnitude(vec[3]);
+		object.VOM.change_magnitude(vec[4]);
+		object.FC.change_magnitude(vec[5]);
+		object.r.change_magnitude(vec[6]);
+		object.i.change_magnitude(vec[7]);
+		object.P_H.change_magnitude(vec[8]);
+		object.FLH_H.change_magnitude(vec[9]);
+		object.etaH.change_magnitude(vec[10]);
+		return *log.infile;
+	}
 
 	/* Member functions */
 
@@ -157,6 +197,19 @@ namespace eu_subsidies_and_cost {
 		return outfile;
 	}
 	
+	bool LCOH::find_class_id(std::string & str) {
+		std::size_t i = str.find_first_of('#', 0);
+		if (i != -1) {
+			str.erase(0, i + 1);
+			Read_File::Trim(str);
+			return true;
+		}
+		else
+		{
+			return false;
+		}
+	}
+
 	const int & LCOH::get_count() { return count; }
 
 	/* Constructor */

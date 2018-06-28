@@ -26,7 +26,7 @@ namespace eu_subsidies_and_cost {
 		friend std::ostream & operator <<(std::ostream & outfile, const Coefficient & object);
 
 		// Summary: cin the coefficient
-		friend std::istream & operator >>(std::istream & infile, const Coefficient & object);
+		friend std::istream & operator >>(std::istream & infile, Coefficient & object);
 
 	public:
 
@@ -84,6 +84,9 @@ namespace eu_subsidies_and_cost {
 	{
 		// Summary: print the physical qunatity
 		friend std::ostream & operator <<(std::ostream & outfile, const Physical_Quantity & object);
+
+		// Summary: cin the coefficient
+		friend std::istream & operator >>(std::istream & infile, Physical_Quantity & object);
 
 	public:
 		// Summary: Construct a physical quantity
@@ -147,6 +150,9 @@ namespace eu_subsidies_and_cost {
 	{
 		// Summary: Save the object initialization arguments
 		friend std::ostream & operator <<(Save_File & log, const LCOH & object);
+
+		// Summary: Read the object from the existing file
+		friend std::istream & operator >>(Read_File & log, LCOH & object);
 
 	public:
 		// Summary: Construct an object to manage the calculation of the LCOH
@@ -219,6 +225,12 @@ namespace eu_subsidies_and_cost {
 		Physical_Quantity FC;
 		Coefficient r;
 		Coefficient i;
+
+	protected:
+		// Summary: Obtain the class id name of the file storing a LCOH object 
+		//	Find the first "#" in a string and delete chars before "#" (including "#")
+		//	The class id (std::string) is labbeled by a "#" in front of it 
+		static bool find_class_id(std::string & str);
 
 	private:
 		Physical_Quantity P_H;

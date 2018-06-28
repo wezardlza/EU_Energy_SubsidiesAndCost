@@ -105,10 +105,13 @@ public:
 	// Summary: Print the table
 	void print_table();
 
-protected:
+	// Summary: Obtain the TABLE object
+	const TABLE & get_table() const;
 
 	// a input file stream based on the input .csv file 
 	std::istream *infile;
+
+protected:
 
 	// a table based on the input .csv file
 	TABLE table;

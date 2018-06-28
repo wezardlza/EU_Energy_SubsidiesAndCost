@@ -113,6 +113,7 @@ void File_Stream::change_file_attributes(const std::string & file_name_, const s
 	file_address = fa.file_address();
 	file_stream();
 }
+
 void File_Stream::change_file_attributes(const std::string & file_name_, const std::string & directory,
 	const std::string & format) {
 	File_Address::directory = directory;
@@ -160,7 +161,7 @@ void Read_File::Trim(std::string & str)
 	str.erase(str.find_last_not_of(" \t\r\n") + 1);
 }
 
-/* Meember fucntions */
+/* Member fucntions */
 
 void Read_File::table_init() {
 
@@ -244,13 +245,16 @@ void Read_File::print_table() {
 	}
 }
 
+const TABLE & Read_File::get_table() const { return table; }
+
 std::size_t Read_File::count(0);
 
 
 /*######################################################################################################################
 Class 'Save_File'
 ======================================================================================================================*/
-// Friends
+/* Friends */
+
 std::ostream & operator<<(Save_File & log, const ROW & row) {
 	const ROW_SIZE & n = row.size() - 1;
 	for (ROW_INDEX i = 0; i != n; ++i) {
@@ -268,7 +272,9 @@ std::ostream & operator<<(Save_File & log, const TABLE & table) {
 	log << table[n];
 	return *log.outfile;
 }
-// Constructors
+
+/* Constructors */
+
 Save_File::Save_File(std::ostream & outfile) : outfile(&outfile) { ++count; }
 
 Save_File::~Save_File() { --count; }

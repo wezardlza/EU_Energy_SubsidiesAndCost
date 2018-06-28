@@ -14,7 +14,7 @@ This file defines alias names of the SRF.h.
 
 typedef std::string                                  CELL;
 typedef T_ROW<CELL>                                  ROW;
-typedef T_TABLE<CELL>							     TABLE;
+typedef T_TABLE<CELL>                                TABLE;
 
 
 typedef T_ROW_INDEX<CELL>                            ROW_INDEX;
