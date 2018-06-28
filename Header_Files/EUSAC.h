@@ -235,6 +235,8 @@ namespace eu_subsidies_and_cost {
 
 	class LCOE : public LCOH
 	{
+		// Summary: Save the object initialization arguments
+		friend std::ostream & operator <<(Save_File & log, const LCOE & object);
 
 	public:
 
@@ -309,6 +311,8 @@ namespace eu_subsidies_and_cost {
 
 	class LCOH_CHP : public LCOH
 	{
+		// Summary: Save the object initialization arguments
+		friend std::ostream & operator <<(Save_File & log, const LCOH_CHP & object);
 
 	public:
 
@@ -392,6 +396,9 @@ namespace eu_subsidies_and_cost {
 
 	class LCOE_CHP : public LCOH_CHP
 	{
+		// Summary: Save the object initialization arguments
+		friend std::ostream & operator <<(Save_File & log, const LCOE_CHP & object);
+
 	public:
 
 		// Summary: Construct an object to manage the calculation of the LCOE of CHP
@@ -436,7 +443,7 @@ namespace eu_subsidies_and_cost {
 		Physical_Quantity HP;
 
 		// Summary: Save the protected object initialization arguments
-		std::ostream & __save(std::ostream & outfile) const;
+		std::ostream & save_private(std::ostream & outfile) const;
 
 		// The number of the class objects
 		static int count;

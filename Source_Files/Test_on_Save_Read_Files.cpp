@@ -12,8 +12,6 @@ namespace escn = eu_subsidies_and_cost;
 
 int main()
 {
-
-	Save_File save();
 	escn::Physical_Quantity C("C", "capitial cost", 287000.0, "kGBP");
 	escn::Physical_Quantity LB("LB", "construction period", 5.0, "yr");
 	escn::Physical_Quantity LT("LT", "project duration", 20.0, "yr");
@@ -64,38 +62,29 @@ int main()
 	// Construct hypothetic plant investments
 	escn::LCOH plantA(C, LB, LT, FOM, VOM, FC, r, i, P_H);
 	escn::LCOE plantB(C, LB, LT, FOM, VOM, FC, r, i, REV, dv, d, P_E, FLH_E, etaE);
-	const std::string file_address1 = "../Data_Files/TEST_on_Save_Read_Files/LCOH.csv";
-	const std::string file_address2 = "../Data_Files/TEST_on_Save_Read_Files/LCOE.csv";
-	const std::string file_address3 = "../Data_Files/TEST_1_LCOE.csv";
 
-	File_Address::is_file_acessible(file_address1);
-	outfile.open(file_address1, std::ofstream::out);
-	plantA.save(outfile);
-	outfile.close();
+	File_Stream fs1("LCOH", "../Data_Files/TEST_on_Save_Read_Files/", "csv", std::iostream::out);
+	Save_File sf1_write(fs1.file);
+	sf1_write << plantA;
+	
+	File_Stream fs10("LCOH", "../Data_Files/TEST_on_Save_Read_Files/", "csv", std::iostream::in);
+	Read_File sf1_read(fs10.file);
+	sf1_read.table_init();
+	sf1_read.print_table();
 
-	File_Address::is_file_acessible(file_address2);
-	outfile.open(file_address2, std::ofstream::out);
-	plantB.save(outfile);
-	outfile.close();
+	File_Stream fs2("LCOE", "../Data_Files/TEST_on_Save_Read_Files/", "csv", std::iostream::out);
+	Save_File sf2(fs2.file);
+	sf2 << plantB;
 
-	const std::string file_name1 = "LCOH";
-	const std::string file_directory1 = "../Data_Files/TEST_on_Save_Read_Files/";
+	File_Stream fs20("LCOE", "../Data_Files/TEST_on_Save_Read_Files/", "csv", std::iostream::in);
+	Read_File sf2_read(fs20.file);
+	sf2_read.table_init();
+	sf2_read.print_table();
 
-	const std::string file_name2 = "LCOE";
-	const std::string file_directory2 = "../Data_Files/TEST_on_Save_Read_Files/";
-
-	const std::string file_name3 = "TEST_1_LCOE";
-	const std::string file_directory3 = "../Data_Files/";
-
-	Read_File csv1(file_name1, file_directory1);
-	Read_File csv2(file_name2, file_directory2);
-	Read_File csv3(file_name3, file_directory3);
-	csv1.table_init();
-	csv2.table_init();
-	csv3.table_init();
-	csv1.print_table();
-	csv2.print_table();
-	csv3.print_table();
+	File_Stream fs3("TEST_1_LCOE", "../Data_Files/", "csv", std::iostream::in);
+	Read_File sf3_read(fs3.file);
+	sf3_read.table_init();
+	sf3_read.print_table();
 
 	system("pause");
 }

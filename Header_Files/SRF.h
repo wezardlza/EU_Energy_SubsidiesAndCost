@@ -17,15 +17,26 @@ Institution: Control Group, UOM
 #include <string>  
 #include <vector> 
 
-class File_Address {
+class File_Address 
+{
 public:
-	File_Address(const std::string & name);
+	// Summary: Construct an address to store the file
+	// name: name of the file 
+	File_Address(const std::string & file_name);
 	~File_Address();
 
+	// directory of the succeeding files, default is "./" 
 	static std::string directory;
+
+	// format of the succeeding files, default is ".csv"  
 	static std::string format;
-	std::string name;
-	std::string file_address();
+
+	// name of the file 
+	std::string file_name;
+	
+	// Summary: Address of the file 
+	const std::string file_address() const;
+	
 	// Summary: Check if the file already exists
 	static bool is_file_acessible(const std::string & file_address);
 
@@ -33,13 +44,56 @@ private:
 	static std::size_t count;
 };
 
-// Open the input file and form a table of the data
+
+class File_Stream 
+{
+public:
+	// Summary: Construct an address to store the file
+	// file_name: name of the file
+	// directory: directory of the succeeding files, default is "./" 
+	// format: format of the succeeding files, default is ".csv" 
+	// file_mode: file mode of the succeeding files, default is "std::ios_base::in"
+	File_Stream(const std::string & file_name, const std::string & directory, const std::string & format, 
+		const std::ios_base::openmode & file_mode);
+
+	static std::ios_base::openmode file_mode;
+	
+	// Summary: Change the name, directory, format, or open mode of the file
+	void change_file_attributes(const std::string & file_name, const std::string & directory, 
+		const std::string & format, const std::ios_base::openmode & file_mode);
+
+	// Summary: Change the name, directory, or format of the file
+	void change_file_attributes(const std::string & file_name, const std::string & directory,
+		const std::string & format);
+
+	// Summary: Change the openmode of the file
+	void change_file_attributes(const std::ios_base::openmode & file_mode);
+
+	// Summary: Change the name of the file
+	void change_file_attributes(const std::string & file_name);
+
+	// file stream
+	std::fstream file;
+	
+	// file name
+	std::string file_name;
+
+	// file address
+	std::string file_address;
+
+private:
+	// Summary: Retrun stream
+	std::fstream & file_stream();
+
+	static std::size_t count;
+};
+
+
 class Read_File
 {
 public:
 
-	Read_File(const std::string & file_name, const std::string & directory, const std::string & format = "csv");
-	Read_File(const std::string & file_name);
+	Read_File(std::istream & infile);
 	~Read_File();
 
 	// Summary: Trim the string 
@@ -54,18 +108,9 @@ public:
 protected:
 
 	// a input file stream based on the input .csv file 
-	std::ifstream infile;
+	std::istream *infile;
 
 	// a table based on the input .csv file
-	// a template has the original .csv file as
-	// 333,22,1,4444,666666,55555
-	// 22, 1, 333, 55555, 22, 4444, 333
-	// 1, 333, 4444, 22, 66666
-	// 333, 22, 1
-	// 333, 4444, 1, 22, 55555
-	// 22, 7777777, 55555, 333
-	// 999999999, 55555, 1, 22, 333
-	// 22, 333
 	TABLE table;
 
 	// table indexes of each row sequenced by the row sizes in the asceding order
@@ -83,28 +128,16 @@ class Save_File
 {
 	// Summary: Write the ROW in the open file
 	friend std::ostream & operator<<(Save_File & log, const ROW & row);
+	
 	// Summary: Write the ROW in the open file
 	friend std::ostream & operator<<(Save_File & log, const TABLE & table);
 
 public:
-
-	Save_File(std::ostream outfile);
+	Save_File(std::ostream & outfile);
 	~Save_File();
 
 	std::ostream * outfile;
-
-	// Summary: Record the record in a row
-	// void save_row(ROW & row, const std::string & file_address);
-
-	// Summary£º Record the records in the table
-	// void save_table(TABLE table, const std::string & file_address);
-
-
-protected:
-
-	// Summary: Record the record in a row
-	// void _save_row(ROW & row);
-
+	
 private:
 	static std::size_t count;
 

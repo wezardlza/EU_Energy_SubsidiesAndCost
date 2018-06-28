@@ -17,7 +17,8 @@ namespace eu_subsidies_and_cost {
 	/*##################################################################################################################
 	Class 'Coefficient' 
 	==================================================================================================================*/
-	// Friend
+	/* Friend */
+
 	std::ostream & operator <<(std::ostream & outfile, const Coefficient & object) {
 		outfile << object.symbol << ", ";
 		outfile << object.term << ", ";
@@ -36,7 +37,8 @@ namespace eu_subsidies_and_cost {
 		return infile;
 	}
 
-	// Member functions
+	/* Member functions */
+
 	const std::string & Coefficient::get_symbol() const { return symbol; }
 
 	const std::string & Coefficient::get_term() const { return term; }
@@ -59,7 +61,8 @@ namespace eu_subsidies_and_cost {
 
 	const int & Coefficient::get_count() { return count; }
 
-	// Constructor
+	/* Constructor */
+
 	Coefficient::Coefficient(const std::string & symbol, const std::string & term, const double & maginitude) :
 		symbol(symbol), term(term), magnitude(maginitude) {
 		++count;
@@ -70,13 +73,16 @@ namespace eu_subsidies_and_cost {
 		++count;
 	}
 
-	// Destructor
+	/* Destructor */
+
 	Coefficient::~Coefficient() { --count; }
 
+	
 	/*##################################################################################################################
 	Class 'Physical_Quantity'
 	==================================================================================================================*/
-	// Friend
+	/* Friends */
+
 	std::ostream & operator <<(std::ostream & outfile, const Physical_Quantity & object) {
 		outfile << object.symbol << ", ";
 		outfile << object.term << ", ";
@@ -85,7 +91,7 @@ namespace eu_subsidies_and_cost {
 		return outfile;
 	}
 
-	// Member functions
+	/* Member functions */
 	const std::string & Physical_Quantity::get_unit() const { return unit; }
 
 	ROW Physical_Quantity::_record() const {
@@ -97,7 +103,7 @@ namespace eu_subsidies_and_cost {
 		return record;
 	}
 
-	// Constructor
+	/* Constructor */
 	Physical_Quantity::Physical_Quantity(
 		const std::string & symbol, const std::string & term, const double & magnitude, const std::string & unit) :
 		Coefficient::Coefficient(symbol, term, magnitude), unit(unit) {
@@ -109,21 +115,24 @@ namespace eu_subsidies_and_cost {
 		++count;
 	}
 
-	// Destructor
+	/* Destructor */
+
 	Physical_Quantity::~Physical_Quantity() { --count; }
+
 
 	/*##################################################################################################################
 	Class 'LCOH' 
 	==================================================================================================================*/
-	// Friend
+	/* Friends */
 	std::ostream & operator <<(Save_File & log, const LCOH & object) {
-		* log.outfile << "# " << typeid(object).name() << std::endl;
+		*log.outfile << "# " << typeid(object).name() << std::endl;
 		object.save_public(*log.outfile);
 		object.save_private(*log.outfile);
-		return * log.outfile;
+		return *log.outfile;
 	}
 
-	// Member functions
+	/* Member functions */
+
 	double LCOH::operator()
 		(const double & alpha, const double & I, const double & OM, const double & F, const double & EH) {
 		return (alpha * I + OM + F) / EH;
@@ -150,7 +159,8 @@ namespace eu_subsidies_and_cost {
 	
 	const int & LCOH::get_count() { return count; }
 
-	// Constructor
+	/* Constructor */
+
 	LCOH::LCOH(const Physical_Quantity & C, const Physical_Quantity & LB, const Physical_Quantity & LT, 
 		const Physical_Quantity & FOM, const Physical_Quantity & VOM, const Physical_Quantity & FC, 
 		const Coefficient & r, const Coefficient & i, const Physical_Quantity & P_H, const Physical_Quantity & FLH_H, 
@@ -165,13 +175,25 @@ namespace eu_subsidies_and_cost {
 		++count;
 	}
 
-	// Destructor
+	/* Destructor */
+
 	LCOH::~LCOH() { --count; }
+
 
 	/*##################################################################################################################
 	Class 'LCOE' 
 	==================================================================================================================*/
-	// Member functions
+	/* Friends */
+	
+	std::ostream & operator <<(Save_File & log, const LCOE & object) {
+		*log.outfile << "# " << typeid(object).name() << std::endl;
+		object.save_public(*log.outfile);
+		object.save_private(*log.outfile);
+		return *log.outfile;
+	}
+
+	/* Member functions */
+	
 	const int & LCOE::get_count() { return count; }
 
 	std::ostream & LCOE::save_public(std::ostream & outfile) const {
@@ -189,7 +211,8 @@ namespace eu_subsidies_and_cost {
 		return outfile;
 	}
 
-	// Constructor
+	/* Constructor */
+	
 	LCOE::LCOE(const Physical_Quantity & C, const Physical_Quantity & LB, const Physical_Quantity & LT, 
 		const Physical_Quantity & FOM, const Physical_Quantity & VOM, const Physical_Quantity & FC, 
 		const Coefficient & r, const Coefficient & i, const Physical_Quantity & REV, const Physical_Quantity & dv, 
@@ -203,13 +226,24 @@ namespace eu_subsidies_and_cost {
 		++count;
 	}
 
-	// Destructor
+	/* Destructor */
 	LCOE::~LCOE() { --count; }
+
 
 	/*##################################################################################################################
 	Class 'LCOH_CHP'
 	==================================================================================================================*/
-	// Member functions
+	/* Friends */
+	
+	std::ostream & operator <<(Save_File & log, const LCOH_CHP & object) {
+		*log.outfile << "# " << typeid(object).name() << std::endl;
+		object.save_public(*log.outfile);
+		object.save_private(*log.outfile);
+		return *log.outfile;
+	}
+
+	/* Member functions */
+	
 	double LCOH_CHP::operator () (const double & alpha, const double & I, const double & OM, const double & F,
 		const double & EH, const double bp_revenue) {
 		return (alpha * I + OM + F) / EH - bp_revenue;
@@ -233,7 +267,8 @@ namespace eu_subsidies_and_cost {
 
 	const int & LCOH_CHP::get_count() { return count; }
 
-	// Constructor
+	/* Constructor */
+	
 	LCOH_CHP::LCOH_CHP(const Physical_Quantity & C, const Physical_Quantity & LB, const Physical_Quantity & LT, 
 		const Physical_Quantity & FOM, const Physical_Quantity & VOM, const Physical_Quantity & FC, 
 		const Coefficient & r, const Coefficient & i, const Physical_Quantity & P_E,
@@ -243,27 +278,41 @@ namespace eu_subsidies_and_cost {
 		etaH(etaH), EP(EP) {
 		++count;
 	}
+	
 	LCOH_CHP::LCOH_CHP(const LCOH_CHP & orig) : 
 		LCOH::LCOH(orig), P_E(orig.P_E), P_H(orig.P_H), FLH_E(orig.FLH_E), FLH_H(orig.FLH_H), etaE(orig.etaE), 
 		etaH(orig.etaH), EP(orig.EP) {
 		++count; 
 	}
 
-	// Destructor
+	/* Destructor */
+	
 	LCOH_CHP::~LCOH_CHP() { --count; }
+
 
 	/*##################################################################################################################
 	Class 'LCOE_CHP'
 	==================================================================================================================*/
-	// Member functions
+	/* Friends */
+	
+	std::ostream & operator <<(Save_File & log, const LCOE_CHP & object) {
+		*log.outfile << "# " << typeid(object).name() << std::endl;
+		object.save_public(*log.outfile);
+		object.save_private(*log.outfile);
+		return *log.outfile;
+	}
+	
+	/* Member functions */
+	
 	const int & LCOE_CHP::get_count() { return count; }
 
-	std::ostream & LCOE_CHP::__save(std::ostream & outfile) const {
+	std::ostream & LCOE_CHP::save_private(std::ostream & outfile) const {
 		outfile << HP << std::endl;
 		return outfile;
 	}
 
-	// Constructor
+	/* Constructor */
+	
 	LCOE_CHP::LCOE_CHP(const Physical_Quantity & C, 
 		const Physical_Quantity & LB, 
 		const Physical_Quantity & LT, 
@@ -286,35 +335,30 @@ namespace eu_subsidies_and_cost {
 		++count;
 	}
 
-	// Destructor
+	/* Destructor */
+	
 	LCOE_CHP::~LCOE_CHP() { --count; }
+
 
 	/*##################################################################################################################
 	Static counters of each class
 	==================================================================================================================*/
-	// The number of attributes determining the class object
 	std::size_t Coefficient::n_attributes(3);
 	
-	// The number of attributes determining the class object
 	std::size_t Physical_Quantity::n_attributes(4);
 
-	// The number of Physical_Quantity objects
 	int Physical_Quantity::count(0);
 
-	// The number of Coeffcient objects
 	int Coefficient::count(0);
 
-	// The number of LCOH objects
 	int LCOH::count(0);
 
-	// The number of LCOE objects
 	int LCOE::count(0);
 
-	// The number of LCOH_CHP objects
 	int LCOH_CHP::count(0);
 
-	// The number of LCOE_CHP objects
 	int LCOE_CHP::count(0);
+
 
 	/*##################################################################################################################
 	Cosntant values
