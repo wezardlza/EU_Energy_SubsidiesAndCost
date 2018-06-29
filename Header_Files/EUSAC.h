@@ -9,7 +9,7 @@ Institution: Control Group, UOM
 #pragma once
 #ifndef __EUSAC__
 #define __EUSAC__
-#define __DEBUG__
+//#define __DEBUG__
 
 #include "../Header_Files/SRF_ALIAS.h"
 #include "../Header_Files/SRF.h"
@@ -618,5 +618,4 @@ namespace eu_subsidies_and_cost {
 	inline void LCOE_CHP::change_HP(const double & new_magnitude) { HP.change_magnitude(new_magnitude); }
 
 }
-
 #endif // !__EUSAC__

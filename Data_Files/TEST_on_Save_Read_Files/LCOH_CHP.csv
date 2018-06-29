@@ -14,3 +14,4 @@ FLH_H, full load hours of heat, 8000.000000, h
 etaE, conversion efficiency in LHV of electricity, 1.000000, unitless
 etaH, conversion efficiency in LHV of heat, 0.900000, unitless
 EP, electricity price a CHP intallation receives for electricity production as by-product, 0.035000, kGBP/MWh
+

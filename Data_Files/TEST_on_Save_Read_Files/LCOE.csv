@@ -13,3 +13,4 @@ d, decommisioning cost factor, 0.150000, unitless
 P_E, electricity capacity, 650.000000, MW
 FLH_E, full load hours of electrcity, 6000.000000, h
 etaE, conversion efficiency in LHV of electricity, 1.000000, unitless
+

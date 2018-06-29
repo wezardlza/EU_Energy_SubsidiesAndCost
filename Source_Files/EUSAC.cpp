@@ -30,17 +30,19 @@ namespace eu_subsidies_and_cost {
 	std::istream & operator >>(std::istream & infile, Coefficient & object) {
 		std::string str;
 		ROW_INDEX i(0);
-		infile.clear();
 
 		while (std::getline(infile, str, ',')) {
-			if (i = 2) {
+			if (i == 2) {
 				object.change_magnitude(Basic_Maths::num_cast<double>(str));
 				break;
 			}
 			++i;
 		}
-		
-		std::cout << object;
+
+#ifdef __DEBUG__
+		std::cout << object << std::endl;
+#endif // __DEBUG__
+
 		return infile;
 	}
 
@@ -101,7 +103,6 @@ namespace eu_subsidies_and_cost {
 	std::istream & operator >>(std::istream & infile, Physical_Quantity & object) {
 		std::string str;
 		ROW_INDEX i(0);
-		infile.clear();
 
 		while (std::getline(infile, str, ',')) {
 			if (i == 2) {
@@ -111,7 +112,10 @@ namespace eu_subsidies_and_cost {
 			++i;
 		}
 
-		std::cout << object;
+#ifdef __DEBUG__
+		std::cout << object << std::endl;
+#endif // __DEBUG__
+
 		return infile;
 	}
 
@@ -218,12 +222,12 @@ namespace eu_subsidies_and_cost {
 		if (i != -1) {
 			str.erase(0, i + 1);
 			Read_File::Trim(str);
-			return str;
 		}
 		else
 		{
-			return "__No_Hash_Sign_Is_Located__";
+			throw std::runtime_error(CONST_LABEL::ERRO + "No sharp sign located. The data is not class-specified.");
 		}
+		return str;
 	}
 
 	const int & LCOH::get_count() { return count; }

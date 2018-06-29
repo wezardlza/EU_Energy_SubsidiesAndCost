@@ -14,7 +14,7 @@ int main()
 {
 
 	// Set the cammand window size
-	system("mode con cols=170 lines=45  ");
+	// system("mode con cols=170 lines=45  ");
 
 	// Original investment plant specifications
 	extern::escn::Physical_Quantity C0;
@@ -39,7 +39,7 @@ int main()
 
 
 /***********************************************************************************************************************
-	TEST ON DEFAULT PLANT SPECIFICATIONS OUTPUT
+	TEST ON SAVING DEFAULT PLANT SPECIFICATIONS
 ***********************************************************************************************************************/
 
 	// Construct default investments
@@ -55,17 +55,17 @@ int main()
 	// test on output file stream
 	std::cout << "=============================================================================\n" 
 		<< "Test on output file stream for LCOH Plant\n" 
-		<<"=============================================================================" << std::endl;
+		<<"-----------------------------------------------------------------------------" << std::endl;
 	File_Stream A_file_strm("LCOH_origin", "../Data_Files/TEST_on_Save_Read_Files/", "csv", std::iostream::out);
 	Save_File A_file_saving(A_file_strm.file);
-	A_file_saving << plantA;
+	A_file_saving << plantA << std::endl;
 	
 	// test on standard output stream
 	std::cout << "=============================================================================\n"
 		<< "Test on standard output stream for LCOH Plant\n"
-		<< "=============================================================================" << std::endl;
+		<< "-----------------------------------------------------------------------------" << std::endl;
 	A_file_saving.new_outfile(std::cout);
-	A_file_saving << plantA;
+	A_file_saving << plantA << std::endl;
 	
 
 	/*################################################################################################################## 
@@ -74,17 +74,17 @@ int main()
 	// test on output file stream
 	std::cout << "=============================================================================\n"
 		<< "Test on output file stream for LCOE Plant\n"
-		<< "=============================================================================" << std::endl;
+		<< "-----------------------------------------------------------------------------" << std::endl;
 	File_Stream B_file_strm("LCOE_origin", "../Data_Files/TEST_on_Save_Read_Files/", "csv", std::iostream::out);
 	Save_File B_file_saving(B_file_strm.file);
-	B_file_saving << plantB;
+	B_file_saving << plantB << std::endl;
 
 	// test on standard output stream
 	std::cout << "=============================================================================\n"
 		<< "Test on standard output stream for LCOE Plant\n"
-		<< "=============================================================================" << std::endl;
+		<< "-----------------------------------------------------------------------------" << std::endl;
 	B_file_saving.new_outfile(std::cout);
-	B_file_saving << plantB;
+	B_file_saving << plantB << std::endl;
 
 
 	/*##################################################################################################################
@@ -93,17 +93,17 @@ int main()
 	// test on output file stream
 	std::cout << "=============================================================================\n"
 		<< "Test on output file stream for LCOH_CHP Plant\n"
-		<< "=============================================================================" << std::endl;
+		<< "-----------------------------------------------------------------------------" << std::endl;
 	File_Stream C_file_strm("LCOH_CHP_origin", "../Data_Files/TEST_on_Save_Read_Files/", "csv", std::iostream::out);
 	Save_File C_file_saving(C_file_strm.file);
-	C_file_saving << plantC;
+	C_file_saving << plantC << std::endl;
 
 	// test on standard output stream
 	std::cout << "=============================================================================\n"
 		<< "Test on standard output stream for LCOH_CHP Plant\n"
-		<< "=============================================================================" << std::endl;
+		<< "-----------------------------------------------------------------------------" << std::endl;
 	C_file_saving.new_outfile(std::cout);
-	C_file_saving << plantC;
+	C_file_saving << plantC << std::endl;
 
 
 	/*##################################################################################################################
@@ -112,20 +112,20 @@ int main()
 	// test on output file stream
 	std::cout << "=============================================================================\n"
 		<< "Test on output file stream for LCOE_CHP Plant\n"
-		<< "=============================================================================" << std::endl;
+		<< "-----------------------------------------------------------------------------" << std::endl;
 	File_Stream D_file_strm("LCOE_CHP_origin", "../Data_Files/TEST_on_Save_Read_Files/", "csv", std::iostream::out);
 	Save_File D_file_saving(D_file_strm.file);
-	D_file_saving << plantD;
+	D_file_saving << plantD << std::endl;
 
 	// test on standard output stream
 	std::cout << "=============================================================================\n"
 		<< "Test on standard output stream for LCOE_CHP Plant\n"
-		<< "=============================================================================" << std::endl;
+		<< "-----------------------------------------------------------------------------" << std::endl;
 	D_file_saving.new_outfile(std::cout);
-	D_file_saving << plantD;
+	D_file_saving << plantD << std::endl;
 
 /***********************************************************************************************************************
-TEST ON MODIFIED PLANT SPECIFICATIONS OUTPUT
+TEST ON SAVING MODIFIED PLANT SPECIFICATIONS
 ***********************************************************************************************************************/
 	
 	// Original investment plant specifications
@@ -141,17 +141,17 @@ TEST ON MODIFIED PLANT SPECIFICATIONS OUTPUT
 	// test on output file stream
 	std::cout << "=============================================================================\n"
 		<< "Test on output file stream for LCOH Plant\n"
-		<< "=============================================================================" << std::endl;
+		<< "-----------------------------------------------------------------------------" << std::endl;
 	A_file_strm.change_file_attributes("LCOH");
 	A_file_saving.new_outfile(A_file_strm.file);
-	A_file_saving << plantA;
+	A_file_saving << plantA << std::endl;
 
 	// test on standard output stream
 	std::cout << "=============================================================================\n"
 		<< "Test on standard output stream for LCOH Plant\n"
-		<< "=============================================================================" << std::endl;
+		<< "-----------------------------------------------------------------------------" << std::endl;
 	A_file_saving.new_outfile(std::cout);
-	A_file_saving << plantA;
+	A_file_saving << plantA << std::endl;
 
 
 	/*##################################################################################################################
@@ -160,17 +160,17 @@ TEST ON MODIFIED PLANT SPECIFICATIONS OUTPUT
 	// test on output file stream
 	std::cout << "=============================================================================\n"
 		<< "Test on output file stream for LCOE Plant\n"
-		<< "=============================================================================" << std::endl;
+		<< "-----------------------------------------------------------------------------" << std::endl;
 	B_file_strm.change_file_attributes("LCOE", "../Data_Files/TEST_on_Save_Read_Files/", "csv");
 	B_file_saving.new_outfile(B_file_strm.file);
-	B_file_saving << plantB;
+	B_file_saving << plantB << std::endl;
 
 	// test on standard output stream
 	std::cout << "=============================================================================\n"
 		<< "Test on standard output stream for LCOE Plant\n"
-		<< "=============================================================================" << std::endl;
+		<< "-----------------------------------------------------------------------------" << std::endl;
 	B_file_saving.new_outfile(std::cout);
-	B_file_saving << plantB;
+	B_file_saving << plantB << std::endl;
 
 
 	/*##################################################################################################################
@@ -179,17 +179,17 @@ TEST ON MODIFIED PLANT SPECIFICATIONS OUTPUT
 	// test on output file stream
 	std::cout << "=============================================================================\n"
 		<< "Test on output file stream for LCOH_CHP Plant\n"
-		<< "=============================================================================" << std::endl;
+		<< "-----------------------------------------------------------------------------" << std::endl;
 	C_file_strm.change_file_attributes("LCOH_CHP");
 	C_file_saving.new_outfile(C_file_strm.file);
-	C_file_saving << plantC;
+	C_file_saving << plantC << std::endl;
 
 	// test on standard output stream
 	std::cout << "=============================================================================\n"
 		<< "Test on standard output stream for LCOH_CHP Plant\n"
-		<< "=============================================================================" << std::endl;
+		<< "-----------------------------------------------------------------------------" << std::endl;
 	C_file_saving.new_outfile(std::cout);
-	C_file_saving << plantC;
+	C_file_saving << plantC << std::endl;
 
 
 	/*##################################################################################################################
@@ -198,93 +198,147 @@ TEST ON MODIFIED PLANT SPECIFICATIONS OUTPUT
 	// test on output file stream
 	std::cout << "=============================================================================\n"
 		<< "Test on output file stream for LCOE_CHP Plant\n"
-		<< "=============================================================================" << std::endl;
+		<< "-----------------------------------------------------------------------------" << std::endl;
 	D_file_strm.change_file_attributes("LCOE_CHP");
 	D_file_saving.new_outfile(D_file_strm.file);
-	D_file_saving << plantD;
+	D_file_saving << plantD << std::endl;
 
 	// test on standard output stream
 	std::cout << "=============================================================================\n"
 		<< "Test on standard output stream for LCOE_CHP Plant\n"
-		<< "=============================================================================" << std::endl;
+		<< "-----------------------------------------------------------------------------" << std::endl;
 	D_file_saving.new_outfile(std::cout);
-	D_file_saving << plantD;
+	D_file_saving << plantD << std::endl;
 
 
 /***********************************************************************************************************************
-TEST ON DEFAULT PLANT SPECIFICATIONS INPUT
+TEST ON READING DEFAULT PLANT SPECIFICATIONS
 ***********************************************************************************************************************/
 
 
 	/*##################################################################################################################
 	Test on LCOH object
 	==================================================================================================================*/
+	std::cout << "=============================================================================\n"
+		<< "Test on reading file for LCOH Plant from file LCOH_origin.csv\n"
+		<< "-----------------------------------------------------------------------------" << std::endl;
 	A_file_strm.change_file_attributes("LCOH_origin", "../Data_Files/TEST_on_Save_Read_Files/", 
 		"csv", std::ifstream::in);
 	Read_File A_file_reading(A_file_strm.file);
 	A_file_reading >> plantA;
-	
+
+	std::cout << "-----------------------------------------------------------------------------\n"
+		<< "Check specifications for LCOH Plant from file LCOH_origin.csv\n" 
+		<< "-----------------------------------------------------------------------------" << std::endl;
 	A_file_saving.new_outfile(std::cout);
-	A_file_saving << plantA;
+	A_file_saving << plantA << std::endl;
 
 
 	/*##################################################################################################################
 	Test on LCOE object
 	==================================================================================================================*/
+	std::cout << "=============================================================================\n"
+		<< "Test on reading file for LCOE Plant from file LCOE_origin.csv\n"
+		<< "-----------------------------------------------------------------------------" << std::endl;
 	B_file_strm.change_file_attributes("LCOE_origin", "../Data_Files/TEST_on_Save_Read_Files/",
 		"csv", std::ifstream::in);
 	Read_File B_file_reading(B_file_strm.file);
 	B_file_reading >> plantB;
 
+	std::cout << "-----------------------------------------------------------------------------\n"
+		<< "Check specifications for LCOE Plant from file LCOE_origin.csv\n" 
+		<< "-----------------------------------------------------------------------------" << std::endl;
 	B_file_saving.new_outfile(std::cout);
-	B_file_saving << plantB;
+	B_file_saving << plantB << std::endl;
 
 
 	/*##################################################################################################################
 	Test on LCOH_CHP object
 	==================================================================================================================*/
+	std::cout << "=============================================================================\n"
+		<< "Test on reading file for LCOH_CHP Plant from file LCOH_CHP_origin.csv\n"
+		<< "-----------------------------------------------------------------------------" << std::endl;
 	C_file_strm.change_file_attributes("LCOH_CHP_origin", "../Data_Files/TEST_on_Save_Read_Files/",
 		"csv", std::ifstream::in);
 	Read_File C_file_reading(C_file_strm.file);
 	C_file_reading >> plantC;
 
+	std::cout << "-----------------------------------------------------------------------------\n"
+		<< "Check specifications for LCOH_CHP Plant from file LCOH_CHP_origin.csv\n"
+		<< "-----------------------------------------------------------------------------" << std::endl;
 	C_file_saving.new_outfile(std::cout);
-	C_file_saving << plantC;
+	C_file_saving << plantC << std::endl;
 
 
 	/*##################################################################################################################
 	Test on LCOE_CHP object
 	==================================================================================================================*/
+	std::cout << "=============================================================================\n"
+		<< "Test on reading file for LCOE_CHP Plant from file LCOE_CHP_origin.csv\n"
+		<< "-----------------------------------------------------------------------------" << std::endl;
 	D_file_strm.change_file_attributes("LCOE_CHP_origin", "../Data_Files/TEST_on_Save_Read_Files/",
 		"csv", std::ifstream::in);
 	Read_File D_file_reading(D_file_strm.file);
 	D_file_reading >> plantD;
 
+	std::cout << "-----------------------------------------------------------------------------\n"
+		<< "Check specifications for LCOE_CHP Plant from file LCOE_CHP_origin.csv\n"
+		<< "-----------------------------------------------------------------------------" << std::endl;
 	D_file_saving.new_outfile(std::cout);
-	D_file_saving << plantD;
+	D_file_saving << plantD << std::endl;
 
 
-
-	File_Stream fs11("LCOE", "../Data_Files/TEST_on_Save_Read_Files/", "csv", std::iostream::in);
+/***********************************************************************************************************************
+TEST ON READING MODIFIED PLANT SPECIFICATIONS 
+***********************************************************************************************************************/
 	
-	// test on 
-	Read_File sf1_read(fs11.file);
-	sf1_read.table_init();
-	sf1_read.print_table();
+	std::cout << "=============================================================================\n"
+		<< "Test on reading file for LCOH Plant from file LCOH.csv\n"
+		<< "-----------------------------------------------------------------------------" << std::endl;
+	A_file_strm.change_file_attributes("LCOH", "../Data_Files/TEST_on_Save_Read_Files/",
+		"csv", std::ifstream::in);
+	A_file_reading.new_infile(A_file_strm.file);
+	A_file_reading.table_init();
+	A_file_reading.print_table();
+	std::cout << std::endl;
 
-	File_Stream fs20("LCOE", "../Data_Files/TEST_on_Save_Read_Files/", "csv", std::iostream::out);
-	Save_File sf2(fs20.file);
-	sf2 << plantB;
+	std::cout << "=============================================================================\n"
+		<< "Test on file for LCOE Plant from file LCOE.csv\n"
+		<< "-----------------------------------------------------------------------------" << std::endl;
+	B_file_strm.change_file_attributes("LCOE", "../Data_Files/TEST_on_Save_Read_Files/", 
+		"csv", std::iostream::in);
+	B_file_reading.new_infile(B_file_strm.file);
+	B_file_reading.table_init();
+	B_file_reading.print_table();
+	std::cout << std::endl;
 
-	File_Stream fs21("LCOE", "../Data_Files/TEST_on_Save_Read_Files/", "csv", std::iostream::in);
-	Read_File sf2_read(fs21.file);
-	sf2_read.table_init();
-	sf2_read.print_table();
+	std::cout << "=============================================================================\n"
+		<< "Test on file for LCOH_CHP Plant from file LCOH_CHP.csv\n"
+		<< "-----------------------------------------------------------------------------" << std::endl;
+	C_file_strm.change_file_attributes("LCOH_CHP", "../Data_Files/TEST_on_Save_Read_Files/",
+		"csv", std::iostream::in);
+	C_file_reading.new_infile(C_file_strm.file);
+	C_file_reading.table_init();
+	C_file_reading.print_table();
+	std::cout << std::endl;
 
-	File_Stream fs30("TEST_1_LCOE", "../Data_Files/", "csv", std::iostream::in);
-	Read_File sf30_read(fs30.file);
-	sf30_read.table_init();
-	sf30_read.print_table();
+	std::cout << "=============================================================================\n"
+		<< "Test on file for LCOE_CHP Plant from file LCOE_CHP.csv\n"
+		<< "-----------------------------------------------------------------------------" << std::endl;
+	D_file_strm.change_file_attributes("LCOE_CHP", "../Data_Files/TEST_on_Save_Read_Files/",
+		"csv", std::iostream::in);
+	D_file_reading.new_infile(D_file_strm.file);
+	D_file_reading.table_init();
+	D_file_reading.print_table();
+	std::cout << std::endl;
+
+	std::cout << "=============================================================================\n"
+		<< "Test on file for LCOE Plant from file TEST_1_LCOE.csv\n"
+		<< "-----------------------------------------------------------------------------" << std::endl;
+	File_Stream fs("TEST_1_LCOE", "../Data_Files/", "csv", std::iostream::in);
+	Read_File sf_read(fs.file);
+	sf_read.table_init();
+	sf_read.print_table();
 
 
 

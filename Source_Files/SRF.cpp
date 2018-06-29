@@ -49,7 +49,7 @@ bool File_Address::is_file_acessible(const std::string & file_address) {
 	bool b(_access(file_address.c_str(), 0) != -1);
 	if (b) {
 		std::cout << CONST_LABEL::INFO << "File: \"" << file_address 
-			<< "\" already exists and is overwritten." << std::endl;
+			<< "\" already exists \nand is cleared." << std::endl;
 	}
 	else {
 		std::cout << "File: \"" << file_address << "\" is created." << std::endl;
@@ -253,6 +253,11 @@ void Read_File::print_table() {
 }
 
 const TABLE & Read_File::get_table() const { return table; }
+
+std::istream * Read_File::new_infile(std::istream & new_istream) {
+	infile = & new_istream;
+	return infile;
+}
 
 std::size_t Read_File::count(0);
 

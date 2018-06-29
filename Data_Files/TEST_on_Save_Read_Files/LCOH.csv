@@ -10,3 +10,4 @@ i, interest rate over the construction loan, 0.050000, unitless
 P_H, heat capacity, 650.000000, MW
 FLH_H, full load hours of heat, 8000.000000, h
 etaH, conversion efficiency in LHV of heat, 0.900000, unitless
+

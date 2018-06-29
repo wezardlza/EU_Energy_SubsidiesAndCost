@@ -117,8 +117,11 @@ public:
 	// Summary: Obtain the TABLE object
 	const TABLE & get_table() const;
 
+	// Summary: Assign the Read_File object a new input stream pointer member
+	std::istream * new_infile(std::istream & new_istream);
+
 	// a input file stream based on the input .csv file 
-	std::istream *infile;
+	std::istream * infile;
 
 protected:
 
@@ -148,7 +151,9 @@ public:
 	Save_File(std::ostream & outfile);
 	~Save_File();
 
-	std::ostream * new_outfile(std::ostream & outfile);
+	// Summary: Assign the Save_File object a new output stream pointer member
+		std::ostream * new_outfile(std::ostream & new_ostream);
+
 	std::ostream * outfile;
 	
 private:
