@@ -16,8 +16,8 @@ int main()
 	// Set the cammand window size
 	// system("mode con cols=170 lines=45  ");
 
-	// Original investment plant specifications
-	extern::escn::Physical_Quantity C0;
+	// Default investment plant specifications
+	extern escn::Physical_Quantity C0;
 	extern escn::Physical_Quantity LB0;
 	extern escn::Physical_Quantity LT0;
 	extern escn::Physical_Quantity FOM0;
