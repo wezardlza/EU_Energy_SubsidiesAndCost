@@ -29,17 +29,17 @@ const std::string File_Address::file_address() const {
 	struct _stat fileStat;
 	if ((_stat(directory.c_str(), & fileStat) == 0) && (fileStat.st_mode & _S_IFDIR))
 	{
-		std::cout << "The directory: \"" << directory << "\" already exists." << std::endl;;
+		std::cout << CONST_LABEL::INFO << "Directory: \"" << directory << "\" already exists." << std::endl;;
 	}
 	else
 	{
 		int i = _mkdir(directory.c_str());
 		if (i = 1) {
-			std::cout << "The directory: \"" << directory << "\" is created." << std::endl;
+			std::cout << CONST_LABEL::INFO << "Directory: \"" << directory << "\" is created." << std::endl;
 		}
 		else
 		{
-			throw std::runtime_error("Error: Fail to create the directory: \""  + directory + "\" is created.");
+			throw std::runtime_error(CONST_LABEL::ERRO + "Fail to create the directory: \""  + directory + "\" is created.");
 		}
 	}
 	return directory + file_name + "." + format;	
@@ -48,10 +48,11 @@ const std::string File_Address::file_address() const {
 bool File_Address::is_file_acessible(const std::string & file_address) {
 	bool b(_access(file_address.c_str(), 0) != -1);
 	if (b) {
-		std::cout << "Warning: The file: \"" << file_address << "\" is overwritten." << std::endl;
+		std::cout << CONST_LABEL::INFO << "File: \"" << file_address 
+			<< "\" already exists and is overwritten." << std::endl;
 	}
 	else {
-		std::cout << "The file: \"" << file_address << "\" is created." << std::endl;
+		std::cout << "File: \"" << file_address << "\" is created." << std::endl;
 	}
 	return b;
 }
@@ -60,6 +61,7 @@ bool File_Address::is_file_acessible(const std::string & file_address) {
 std::size_t File_Address::count(0);
 std::string File_Address::directory("./");
 std::string File_Address::format("csv");
+
 
 /*######################################################################################################################
 Class 'File_Stream'
@@ -74,32 +76,37 @@ File_Stream::File_Stream(const std::string & file_name_, const std::string & dir
 	File_Address fa(file_name);
 	file_address = fa.file_address();
 	file_stream();
+	++count;
 }
+
+/* Destructor */
+
+File_Stream::~File_Stream() { --count; }
+
 
 /* Member functions */
 
 std::fstream & File_Stream::file_stream() {
-	if (file_mode == std::ios_base::in
+	if ( /* input mode */
+		file_mode == std::ios_base::in
 		|| file_mode == (std::ios_base::in | std::ios_base::out)
-		|| file_mode == (std::ios_base::in | std::ios_base::out | std::ios_base::trunc))
-	{
-		file.close();
-		file.clear();
-	}
-	else if (file_mode == std::ios_base::out
+		|| file_mode == (std::ios_base::in | std::ios_base::out | std::ios_base::trunc)) { }
+	else if ( /* output mode */
+		file_mode == std::ios_base::out
 		|| file_mode == (std::ios_base::out | std::ios_base::app)
-		|| file_mode == (std::ios_base::out | std::ios_base::trunc))
-	{
-		file.close();
-		file.clear();
+		|| file_mode == (std::ios_base::out | std::ios_base::trunc)) {
 		File_Address::is_file_acessible(file_address);
 	}
-	else
-	{
-		throw std::runtime_error("Error: Fail to recognize the open mode of the file.");
-	}
+	else { throw std::runtime_error(CONST_LABEL::ERRO + "Fail to recognize the open mode of the file."); }
+	
+	// prepare the file stream
+	file.close();
+	file.clear();
 	file.open(file_address, file_mode);
-	if (!file) { std::cerr << "Error: Unable to open the file \"" << file_address << "/\"." << std::endl; }
+	if (!file) { 
+		std::cerr << CONST_LABEL::ERRO << "Unable to open the file \"" << file_address << "/\"." << std::endl; 
+	}
+	
 	return file;
 }
 
@@ -279,4 +286,24 @@ Save_File::Save_File(std::ostream & outfile) : outfile(&outfile) { ++count; }
 
 Save_File::~Save_File() { --count; }
 
+/* Member functions */
+
+std::ostream * Save_File::new_outfile(std::ostream & new_ostream) { 
+	outfile = & new_ostream;
+	return outfile;
+}
+
+/* Static functions */
+
 std::size_t Save_File::count(0);
+
+
+/*######################################################################################################################
+Constant values
+======================================================================================================================*/
+
+namespace CONST_LABEL {
+	extern const std::string INFO = "INFOMATION:\n";
+	extern const std::string WARN = "WARNING:\n";
+	extern const std::string ERRO = "ERROR:\n";
+};

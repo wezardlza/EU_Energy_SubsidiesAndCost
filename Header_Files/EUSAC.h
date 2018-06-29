@@ -58,7 +58,7 @@ namespace eu_subsidies_and_cost {
 		const double & get_magnitude() const;
 
 		// Summary: Rewrite the magnitude
-		double & change_magnitude(const double & magnitude);
+		double & change_magnitude(const double & new_magnitude);
 
 		// Summary: Get the number of the class objects
 		static const int & get_count();
@@ -116,7 +116,7 @@ namespace eu_subsidies_and_cost {
 		const std::string unit;
 
 	private:
-		//Summary: Form a record of the coefficient in a ROW object 
+		// Summary: Form a record of the coefficient in a ROW object 
 		ROW _record() const;
 
 		// The number of attributes determining the class object
@@ -189,12 +189,19 @@ namespace eu_subsidies_and_cost {
 
 		inline const Coefficient & get_etaH() const;
 
+		inline void change_P_H(const double & new_magnitude);
+
+		inline void change_FLH_H(const double & new_magnitude);
+
+		inline void change_etaH(const double & new_magnitude);
+
 		inline static double alpha(Physical_Quantity & LT, Coefficient & r);
 
 		inline static double EH(Physical_Quantity & P_EH, Physical_Quantity & FLH);
 
 
-		/*Methods possibly hidden*/
+		/* Methods possibly hidden */
+
 		inline static double I(Physical_Quantity & C, Physical_Quantity & LB, Coefficient & i);
 
 		inline static double OM(Physical_Quantity & FOM, Physical_Quantity & VOM, const double & EH);
@@ -230,7 +237,7 @@ namespace eu_subsidies_and_cost {
 		// Summary: Obtain the class id name of the file storing a LCOH object 
 		//	Find the first "#" in a string and delete chars before "#" (including "#")
 		//	The class id (std::string) is labbeled by a "#" in front of it 
-		static bool find_class_id(std::string & str);
+		static const std::string & find_class_id(std::string & str);
 
 	private:
 		Physical_Quantity P_H;
@@ -249,6 +256,9 @@ namespace eu_subsidies_and_cost {
 	{
 		// Summary: Save the object initialization arguments
 		friend std::ostream & operator <<(Save_File & log, const LCOE & object);
+
+		// Summary: Read the object from the existing file
+		friend std::istream & operator >>(Read_File & log, LCOE & object);
 
 	public:
 
@@ -291,7 +301,14 @@ namespace eu_subsidies_and_cost {
 
 		inline const Coefficient & get_etaE() const;
 
+		inline void change_P_E(const double & new_magnitude);
+
+		inline void change_FLH_E(const double & new_magnitude);
+
+		inline void change_etaE(const double & new_magnitude);
+
 		/*Methods rewritten*/
+
 		inline static double I(Physical_Quantity & C, Physical_Quantity & LB, Coefficient & i, 
 			Physical_Quantity & LT, Coefficient & r, Coefficient & d);
 
@@ -325,6 +342,9 @@ namespace eu_subsidies_and_cost {
 	{
 		// Summary: Save the object initialization arguments
 		friend std::ostream & operator <<(Save_File & log, const LCOH_CHP & object);
+
+		// Summary: Read the object from the existing file
+		friend std::istream & operator >>(Read_File & log, LCOH_CHP & object);
 
 	public:
 
@@ -363,6 +383,8 @@ namespace eu_subsidies_and_cost {
 		~LCOH_CHP();
 
 		inline const Physical_Quantity & get_EP() const;
+
+		inline void change_EP(const double & new_magnitude);
 
 		/*Methods rewritten*/
 		inline static double F(Physical_Quantity & FC, Physical_Quantity & E, Physical_Quantity & H, 
@@ -411,6 +433,9 @@ namespace eu_subsidies_and_cost {
 		// Summary: Save the object initialization arguments
 		friend std::ostream & operator <<(Save_File & log, const LCOE_CHP & object);
 
+		// Summary: Read the object from the existing file
+		friend std::istream & operator >>(Read_File & log, LCOE_CHP & object);
+
 	public:
 
 		// Summary: Construct an object to manage the calculation of the LCOE of CHP
@@ -448,6 +473,8 @@ namespace eu_subsidies_and_cost {
 
 		inline const Physical_Quantity & get_HP() const;
 
+		inline void change_HP(const double & new_magnitude);
+
 		// Summary: Get the number of the class objects
 		static const int & get_count();
 	
@@ -473,6 +500,15 @@ namespace eu_subsidies_and_cost {
 
 	// Summary: Get the conversion efficiency in lower heating value(LHV) of heat
 	inline const Coefficient & LCOH::get_etaH() const { return etaH; }
+
+	// Summary: Change the heat capacity
+	inline void LCOH::change_P_H(const double & new_magnitude) { P_H.change_magnitude(new_magnitude); }
+
+	// Summary: Change the equivalent full load hours for heat production
+	inline void LCOH::change_FLH_H(const double & new_magnitude) { FLH_H.change_magnitude(new_magnitude); }
+
+	// Summary: Change the conversion efficiency in lower heating value(LHV) of heat
+	inline void LCOH::change_etaH(const double & new_magnitude) { etaH.change_magnitude(new_magnitude); }
 
 	// Summary: Capital recovery factor
 	inline double LCOH::alpha(Physical_Quantity & LT, Coefficient & r) {
@@ -510,11 +546,20 @@ namespace eu_subsidies_and_cost {
 	// Summary: Get the elelctricity capacity
 	inline const Physical_Quantity & LCOE::get_P_E() const { return P_E; }
 
-	// Summary : Get the equivalent full load hours for electrcity production
+	// Summary: Get the equivalent full load hours for electrcity production
 	inline const Physical_Quantity & LCOE::get_FLH_E() const { return FLH_E; }
 
-	// Summary : Get the conversion efficiency in lower heating value (LHV) of electricity
+	// Summary: Get the conversion efficiency in lower heating value (LHV) of electricity
 	inline const Coefficient & LCOE::get_etaE() const { return etaE; }
+	
+	// Summary: Change the elelctricity capacity
+	inline void LCOE::change_P_E(const double & new_magnitude) { P_E.change_magnitude(new_magnitude); }
+
+	// Summary: Change equivalent full load hours for electrcity production
+	inline void LCOE::change_FLH_E(const double & new_magnitude) { FLH_E.change_magnitude(new_magnitude); }
+
+	// Summary: Change the conversion efficiency in lower heating value (LHV) of electricity
+	inline void LCOE::change_etaE(const double & new_magnitude) { etaE.change_magnitude(new_magnitude); }
 
 	// Summary: Investment cost including finance cost for construction at a predefined interest rate
 	inline double LCOE::I(Physical_Quantity & C, Physical_Quantity & LB, Coefficient & i,
@@ -531,7 +576,11 @@ namespace eu_subsidies_and_cost {
 
 	/* Inline functions of LCOH_CHP */
 
+	// Summary: Getthe elelctricity price
 	inline const Physical_Quantity & LCOH_CHP::get_EP() const { return EP; }
+
+	// Summary: Change the elelctricity price
+	inline void LCOH_CHP::change_EP(const double & new_magnitude) { EP.change_magnitude(new_magnitude); }
 
 	// Summary: Annual fuel cost
 	inline double LCOH_CHP::F(Physical_Quantity & FC, Physical_Quantity & E, Physical_Quantity & H,
@@ -559,10 +608,14 @@ namespace eu_subsidies_and_cost {
 			FLH_HE.get_magnitude() / etaEH.get_magnitude() / FLH_EH.get_magnitude();
 	}
 
+
 	/* Inline functions of LCOE_CHP */
 
 	// Summary: Get the heat price
 	inline const Physical_Quantity & LCOE_CHP::get_HP() const { return HP; }
+
+	// Summary: Change the heat price
+	inline void LCOE_CHP::change_HP(const double & new_magnitude) { HP.change_magnitude(new_magnitude); }
 
 }
 

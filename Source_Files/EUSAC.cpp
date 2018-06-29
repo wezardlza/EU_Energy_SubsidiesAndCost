@@ -26,13 +26,20 @@ namespace eu_subsidies_and_cost {
 		outfile << "unitless";
 		return outfile;
 	}
+
 	std::istream & operator >>(std::istream & infile, Coefficient & object) {
 		std::string str;
-		ROW row;
+		ROW_INDEX i(0);
 		infile.clear();
-		while (std::getline(infile, str, '\n')) {
-			object.change_magnitude(Basic_Maths::num_cast<double>(str));
+
+		while (std::getline(infile, str, ',')) {
+			if (i = 2) {
+				object.change_magnitude(Basic_Maths::num_cast<double>(str));
+				break;
+			}
+			++i;
 		}
+		
 		std::cout << object;
 		return infile;
 	}
@@ -45,8 +52,8 @@ namespace eu_subsidies_and_cost {
 
 	const double & Coefficient::get_magnitude() const { return magnitude; }
 
-	double & Coefficient::change_magnitude(const double & magnitude_new) {
-		magnitude = magnitude_new;
+	double & Coefficient::change_magnitude(const double & new_magnitude) {
+		magnitude = new_magnitude;
 		return magnitude;
 	}
 
@@ -91,16 +98,22 @@ namespace eu_subsidies_and_cost {
 		return outfile;
 	}
 
-	/*std::istream & operator >>(std::istream & infile, Physical_Quantity & object) {
+	std::istream & operator >>(std::istream & infile, Physical_Quantity & object) {
 		std::string str;
-		ROW row;
+		ROW_INDEX i(0);
 		infile.clear();
-		while (std::getline(infile, str, '\n')) {
-			object.change_magnitude(Basic_Maths::num_cast<double>(str));
+
+		while (std::getline(infile, str, ',')) {
+			if (i == 2) {
+				object.change_magnitude(Basic_Maths::num_cast<double>(str));
+				break;
+			}
+			++i;
 		}
+
 		std::cout << object;
 		return infile;
-	}*/
+	}
 
 	/* Member functions */
 	const std::string & Physical_Quantity::get_unit() const { return unit; }
@@ -144,30 +157,33 @@ namespace eu_subsidies_and_cost {
 	
 	std::istream & operator >>(Read_File & log, LCOH & object) {
 		std::string str;
-		while (std::getline(*log.infile, str)) {
-			if (object.find_class_id(str)) {
-				if (typeid(object).name() == str) {
-					log.table_init();
-				}
-			}
+		std::vector<std::istringstream> vec;
+
+		// Obatin the class name
+		std::getline(*log.infile, str);
+		std::string class_id = typeid(object).name();
+		if (LCOH::find_class_id(str) != class_id) {
+			throw std::runtime_error(
+				CONST_LABEL::ERRO + "File: The file cannot assign the value of ab object for " + class_id);
 		}
-		std::vector<double> vec;
-		const TABLE & table = log.get_table();
-		for (TABLE_INDEX i = 0; i != table.size(); ++i) {
-			// note the second column in the "table" is the magnitude of each input arguments of LCOH object
-			vec.push_back(std::move(Basic_Maths::num_cast<double>(table[i][2])));
+		
+		while (std::getline(*log.infile, str))
+		{
+			std::istringstream ins;
+			ins.str(str);
+			vec.push_back(std::move(ins));			
 		}
-		object.C.change_magnitude(vec[0]);
-		object.LB.change_magnitude(vec[1]);
-		object.LT.change_magnitude(vec[2]);
-		object.FOM.change_magnitude(vec[3]);
-		object.VOM.change_magnitude(vec[4]);
-		object.FC.change_magnitude(vec[5]);
-		object.r.change_magnitude(vec[6]);
-		object.i.change_magnitude(vec[7]);
-		object.P_H.change_magnitude(vec[8]);
-		object.FLH_H.change_magnitude(vec[9]);
-		object.etaH.change_magnitude(vec[10]);
+		vec[0] >> object.C;
+		vec[1] >> object.LB;
+		vec[2] >> object.LT;
+		vec[3] >> object.FOM;
+		vec[4] >> object.VOM;
+		vec[5] >> object.FC;
+		vec[6] >> object.r;
+		vec[7] >> object.i;
+		vec[8] >> object.P_H;
+		vec[9] >> object.FLH_H;
+		vec[10] >> object.etaH;
 		return *log.infile;
 	}
 
@@ -197,16 +213,16 @@ namespace eu_subsidies_and_cost {
 		return outfile;
 	}
 	
-	bool LCOH::find_class_id(std::string & str) {
+	const std::string & LCOH::find_class_id(std::string & str) {
 		std::size_t i = str.find_first_of('#', 0);
 		if (i != -1) {
 			str.erase(0, i + 1);
 			Read_File::Trim(str);
-			return true;
+			return str;
 		}
 		else
 		{
-			return false;
+			return "__No_Hash_Sign_Is_Located__";
 		}
 	}
 
@@ -244,6 +260,35 @@ namespace eu_subsidies_and_cost {
 		object.save_private(*log.outfile);
 		return *log.outfile;
 	}
+
+	// Summary: Read the object from the existing file
+	std::istream & operator >>(Read_File & log, LCOE & object) {
+		std::string str;
+		std::vector<std::istringstream> vec;
+		while (std::getline(*log.infile, str))
+		{
+			std::istringstream ins;
+			ins.str(str);
+			vec.push_back(std::move(ins));
+		}
+		vec[0] >> object.C;
+		vec[1] >> object.LB;
+		vec[2] >> object.LT;
+		vec[3] >> object.FOM;
+		vec[4] >> object.VOM;
+		vec[5] >> object.FC;
+		vec[6] >> object.r;
+		vec[7] >> object.i;
+		vec[8] >> object.REV;
+		vec[9] >> object.dv;
+		vec[10] >> object.d;
+		vec[11] >> object.P_E;
+		vec[12] >> object.FLH_E;
+		vec[13] >> object.etaE;
+		return *log.infile;
+
+	}
+
 
 	/* Member functions */
 	
@@ -293,6 +338,34 @@ namespace eu_subsidies_and_cost {
 		object.save_public(*log.outfile);
 		object.save_private(*log.outfile);
 		return *log.outfile;
+	}
+
+	// Summary: Read the object from the existing file
+	std::istream & operator >>(Read_File & log, LCOH_CHP & object) {
+		std::string str;
+		std::vector<std::istringstream> vec;
+		while (std::getline(*log.infile, str))
+		{
+			std::istringstream ins;
+			ins.str(str);
+			vec.push_back(std::move(ins));
+		}
+		vec[0] >> object.C;
+		vec[1] >> object.LB;
+		vec[2] >> object.LT;
+		vec[3] >> object.FOM;
+		vec[4] >> object.VOM;
+		vec[5] >> object.FC;
+		vec[6] >> object.r;
+		vec[7] >> object.i;
+		vec[8] >> object.P_E;
+		vec[9] >> object.P_H;
+		vec[10] >> object.FLH_E;
+		vec[11] >> object.FLH_E;
+		vec[12] >> object.etaE;
+		vec[13] >> object.etaH;
+		vec[14] >> object.EP;
+		return *log.infile;
 	}
 
 	/* Member functions */
@@ -355,6 +428,34 @@ namespace eu_subsidies_and_cost {
 		return *log.outfile;
 	}
 	
+	// Summary: Read the object from the existing file
+	std::istream & operator >>(Read_File & log, LCOE_CHP & object) {
+		std::string str;
+		std::vector<std::istringstream> vec;
+		while (std::getline(*log.infile, str))
+		{
+			std::istringstream ins;
+			ins.str(str);
+			vec.push_back(std::move(ins));
+		}
+		vec[0] >> object.C;
+		vec[1] >> object.LB;
+		vec[2] >> object.LT;
+		vec[3] >> object.FOM;
+		vec[4] >> object.VOM;
+		vec[5] >> object.FC;
+		vec[6] >> object.r;
+		vec[7] >> object.i;
+		vec[8] >> object.P_E;
+		vec[9] >> object.P_H;
+		vec[10] >> object.FLH_E;
+		vec[11] >> object.FLH_E;
+		vec[12] >> object.etaE;
+		vec[13] >> object.etaH;
+		vec[14] >> object.HP;
+		return *log.infile;
+	}
+
 	/* Member functions */
 	
 	const int & LCOE_CHP::get_count() { return count; }

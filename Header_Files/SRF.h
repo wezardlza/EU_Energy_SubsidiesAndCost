@@ -37,7 +37,8 @@ public:
 	// Summary: Address of the file 
 	const std::string file_address() const;
 	
-	// Summary: Check if the file already exists
+	// Summary: Check if the file already exists.
+	// This method is called when a file is about to be written.
 	static bool is_file_acessible(const std::string & file_address);
 
 private:
@@ -56,6 +57,8 @@ public:
 	File_Stream(const std::string & file_name, const std::string & directory, const std::string & format, 
 		const std::ios_base::openmode & file_mode);
 
+	~File_Stream();
+
 	static std::ios_base::openmode file_mode;
 	
 	// Summary: Change the name, directory, format, or open mode of the file
@@ -72,18 +75,24 @@ public:
 	// Summary: Change the name of the file
 	void change_file_attributes(const std::string & file_name);
 
+	// Summary :Get the name of the open file
+	inline const std::string & get_file_name() const;
+
+	// Summary: Get the address of the open file
+	inline const std::string & get_file_address() const;
+
 	// file stream
 	std::fstream file;
 	
+private:
+	// Summary: Retrun stream
+	std::fstream & file_stream();
+
 	// file name
 	std::string file_name;
 
 	// file address
 	std::string file_address;
-
-private:
-	// Summary: Retrun stream
-	std::fstream & file_stream();
 
 	static std::size_t count;
 };
@@ -139,11 +148,30 @@ public:
 	Save_File(std::ostream & outfile);
 	~Save_File();
 
+	std::ostream * new_outfile(std::ostream & outfile);
 	std::ostream * outfile;
 	
 private:
 	static std::size_t count;
 
+};
+
+
+/* Inline functions */
+
+inline const std::string & File_Stream::get_file_name() const { return file_name; }
+
+inline const std::string & File_Stream::get_file_address() const { return file_address; }
+
+
+/*######################################################################################################################
+Constant values
+======================================================================================================================*/
+
+namespace CONST_LABEL {
+	extern const std::string INFO;
+	extern const std::string WARN;
+	extern const std::string ERRO;
 };
 
 

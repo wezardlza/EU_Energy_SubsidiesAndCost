@@ -1,12 +1,16 @@
-# class eu_subsidies_and_cost::LCOH
+# class eu_subsidies_and_cost::LCOE_CHP
 C, capital cost, 287000.000000, kGBP
 LB, cosntruction period, 5.000000, yr
-LT, project duration, 30.000000, yr
+LT, project duration, 20.000000, yr
 FOM, fixed OM cost, 0.000000, kGBP/yr
 VOM, variable OM cost, 0.000204, kGBP/MWh
 FC, fuel costs per unit of enengy input, 0.008000, kGBP/MWh
 r, weighted average cost of capital (WACC), 0.075000, unitless
 i, interest rate over the construction loan, 0.050000, unitless
+P_E, electricity capacity, 650.000000, MW
 P_H, heat capacity, 650.000000, MW
+FLH_E, full load hours of electrcity, 0.000000, h
 FLH_H, full load hours of heat, 8000.000000, h
+etaE, conversion efficiency in LHV of electricity, 1.000000, unitless
 etaH, conversion efficiency in LHV of heat, 0.900000, unitless
+HP, wholesale heat price, 0.008889, Euros/MWh
