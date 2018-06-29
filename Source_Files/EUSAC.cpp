@@ -168,7 +168,7 @@ namespace eu_subsidies_and_cost {
 		std::string class_id = typeid(object).name();
 		if (LCOH::find_class_id(str) != class_id) {
 			throw std::runtime_error(
-				CONST_LABEL::ERRO + "File: The file cannot assign the value of ab object for " + class_id);
+				CONST_LABEL::ERRO + "File: The file cannot assign the value of an object for " + class_id);
 		}
 		
 		while (std::getline(*log.infile, str))
