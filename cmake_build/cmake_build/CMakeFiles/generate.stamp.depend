@@ -1,0 +1,14 @@
+# CMake generation dependency list for this directory.
+E:/research/Manchester/Ziang_Proj/CPP_Proj/GitHub/pybind11/CMakeLists.txt
+E:/research/Manchester/Ziang_Proj/CPP_Proj/GitHub/pybind11/tools/pybind11Tools.cmake
+E:/research/Manchester/Ziang_Proj/CPP_Proj/GitHub/pybind11/tools/FindPythonLibsNew.cmake
+D:/Program Files/CMake/share/cmake-3.11/Modules/FindPythonInterp.cmake
+D:/Program Files/CMake/share/cmake-3.11/Modules/FindPackageHandleStandardArgs.cmake
+D:/Program Files/CMake/share/cmake-3.11/Modules/FindPackageMessage.cmake
+D:/Program Files/CMake/share/cmake-3.11/Modules/CheckCXXCompilerFlag.cmake
+D:/Program Files/CMake/share/cmake-3.11/Modules/CheckCXXSourceCompiles.cmake
+D:/Program Files/CMake/share/cmake-3.11/Modules/CMakeCheckCompilerFlagCommonPatterns.cmake
+D:/Program Files/CMake/share/cmake-3.11/Modules/CMakeParseArguments.cmake
+D:/Program Files/CMake/share/cmake-3.11/Modules/GNUInstallDirs.cmake
+D:/Program Files/CMake/share/cmake-3.11/Modules/CMakePackageConfigHelpers.cmake
+D:/Program Files/CMake/share/cmake-3.11/Modules/WriteBasicConfigVersionFile.cmake

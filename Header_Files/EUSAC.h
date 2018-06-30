@@ -31,11 +31,11 @@ namespace eu_subsidies_and_cost {
 	public:
 
 		// Summary: Construct a coefficient, related the calculation of some levelised cost of an 
-		// energy project.
+		// energy project
 		// Parameters:
-		// param: the magnitude of the object.
-		// notation: the symbol or abbrevation of the object.
-		// term: the additional explantions of the object.
+		// symbol: the symbol or abbrevation of the object
+		// term: the additional explantions of the object
+		// magnitude: the magnitude of the object
 		// Return : void
 		Coefficient(const std::string & symbol = "", const std::string & term = "", const double & magnitude = 0.0);
 
@@ -51,10 +51,10 @@ namespace eu_subsidies_and_cost {
 		// Summary: Get the symbol of the physical quantity
 		const std::string & get_symbol() const;
 
-		// Summary: Get the physical explanation of the coefficient.
+		// Summary: Get the physical explanation of the coefficient
 		const std::string & get_term() const;
 
-		// Summary: Get the magnitude of the coefficient.
+		// Summary: Get the magnitude of the coefficient
 		const double & get_magnitude() const;
 
 		// Summary: Rewrite the magnitude
@@ -91,8 +91,9 @@ namespace eu_subsidies_and_cost {
 	public:
 		// Summary: Construct a physical quantity
 		// Parameters:
-		// term: name of the physical quantity
-		// magnitude: magnitude of the physical quantity
+		// symbol: the symbol or abbrevation of the object
+		// term: the additional explantions of the object
+		// magnitude: the magnitude of the object
 		// unit: unit of the physical quantity
 		// Return: void
 		Physical_Quantity(const std::string & symbol = "", const std::string & term = "",
