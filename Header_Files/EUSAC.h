@@ -9,7 +9,7 @@ Institution: Control Group, UOM
 #pragma once
 #ifndef __EUSAC__
 #define __EUSAC__
-//#define __DEBUG__
+// #define __DEBUG__
 
 #include "../Header_Files/SRF_ALIAS.h"
 #include "../Header_Files/SRF.h"

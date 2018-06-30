@@ -2,7 +2,7 @@
 Author: Ziang Li
 Institution: Control Group, UOM
 
-This file defines the .
+This file defines the template class aliases.
 ***********************************************************************************************************************/
 #pragma once
 #ifndef __ZAMATH_ALIAS__
