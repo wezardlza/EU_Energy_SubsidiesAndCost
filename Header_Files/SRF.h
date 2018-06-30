@@ -117,6 +117,9 @@ public:
 	// Summary: Obtain the TABLE object
 	const TABLE & get_table() const;
 
+	// Summary: If the line is started by '#', skip to the next line of the istream
+	static void is_sharp_sign(std::istream infile);
+
 	// Summary: Assign the Read_File object a new input stream pointer member
 	std::istream * new_infile(std::istream & new_istream);
 

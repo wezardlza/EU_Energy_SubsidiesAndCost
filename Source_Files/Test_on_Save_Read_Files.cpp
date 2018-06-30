@@ -292,12 +292,20 @@ TEST ON READING DEFAULT PLANT SPECIFICATIONS
 TEST ON READING MODIFIED PLANT SPECIFICATIONS 
 ***********************************************************************************************************************/
 	
+	// Used to move istream cursor to the next line
+	std::string buffer;
+
 	std::cout << "=============================================================================\n"
 		<< "Test on reading file for LCOH Plant from file LCOH.csv\n"
 		<< "-----------------------------------------------------------------------------" << std::endl;
 	A_file_strm.change_file_attributes("LCOH", "../Data_Files/TEST_on_Save_Read_Files/",
 		"csv", std::ifstream::in);
 	A_file_reading.new_infile(A_file_strm.file);
+
+	// the first line is neglected for typeset
+	std::getline(*A_file_reading.infile, buffer);
+	std::cout << buffer << std::endl;
+	
 	A_file_reading.table_init();
 	A_file_reading.print_table();
 	std::cout << std::endl;
@@ -308,6 +316,11 @@ TEST ON READING MODIFIED PLANT SPECIFICATIONS
 	B_file_strm.change_file_attributes("LCOE", "../Data_Files/TEST_on_Save_Read_Files/", 
 		"csv", std::iostream::in);
 	B_file_reading.new_infile(B_file_strm.file);
+
+	// the first line is neglected for typeset
+	std::getline(*B_file_reading.infile, buffer);
+	std::cout << buffer << std::endl;
+
 	B_file_reading.table_init();
 	B_file_reading.print_table();
 	std::cout << std::endl;
@@ -318,6 +331,11 @@ TEST ON READING MODIFIED PLANT SPECIFICATIONS
 	C_file_strm.change_file_attributes("LCOH_CHP", "../Data_Files/TEST_on_Save_Read_Files/",
 		"csv", std::iostream::in);
 	C_file_reading.new_infile(C_file_strm.file);
+	
+	// the first line is neglected for typeset
+	std::getline(*C_file_reading.infile, buffer);
+	std::cout << buffer << std::endl;
+
 	C_file_reading.table_init();
 	C_file_reading.print_table();
 	std::cout << std::endl;
@@ -328,6 +346,11 @@ TEST ON READING MODIFIED PLANT SPECIFICATIONS
 	D_file_strm.change_file_attributes("LCOE_CHP", "../Data_Files/TEST_on_Save_Read_Files/",
 		"csv", std::iostream::in);
 	D_file_reading.new_infile(D_file_strm.file);
+	
+	// the first line is neglected for typeset
+	std::getline(*D_file_reading.infile, buffer);
+	std::cout << buffer << std::endl;
+
 	D_file_reading.table_init();
 	D_file_reading.print_table();
 	std::cout << std::endl;
