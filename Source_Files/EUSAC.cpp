@@ -59,6 +59,16 @@ namespace eu_subsidies_and_cost {
 		return magnitude;
 	}
 
+	Coefficient & Coefficient::operator= (const Coefficient & coeff) {
+		if (symbol == coeff.symbol && term == coeff.term) {
+			magnitude = coeff.magnitude;
+		}
+		else {
+			throw std::runtime_error("The two coefficients have different atrributes.");
+		}
+		return *this;
+	}
+
 	const std::size_t & Coefficient::get_count() { return count; }
 
 
@@ -123,6 +133,16 @@ namespace eu_subsidies_and_cost {
 
 	/* Member functions */
 	const std::string & Physical_Quantity::get_unit() const { return unit; }
+
+	Physical_Quantity & Physical_Quantity::operator= (const Physical_Quantity & pq) {
+		if (symbol == pq.symbol && term == pq.term && unit == pq.unit) {
+			magnitude = pq.magnitude;
+		}
+		else {
+			throw std::runtime_error("The two coefficients have different atrributes.");
+		}
+		return *this;
+	}
 
 	const std::size_t & Physical_Quantity::get_count() { return count; }
 

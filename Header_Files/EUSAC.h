@@ -60,6 +60,9 @@ namespace eu_subsidies_and_cost {
 		// Summary: Rewrite the magnitude
 		double & change_magnitude(const double & new_magnitude);
 
+		// Summary: Assignment
+		Coefficient & operator= (const Coefficient & coeff);
+
 		// Summary: Get the number of the class objects
 		static const std::size_t & get_count();
 
@@ -112,6 +115,9 @@ namespace eu_subsidies_and_cost {
 
 		// Summary: Get the unit of the physical quantity
 		const std::string & get_unit() const;
+
+		// Summary: Assignment
+		Physical_Quantity & operator= (const Physical_Quantity & pq);
 
 		// Summary: Get the number of the class objects
 		static const std::size_t & get_count();

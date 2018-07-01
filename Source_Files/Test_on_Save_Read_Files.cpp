@@ -17,26 +17,32 @@ int main()
 	// system("mode con cols=170 lines=45  ");
 
 	// Default investment plant specifications
-	extern escn::Physical_Quantity C0;
-	extern escn::Physical_Quantity LB0;
-	extern escn::Physical_Quantity LT0;
-	extern escn::Physical_Quantity FOM0;
-	extern escn::Physical_Quantity VOM0;
-	extern escn::Physical_Quantity P_E0;
-	extern escn::Physical_Quantity P_H0;
-	extern escn::Physical_Quantity FC0;
-	extern escn::Physical_Quantity REV0;
-	extern escn::Physical_Quantity dv0;
-	extern escn::Physical_Quantity FLH_E0;
-	extern escn::Physical_Quantity FLH_H0;
-	extern escn::Coefficient d0;
-	extern escn::Coefficient r0;
-	extern escn::Coefficient i0;
-	extern escn::Coefficient etaE0;
-	extern escn::Coefficient etaH0;
-	extern escn::Physical_Quantity EP0;
-	extern escn::Physical_Quantity HP0;
+	extern const escn::Physical_Quantity &escn::C0;
+	extern const escn::Physical_Quantity &escn::LB0;
+	extern const escn::Physical_Quantity &escn::LT0;
+	extern const escn::Physical_Quantity &escn::FOM0;
+	extern const escn::Physical_Quantity &escn::VOM0;
+	extern const escn::Physical_Quantity &escn::P_E0;
+	extern const escn::Physical_Quantity &escn::P_H0;
+	extern const escn::Physical_Quantity &escn::FC0;
+	extern const escn::Physical_Quantity &escn::REV0;
+	extern const escn::Physical_Quantity &escn::dv0;
+	extern const escn::Physical_Quantity &escn::FLH_E0;
+	extern const escn::Physical_Quantity &escn::FLH_H0;
+	extern const escn::Coefficient &escn::d0;
+	extern const escn::Coefficient &escn::r0;
+	extern const escn::Coefficient &escn::i0;
+	extern const escn::Coefficient &escn::etaE0;
+	extern const escn::Coefficient &escn::etaH0;
+	extern const escn::Physical_Quantity &escn::EP0;
+	extern const escn::Physical_Quantity &escn::HP0;
 
+	escn::Physical_Quantity C(escn::C0.get_symbol(), escn::C0.get_term(), 4.0, escn::C0.get_unit());
+
+	std::cout << "Note: Check the assignment operator of Coefficent." << std::endl;
+	std::cout << C << std::endl;
+	C = escn::C0;
+	std::cout << C << std::endl;
 
 /***********************************************************************************************************************
 	TEST ON SAVING DEFAULT PLANT SPECIFICATIONS
