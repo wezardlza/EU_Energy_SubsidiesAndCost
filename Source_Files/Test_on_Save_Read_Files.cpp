@@ -41,12 +41,81 @@ int main()
 /***********************************************************************************************************************
 	TEST ON SAVING DEFAULT PLANT SPECIFICATIONS
 ***********************************************************************************************************************/
+	// Check the functions of constructor and destructor
+	std::cout << "Note: There exist some constant Coefficient and Physical_Quantity instances"
+		"\ndefined and imported from other source files." << std::endl;
+	std::cout << "The number of Coefficient object:\t" << escn::Coefficient::get_count() << std::endl;
+	std::cout << "The number of Physical_Quantity object:\t" << escn::Physical_Quantity::get_count() << std::endl;
+	std::cout << "The number of LCOH object:\t\t" << escn::LCOE::get_count() << std::endl;
+	std::cout << "The number of LCOE object:\t\t" << escn::LCOH::get_count() << std::endl;
+	std::cout << "The number of LCOH_CHP object:\t\t" << escn::LCOH_CHP::get_count() << std::endl;
+	std::cout << "The number of LCOE_CHP object:\t\t" << escn::LCOE_CHP::get_count() << std::endl;
+
+	escn::Coefficient c;
+	std::cout << "Note: Another Coefficient instance \"c\" is constructed." << std::endl;
+	std::cout << "The number of Coefficient object:\t" << escn::Coefficient::get_count() << std::endl;
+	std::cout << "The number of Physical_Quantity object:\t" << escn::Physical_Quantity::get_count() << std::endl;
+	std::cout << "The number of LCOH object:\t\t" << escn::LCOE::get_count() << std::endl;
+	std::cout << "The number of LCOE object:\t\t" << escn::LCOH::get_count() << std::endl;
+	std::cout << "The number of LCOH_CHP object:\t\t" << escn::LCOH_CHP::get_count() << std::endl;
+	std::cout << "The number of LCOE_CHP object:\t\t" << escn::LCOE_CHP::get_count() << std::endl;
+
+	{
+		escn::Physical_Quantity pq;
+		std::cout << "Note: Another Physical_Quantity instance \"pq\" is constructed in a nested scope." << std::endl;
+		std::cout << "The number of Coefficient object:\t" << escn::Coefficient::get_count() << std::endl;
+		std::cout << "The number of Physical_Quantity object:\t" << escn::Physical_Quantity::get_count() << std::endl;
+		std::cout << "The number of LCOH object:\t\t" << escn::LCOE::get_count() << std::endl;
+		std::cout << "The number of LCOE object:\t\t" << escn::LCOH::get_count() << std::endl;
+		std::cout << "The number of LCOH_CHP object:\t\t" << escn::LCOH_CHP::get_count() << std::endl;
+		std::cout << "The number of LCOE_CHP object:\t\t" << escn::LCOE_CHP::get_count() << std::endl; 
+	}
+
+
+	std::cout << "Note: Physical_Quantity instance \"pq\" is desstructed when moving out of the nested scope." << std::endl;
+	std::cout << "The number of Coefficient object:\t" << escn::Coefficient::get_count() << std::endl;
+	std::cout << "The number of Physical_Quantity object:\t" << escn::Physical_Quantity::get_count() << std::endl;
+	std::cout << "The number of LCOH object:\t\t" << escn::LCOE::get_count() << std::endl;
+	std::cout << "The number of LCOE object:\t\t" << escn::LCOH::get_count() << std::endl;
+	std::cout << "The number of LCOH_CHP object:\t\t" << escn::LCOH_CHP::get_count() << std::endl;
+	std::cout << "The number of LCOE_CHP object:\t\t" << escn::LCOE_CHP::get_count() << std::endl;
 
 	// Construct default investments
 	escn::LCOH plantA;
+	std::cout << "Note: LCOH instance \"plantA\" is constructed" << std::endl;
+	std::cout << "The number of Coefficient object:\t" << escn::Coefficient::get_count() << std::endl;
+	std::cout << "The number of Physical_Quantity object:\t" << escn::Physical_Quantity::get_count() << std::endl;
+	std::cout << "The number of LCOH object:\t\t" << escn::LCOE::get_count() << std::endl;
+	std::cout << "The number of LCOE object:\t\t" << escn::LCOH::get_count() << std::endl;
+	std::cout << "The number of LCOH_CHP object:\t\t" << escn::LCOH_CHP::get_count() << std::endl;
+	std::cout << "The number of LCOE_CHP object:\t\t" << escn::LCOE_CHP::get_count() << std::endl;
+
 	escn::LCOE plantB;
+	std::cout << "Note: LCOE instance \"plantB\" is constructed" << std::endl;
+	std::cout << "The number of Coefficient object:\t" << escn::Coefficient::get_count() << std::endl;
+	std::cout << "The number of Physical_Quantity object:\t" << escn::Physical_Quantity::get_count() << std::endl;
+	std::cout << "The number of LCOH object:\t\t" << escn::LCOE::get_count() << std::endl;
+	std::cout << "The number of LCOE object:\t\t" << escn::LCOH::get_count() << std::endl;
+	std::cout << "The number of LCOH_CHP object:\t\t" << escn::LCOH_CHP::get_count() << std::endl;
+	std::cout << "The number of LCOE_CHP object:\t\t" << escn::LCOE_CHP::get_count() << std::endl;
+
 	escn::LCOH_CHP plantC;
+	std::cout << "Note: LCOH_CHP instance \"plantC\" is constructed" << std::endl;
+	std::cout << "The number of Coefficient object:\t" << escn::Coefficient::get_count() << std::endl;
+	std::cout << "The number of Physical_Quantity object:\t" << escn::Physical_Quantity::get_count() << std::endl;
+	std::cout << "The number of LCOH object:\t\t" << escn::LCOE::get_count() << std::endl;
+	std::cout << "The number of LCOE object:\t\t" << escn::LCOH::get_count() << std::endl;
+	std::cout << "The number of LCOH_CHP object:\t\t" << escn::LCOH_CHP::get_count() << std::endl;
+	std::cout << "The number of LCOE_CHP object:\t\t" << escn::LCOE_CHP::get_count() << std::endl;
+
 	escn::LCOE_CHP plantD;
+	std::cout << "Note: LCOE_CHP instance \"plantD\" is constructed" << std::endl;
+	std::cout << "The number of Coefficient object:\t" << escn::Coefficient::get_count() << std::endl;
+	std::cout << "The number of Physical_Quantity object:\t" << escn::Physical_Quantity::get_count() << std::endl;
+	std::cout << "The number of LCOH object:\t\t" << escn::LCOE::get_count() << std::endl;
+	std::cout << "The number of LCOE object:\t\t" << escn::LCOH::get_count() << std::endl;
+	std::cout << "The number of LCOH_CHP object:\t\t" << escn::LCOH_CHP::get_count() << std::endl;
+	std::cout << "The number of LCOE_CHP object:\t\t" << escn::LCOE_CHP::get_count() << std::endl;
 
 
 	/*##################################################################################################################

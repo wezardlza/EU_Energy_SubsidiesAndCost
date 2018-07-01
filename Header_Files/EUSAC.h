@@ -61,7 +61,7 @@ namespace eu_subsidies_and_cost {
 		double & change_magnitude(const double & new_magnitude);
 
 		// Summary: Get the number of the class objects
-		static const int & get_count();
+		static const std::size_t & get_count();
 
 	protected:
 		const std::string term;
@@ -76,7 +76,7 @@ namespace eu_subsidies_and_cost {
 		static std::size_t n_attributes;
 		
 		// The number of the class objects
-		static int count;
+		static std::size_t count;
 	};
 
 	// A Physical_Quantity has a unit
@@ -113,6 +113,9 @@ namespace eu_subsidies_and_cost {
 		// Summary: Get the unit of the physical quantity
 		const std::string & get_unit() const;
 
+		// Summary: Get the number of the class objects
+		static const std::size_t & get_count();
+
 	protected:
 		const std::string unit;
 
@@ -124,7 +127,7 @@ namespace eu_subsidies_and_cost {
 		static std::size_t n_attributes;
 
 		// The number of the class objects
-		static int count;
+		static std::size_t count;
 	};
 
 	extern const Physical_Quantity & C0;
@@ -220,7 +223,7 @@ namespace eu_subsidies_and_cost {
 			const double & EH);
 
 		// Summary: Get the number of the class objects
-		static const int & get_count();
+		static const std::size_t & get_count ();
 
 		// Summary: Save the protected object initialization arguments
 		virtual std::ostream & save_public(std::ostream & outfile) const;
@@ -249,7 +252,7 @@ namespace eu_subsidies_and_cost {
 		virtual std::ostream & save_private(std::ostream & outfile) const;
 
 		// The number of the class objects
-		static int count;
+		static std::size_t count;
 
 	};
 
@@ -317,7 +320,7 @@ namespace eu_subsidies_and_cost {
 			Physical_Quantity & REV, Physical_Quantity & dv);
 
 		// Summary: Get the number of the class objects
-		static const int & get_count();
+		static const std::size_t & get_count();
 
 		// Summary: Save the protected object initialization arguments
 		std::ostream & save_public(std::ostream & outfile) const override;
@@ -335,7 +338,7 @@ namespace eu_subsidies_and_cost {
 		std::ostream & save_private(std::ostream & outfile) const override;
 
 		// The number of the class objects
-		static int count;
+		static std::size_t count;
 
 	};
 
@@ -406,7 +409,7 @@ namespace eu_subsidies_and_cost {
 			const double & EH, const double bp_revenue);
 
 		// Summary: Get the number of the class objects
-		static const int & get_count();
+		static const std::size_t & get_count();
 
 		// Summary: Save the protected object initialization arguments
 		virtual std::ostream & save_public(std::ostream & outfile) const override;
@@ -425,7 +428,7 @@ namespace eu_subsidies_and_cost {
 		virtual std::ostream & save_private(std::ostream & outfile) const override;
 
 		// The number of the class objects
-		static int count;
+		static std::size_t count;
 
 	};
 
@@ -477,7 +480,7 @@ namespace eu_subsidies_and_cost {
 		inline void change_HP(const double & new_magnitude);
 
 		// Summary: Get the number of the class objects
-		static const int & get_count();
+		static const std::size_t & get_count();
 	
 	private:
 		Physical_Quantity HP;
@@ -486,7 +489,7 @@ namespace eu_subsidies_and_cost {
 		std::ostream & save_private(std::ostream & outfile) const;
 
 		// The number of the class objects
-		static int count;
+		static std::size_t count;
 
 	};
 

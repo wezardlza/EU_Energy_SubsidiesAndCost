@@ -59,6 +59,9 @@ namespace eu_subsidies_and_cost {
 		return magnitude;
 	}
 
+	const std::size_t & Coefficient::get_count() { return count; }
+
+
 	ROW Coefficient::_record() const {
 		ROW record;
 		record.push_back(symbol);
@@ -68,7 +71,6 @@ namespace eu_subsidies_and_cost {
 		return record;
 	}
 
-	const int & Coefficient::get_count() { return count; }
 
 	/* Constructor */
 
@@ -121,6 +123,8 @@ namespace eu_subsidies_and_cost {
 
 	/* Member functions */
 	const std::string & Physical_Quantity::get_unit() const { return unit; }
+
+	const std::size_t & Physical_Quantity::get_count() { return count; }
 
 	ROW Physical_Quantity::_record() const {
 		ROW record;
@@ -230,7 +234,7 @@ namespace eu_subsidies_and_cost {
 		return str;
 	}
 
-	const int & LCOH::get_count() { return count; }
+	const std::size_t & LCOH::get_count() { return count; }
 
 	/* Constructor */
 
@@ -296,7 +300,7 @@ namespace eu_subsidies_and_cost {
 
 	/* Member functions */
 	
-	const int & LCOE::get_count() { return count; }
+	const std::size_t & LCOE::get_count() { return count; }
 
 	std::ostream & LCOE::save_public(std::ostream & outfile) const {
 		LCOH::save_public(outfile);
@@ -395,7 +399,7 @@ namespace eu_subsidies_and_cost {
 		return outfile;
 	}
 
-	const int & LCOH_CHP::get_count() { return count; }
+	const std::size_t & LCOH_CHP::get_count() { return count; }
 
 	/* Constructor */
 	
@@ -462,7 +466,7 @@ namespace eu_subsidies_and_cost {
 
 	/* Member functions */
 	
-	const int & LCOE_CHP::get_count() { return count; }
+	const std::size_t & LCOE_CHP::get_count() { return count; }
 
 	std::ostream & LCOE_CHP::save_private(std::ostream & outfile) const {
 		outfile << HP << std::endl;
@@ -505,17 +509,17 @@ namespace eu_subsidies_and_cost {
 	
 	std::size_t Physical_Quantity::n_attributes(4);
 
-	int Physical_Quantity::count(0);
+	std::size_t Physical_Quantity::count(0);
 
-	int Coefficient::count(0);
+	std::size_t Coefficient::count(0);
 
-	int LCOH::count(0);
+	std::size_t LCOH::count(0);
 
-	int LCOE::count(0);
+	std::size_t LCOE::count(0);
 
-	int LCOH_CHP::count(0);
+	std::size_t LCOH_CHP::count(0);
 
-	int LCOE_CHP::count(0);
+	std::size_t LCOE_CHP::count(0);
 
 
 	/*##################################################################################################################
