@@ -95,6 +95,33 @@ PYBIND11_MODULE(EUSAC, m) {
 		.def("get_file_name", &File_Stream::get_file_name)
 		;
 
+	/* Class Save_File */
+
+	/* From the author's perspective, istream is not easily supported due to pybind11 limitation, a function
+	is defined to offer just save function interface */
+
+	m.def("save", [](const escn::LCOH &lcoh_object, const std::string &name, const std::string &directory, 
+		const std::string &format) {
+		File_Stream A_file_strm(name, directory, format, std::iostream::out);
+		Save_File A_file_saving(A_file_strm.file);
+		A_file_saving << lcoh_object << std::endl; }, 
+		"Summary: Save a LCOH instance"
+			"\nlcoh_object: a LCOH instance"
+			"\nname: name of the file"
+			"\ndirectory: directory of the succeeding files. \"./\" is the current folder"
+			"\nformat:format of the succeeding files, default is \"csv\"");
+
+	/* Class Read_File */
+
+	/* From the author's perspective, istream is not easily supported due to pybind11 limitation, a function
+	is defined to offer just save function interface */
+
+	m.def("read", [](const escn::LCOH &lcoh_object, const std::string &name, const std::string &directory,
+		const std::string &format) {
+		File_Stream A_file_strm(name, directory, format, std::iostream::out);
+		Save_File A_file_saving(A_file_strm.file);
+		A_file_saving << lcoh_object << std::endl;
+	});
 
 	/* Class Coefficient */
 
@@ -110,7 +137,7 @@ PYBIND11_MODULE(EUSAC, m) {
 		.def("get_term", &escn::Coefficient::get_term, "Summary: Get the physical explanation of the coefficient")
 		.def("get_magnitude", &escn::Coefficient::get_magnitude, "Summary: Get the magnitude of the coefficient")
 		.def("change_magnitude", &escn::Coefficient::change_magnitude, "Summary: Rewrite the magnitude")
-		.def("get_count", &escn::Coefficient::get_count, "Summary: Get the number of the class objects")
+		.def_static("get_count", &escn::Coefficient::get_count, "Summary: Get the number of the class objects")
 		.def_property_readonly("symbol", &escn::Coefficient::get_symbol, "symbol of the physical quantity")
 		.def_property_readonly("term", &escn::Coefficient::get_term, "physical explanation of the coefficient")
 		.def_property("magnitude", &escn::Coefficient::get_magnitude, &escn::Coefficient::change_magnitude, 
@@ -135,7 +162,7 @@ PYBIND11_MODULE(EUSAC, m) {
 		.def(py::init<escn::Physical_Quantity &>(), "Summary: Define a physical quantity with copy constructor")
 		.def(py::init<>(), "Default physical quantity")
 		.def("get_unit", &escn::Physical_Quantity::get_unit, "Summary: Get the unit of the physical quantity")
-		.def("get_count", &escn::Physical_Quantity::get_count, "Summary: Get the number of the class objects")
+		.def_static("get_count", &escn::Physical_Quantity::get_count, "Summary: Get the number of the class objects")
 		.def("get_unit", &escn::Physical_Quantity::get_unit, "Summary: Get the unit of the physical quantity")
 
 		.def("cprint", [](escn::Physical_Quantity & pq) {

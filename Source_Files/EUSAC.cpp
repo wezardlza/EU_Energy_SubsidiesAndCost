@@ -176,6 +176,7 @@ namespace eu_subsidies_and_cost {
 	Class 'LCOH' 
 	==================================================================================================================*/
 	/* Friends */
+
 	std::ostream & operator <<(Save_File & log, const LCOH & object) {
 		*log.outfile << "# " << typeid(object).name() << std::endl;
 		object.save_public(*log.outfile);
@@ -215,11 +216,22 @@ namespace eu_subsidies_and_cost {
 		return *log.infile;
 	}
 
-	/* Member functions */
+	/* Overloaded operator */
 
 	double LCOH::operator()
 		(const double & alpha, const double & I, const double & OM, const double & F, const double & EH) {
 		return (alpha * I + OM + F) / EH;
+	}
+
+	/* Vitual functions */
+
+	const double & LCOH::run() {
+		const double & alpha_ = alpha(LT, r);
+		const double & I_ = I(C, LB, i);
+		const double & EH_ = EH(P_H, FLH_H);
+		const double & OM_ = OM(FOM, VOM, EH_);
+		const double & F_ = F(FC, etaH, EH_);
+		return (*this)(alpha_, I_, OM_, F_, EH_);
 	}
 
 	std::ostream & LCOH::save_public(std::ostream & outfile) const {
@@ -254,7 +266,6 @@ namespace eu_subsidies_and_cost {
 		return str;
 	}
 
-	const std::size_t & LCOH::get_count() { return count; }
 
 	/* Constructor */
 
@@ -282,12 +293,12 @@ namespace eu_subsidies_and_cost {
 	==================================================================================================================*/
 	/* Friends */
 	
-	std::ostream & operator <<(Save_File & log, const LCOE & object) {
+	/*std::ostream & operator <<(Save_File & log, const LCOE & object) {
 		*log.outfile << "# " << typeid(object).name() << std::endl;
 		object.save_public(*log.outfile);
 		object.save_private(*log.outfile);
 		return *log.outfile;
-	}
+	}*/
 
 	// Summary: Read the object from the existing file
 	std::istream & operator >>(Read_File & log, LCOE & object) {
@@ -318,9 +329,16 @@ namespace eu_subsidies_and_cost {
 	}
 
 
-	/* Member functions */
+	/* Virtual functions */
 	
-	const std::size_t & LCOE::get_count() { return count; }
+	const double & LCOE::run() {
+		const double & alpha_ = alpha(LT, r);
+		const double & I_ = I(C, LB, i, LT, r, d);
+		const double & EH_ = EH(P_E, FLH_E);
+		const double & OM_ = OM(FOM, VOM, EH_, REV, dv);
+		const double & F_ = F(FC, etaE, EH_);
+		return (*this)(alpha_, I_, OM_, F_, EH_);
+	}
 
 	std::ostream & LCOE::save_public(std::ostream & outfile) const {
 		LCOH::save_public(outfile);
@@ -361,12 +379,12 @@ namespace eu_subsidies_and_cost {
 	==================================================================================================================*/
 	/* Friends */
 	
-	std::ostream & operator <<(Save_File & log, const LCOH_CHP & object) {
+	/*std::ostream & operator <<(Save_File & log, const LCOH_CHP & object) {
 		*log.outfile << "# " << typeid(object).name() << std::endl;
 		object.save_public(*log.outfile);
 		object.save_private(*log.outfile);
 		return *log.outfile;
-	}
+	}*/
 
 	// Summary: Read the object from the existing file
 	std::istream & operator >>(Read_File & log, LCOH_CHP & object) {
@@ -389,7 +407,7 @@ namespace eu_subsidies_and_cost {
 		vec[8] >> object.P_E;
 		vec[9] >> object.P_H;
 		vec[10] >> object.FLH_E;
-		vec[11] >> object.FLH_E;
+		vec[11] >> object.FLH_H;
 		vec[12] >> object.etaE;
 		vec[13] >> object.etaH;
 		vec[14] >> object.EP;
@@ -401,6 +419,17 @@ namespace eu_subsidies_and_cost {
 	double LCOH_CHP::operator () (const double & alpha, const double & I, const double & OM, const double & F,
 		const double & EH, const double bp_revenue) {
 		return (alpha * I + OM + F) / EH - bp_revenue;
+	}
+
+	const double & LCOH_CHP::run() {
+		const double & alpha_ = alpha(LT, r);
+		const double & I_ = I(C, LB, i);
+		const double & E_ = EH(P_E, FLH_E);
+		const double & H_ = EH(P_H, FLH_H);
+		const double & OM_ = OM(FOM, VOM, H_);
+		const double & F_ = F(FC, E_, H_, etaE, etaH);
+		const double & bp_revenue_ = bp_revenue(E_, EP, FLH_H, FLH_E, etaH, etaE);
+		return (*this)(alpha_, I_, OM_, F_, H_, bp_revenue_);
 	}
 
 	std::ostream & LCOH_CHP::save_public(std::ostream & outfile) const {
@@ -418,8 +447,6 @@ namespace eu_subsidies_and_cost {
 		outfile << EP << std::endl;
 		return outfile;
 	}
-
-	const std::size_t & LCOH_CHP::get_count() { return count; }
 
 	/* Constructor */
 	
@@ -449,12 +476,12 @@ namespace eu_subsidies_and_cost {
 	==================================================================================================================*/
 	/* Friends */
 	
-	std::ostream & operator <<(Save_File & log, const LCOE_CHP & object) {
+	/*std::ostream & operator <<(Save_File & log, const LCOE_CHP & object) {
 		*log.outfile << "# " << typeid(object).name() << std::endl;
 		object.save_public(*log.outfile);
 		object.save_private(*log.outfile);
 		return *log.outfile;
-	}
+	}*/
 	
 	// Summary: Read the object from the existing file
 	std::istream & operator >>(Read_File & log, LCOE_CHP & object) {
@@ -477,16 +504,25 @@ namespace eu_subsidies_and_cost {
 		vec[8] >> object.P_E;
 		vec[9] >> object.P_H;
 		vec[10] >> object.FLH_E;
-		vec[11] >> object.FLH_E;
+		vec[11] >> object.FLH_H;
 		vec[12] >> object.etaE;
 		vec[13] >> object.etaH;
 		vec[14] >> object.HP;
 		return *log.infile;
 	}
 
-	/* Member functions */
+	/* Virtual functions */
 	
-	const std::size_t & LCOE_CHP::get_count() { return count; }
+	const double & LCOE_CHP::run() {
+		const double & alpha_ = alpha(LT, r);
+		const double & I_ = I(C, LB, i);
+		const double & E_ = EH(P_E, FLH_E);
+		const double & H_ = EH(P_H, FLH_H);
+		const double & OM_ = OM(FOM, VOM, E_);
+		const double & F_ = F(FC, E_, H_, etaE, etaH);
+		const double & bp_revenue_ = bp_revenue(H_, HP, FLH_E, FLH_H, etaE, etaH);
+		return (*this)(alpha_, I_, OM_, F_, E_, bp_revenue_);
+	}
 
 	std::ostream & LCOE_CHP::save_private(std::ostream & outfile) const {
 		outfile << HP << std::endl;
@@ -559,7 +595,7 @@ namespace eu_subsidies_and_cost {
 	extern const Physical_Quantity & FLH_E0 = Physical_Quantity("FLH_E", "full load hours of electrcity", 0.0, "h");
 	extern const Physical_Quantity & FLH_H0 = Physical_Quantity("FLH_H", "full load hours of heat", 8000.0, "h");
 	extern const Physical_Quantity & EP0 = Physical_Quantity("EP", 
-		"electricity price a CHP intallation receives for electricity production as by-product", 0.03, "kGBP/MWh");
+		"wholesale electricity price", 0.03, "kGBP/MWh");
 	extern const Coefficient & r0 = Coefficient("r", "weighted average cost of capital (WACC)", 0.075);
 	extern const Coefficient & i0 = Coefficient("i", "interest rate over the construction loan", 0.05);
 	extern const Coefficient & d0 = Coefficient("d", "decommisioning cost factor", 0.15);

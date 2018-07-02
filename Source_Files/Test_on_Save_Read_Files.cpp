@@ -44,9 +44,11 @@ int main()
 	C = escn::C0;
 	std::cout << C << std::endl;
 
+
 /***********************************************************************************************************************
 	TEST ON SAVING DEFAULT PLANT SPECIFICATIONS
 ***********************************************************************************************************************/
+
 	// Check the functions of constructor and destructor
 	std::cout << "Note: There exist some constant Coefficient and Physical_Quantity instances"
 		"\ndefined and imported from other source files." << std::endl;
@@ -78,7 +80,8 @@ int main()
 	}
 
 
-	std::cout << "Note: Physical_Quantity instance \"pq\" is desstructed when moving out of the nested scope." << std::endl;
+	std::cout << "Note: Physical_Quantity instance \"pq\" is desstructed when moving out of the nested scope." 
+		<< std::endl;
 	std::cout << "The number of Coefficient object:\t" << escn::Coefficient::get_count() << std::endl;
 	std::cout << "The number of Physical_Quantity object:\t" << escn::Physical_Quantity::get_count() << std::endl;
 	std::cout << "The number of LCOH object:\t\t" << escn::LCOE::get_count() << std::endl;
@@ -203,6 +206,20 @@ int main()
 /***********************************************************************************************************************
 TEST ON SAVING MODIFIED PLANT SPECIFICATIONS
 ***********************************************************************************************************************/
+	std::cout << "Note: The levelised cost of each plant is calculated as follows." << std::endl;
+	auto x1 = plantA.run();
+	auto x2 = plantB.run();
+	auto x3 = plantC.run();
+	auto x4 = plantD.run();
+
+	std::cout << "The levelised cost of plantA is: " << (plantA.run()) << " kGBP/MWh" << std::endl;
+	std::cout << "The levelised cost of plantB is: " << (plantB.run()) << " kGBP/MWh" << std::endl;
+	std::cout << "The levelised cost of plantC is: " << (plantC.run()) << " kGBP/MWh" << std::endl;
+	std::cout << "The levelised cost of plantD is: " << (plantD.run()) << " kGBP/MWh" << std::endl;
+
+/***********************************************************************************************************************
+TEST ON SAVING MODIFIED PLANT SPECIFICATIONS
+***********************************************************************************************************************/
 	
 	// Original investment plant specifications
 	plantA.LT.change_magnitude(30.0);
@@ -290,7 +307,6 @@ TEST ON SAVING MODIFIED PLANT SPECIFICATIONS
 /***********************************************************************************************************************
 TEST ON READING DEFAULT PLANT SPECIFICATIONS
 ***********************************************************************************************************************/
-
 
 	/*##################################################################################################################
 	Test on LCOH object

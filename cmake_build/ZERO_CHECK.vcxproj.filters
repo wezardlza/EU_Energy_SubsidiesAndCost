@@ -1,0 +1,13 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <CustomBuild Include="C:\Ziang_Proj\CPP_Proj\EU_Energy_SubsidiesAndCost\cmake_build\CMakeFiles\808f522004297769d9bbe5877c996175\generate.stamp.rule">
+      <Filter>CMake Rules</Filter>
+    </CustomBuild>
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="CMake Rules">
+      <UniqueIdentifier>{7B6A491E-7CF8-32C8-88B7-63CD32437159}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+</Project>

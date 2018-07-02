@@ -1,0 +1,25 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <ClCompile Include="C:\Ziang_Proj\CPP_Proj\EU_Energy_SubsidiesAndCost\Source_Files\ZAMATH.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Ziang_Proj\CPP_Proj\EU_Energy_SubsidiesAndCost\Source_Files\SRF.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Ziang_Proj\CPP_Proj\EU_Energy_SubsidiesAndCost\Source_Files\EUSAC.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Ziang_Proj\CPP_Proj\EU_Energy_SubsidiesAndCost\Source_Files\PYBIND_EUSAC.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <CustomBuild Include="C:\Ziang_Proj\CPP_Proj\EU_Energy_SubsidiesAndCost\CMakeLists.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="Source Files">
+      <UniqueIdentifier>{FC49E574-50A7-38E0-B89F-BF7D5AF20F70}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+</Project>

@@ -192,6 +192,7 @@ namespace eu_subsidies_and_cost {
 		LCOH(const LCOH &);
 		~LCOH();
 		
+		/* Read and write of private member variable */
 
 		inline const Physical_Quantity & get_P_H() const;
 
@@ -205,18 +206,27 @@ namespace eu_subsidies_and_cost {
 
 		inline void change_etaH(const double & new_magnitude);
 
+		/* Static Methods */
+
+		inline static const std::size_t & get_count ();
+
 		inline static double alpha(Physical_Quantity & LT, Coefficient & r);
 
 		inline static double EH(Physical_Quantity & P_EH, Physical_Quantity & FLH);
 
-
-		/* Methods possibly hidden */
+		/*--------------------------------------------------------------------------------------------------------------
+		methods possibly hidden
+		--------------------------------------------------------------------------------------------------------------*/
 
 		inline static double I(Physical_Quantity & C, Physical_Quantity & LB, Coefficient & i);
 
 		inline static double OM(Physical_Quantity & FOM, Physical_Quantity & VOM, const double & EH);
 
 		inline static double F(Physical_Quantity & FC, Coefficient & eta, const double & EH);
+		
+		/*------------------------------------------------------------------------------------------------------------*/
+
+		/* Overloaded operators */
 
 		// Summary: Levelised cost of heat
 		// alpha: capital recovery factor
@@ -228,12 +238,16 @@ namespace eu_subsidies_and_cost {
 		double operator () (const double & alpha, const double & I, const double & OM, const double & F,
 			const double & EH);
 
-		// Summary: Get the number of the class objects
-		static const std::size_t & get_count ();
+		/* Virtual functions*/
+
+		// Summary: Calculate LCOH value of the specified class instance
+		virtual const double & run();
 
 		// Summary: Save the protected object initialization arguments
 		virtual std::ostream & save_public(std::ostream & outfile) const;
 
+		/* Public variables */
+		
 		Physical_Quantity C;
 		Physical_Quantity LB;
 		Physical_Quantity LT;
@@ -265,7 +279,7 @@ namespace eu_subsidies_and_cost {
 	class LCOE : public LCOH
 	{
 		// Summary: Save the object initialization arguments
-		friend std::ostream & operator <<(Save_File & log, const LCOE & object);
+		friend std::ostream & operator <<(Save_File & log, const LCOH & object);
 
 		// Summary: Read the object from the existing file
 		friend std::istream & operator >>(Read_File & log, LCOE & object);
@@ -305,6 +319,8 @@ namespace eu_subsidies_and_cost {
 		LCOE(const LCOE &);
 		~LCOE();
 
+		/* Read and write of private member variable */
+		
 		inline const Physical_Quantity & get_P_E() const;
 
 		inline const Physical_Quantity & get_FLH_E() const;
@@ -317,20 +333,32 @@ namespace eu_subsidies_and_cost {
 
 		inline void change_etaE(const double & new_magnitude);
 
-		/*Methods rewritten*/
+		/* Static methods */
+
+		inline static const std::size_t & get_count();
+
+		/*--------------------------------------------------------------------------------------------------------------
+		methods possibly hidden
+		--------------------------------------------------------------------------------------------------------------*/
 
 		inline static double I(Physical_Quantity & C, Physical_Quantity & LB, Coefficient & i, 
 			Physical_Quantity & LT, Coefficient & r, Coefficient & d);
 
 		inline static double OM(Physical_Quantity & FOM, Physical_Quantity & VOM, const double & EH, 
 			Physical_Quantity & REV, Physical_Quantity & dv);
+		
+		/*------------------------------------------------------------------------------------------------------------*/
 
-		// Summary: Get the number of the class objects
-		static const std::size_t & get_count();
+		/* Virtual functions*/
+
+		// Summary: Calculate LCOE value of the specified class instance
+		virtual const double & run() override;
 
 		// Summary: Save the protected object initialization arguments
-		std::ostream & save_public(std::ostream & outfile) const override;
+		virtual std::ostream & save_public(std::ostream & outfile) const override;
 
+		/* Public variables */
+		
 		Physical_Quantity REV;
 		Physical_Quantity dv;
 		Coefficient d;
@@ -341,7 +369,7 @@ namespace eu_subsidies_and_cost {
 		Coefficient etaE;
 
 		// Summary: Save the protected object initialization arguments
-		std::ostream & save_private(std::ostream & outfile) const override;
+		virtual std::ostream & save_private(std::ostream & outfile) const override;
 
 		// The number of the class objects
 		static std::size_t count;
@@ -351,7 +379,7 @@ namespace eu_subsidies_and_cost {
 	class LCOH_CHP : public LCOH
 	{
 		// Summary: Save the object initialization arguments
-		friend std::ostream & operator <<(Save_File & log, const LCOH_CHP & object);
+		friend std::ostream & operator <<(Save_File & log, const LCOH & object);
 
 		// Summary: Read the object from the existing file
 		friend std::istream & operator >>(Read_File & log, LCOH_CHP & object);
@@ -392,16 +420,23 @@ namespace eu_subsidies_and_cost {
 		LCOH_CHP(const LCOH_CHP &);
 		~LCOH_CHP();
 
+		/* Read and write of private member variable */
+
 		inline const Physical_Quantity & get_EP() const;
 
 		inline void change_EP(const double & new_magnitude);
 
-		/*Methods rewritten*/
-		inline static double F(Physical_Quantity & FC, Physical_Quantity & E, Physical_Quantity & H, 
-			Coefficient & etaE, Coefficient & etaH);
+		/* Static Methods */
 
-		inline static double bp_revenue(Physical_Quantity & HE, Physical_Quantity & HE_P,
+		inline static const std::size_t & get_count();
+
+		inline static double F(Physical_Quantity & FC, const double & E, const double & H, Coefficient & etaE,
+			Coefficient & etaH);
+
+		inline static double bp_revenue(const double & HE, Physical_Quantity & HE_P,
 			Physical_Quantity & FLH_EH, Physical_Quantity & FLH_HE, Coefficient & etaEH, Coefficient & etaHE);
+
+		/* Overloaded operators */
 
 		// Summary: Levelised cost of heat for combined heat and power (CHP)
 		// alpha: capital recovery factor
@@ -414,11 +449,15 @@ namespace eu_subsidies_and_cost {
 		double operator () (const double & alpha, const double & I, const double & OM, const double & F,
 			const double & EH, const double bp_revenue);
 
-		// Summary: Get the number of the class objects
-		static const std::size_t & get_count();
+		/* Virual functions */
+
+		// Summary: Calculate LCOH_CHP value of the specified class instance
+		virtual const double & run() override;
 
 		// Summary: Save the protected object initialization arguments
 		virtual std::ostream & save_public(std::ostream & outfile) const override;
+
+		/* Public variables */
 
 		Physical_Quantity P_E;
 		Physical_Quantity P_H;
@@ -441,7 +480,7 @@ namespace eu_subsidies_and_cost {
 	class LCOE_CHP : public LCOH_CHP
 	{
 		// Summary: Save the object initialization arguments
-		friend std::ostream & operator <<(Save_File & log, const LCOE_CHP & object);
+		friend std::ostream & operator <<(Save_File & log, const LCOH & object);
 
 		// Summary: Read the object from the existing file
 		friend std::istream & operator >>(Read_File & log, LCOE_CHP & object);
@@ -481,18 +520,26 @@ namespace eu_subsidies_and_cost {
 		LCOE_CHP(const LCOE_CHP &);
 		~LCOE_CHP();
 
+		/* Read and write of private member variable */
+		
 		inline const Physical_Quantity & get_HP() const;
 
 		inline void change_HP(const double & new_magnitude);
 
-		// Summary: Get the number of the class objects
-		static const std::size_t & get_count();
-	
+		/* Static methods */
+
+		inline static const std::size_t & get_count();
+		
+		/* Virtual functions */
+
+		// Summary: Calculate LCOE_CHP value of the specified class instance
+		virtual const double & run() override;
+
 	private:
 		Physical_Quantity HP;
 
 		// Summary: Save the protected object initialization arguments
-		std::ostream & save_private(std::ostream & outfile) const;
+		virtual std::ostream & save_private(std::ostream & outfile) const override;
 
 		// The number of the class objects
 		static std::size_t count;
@@ -519,6 +566,9 @@ namespace eu_subsidies_and_cost {
 
 	// Summary: Change the conversion efficiency in lower heating value(LHV) of heat
 	inline void LCOH::change_etaH(const double & new_magnitude) { etaH.change_magnitude(new_magnitude); }
+
+	// Summary: Get the number of the class objects
+	inline const std::size_t & LCOH::get_count() { return count; }
 
 	// Summary: Capital recovery factor
 	inline double LCOH::alpha(Physical_Quantity & LT, Coefficient & r) {
@@ -571,6 +621,9 @@ namespace eu_subsidies_and_cost {
 	// Summary: Change the conversion efficiency in lower heating value (LHV) of electricity
 	inline void LCOE::change_etaE(const double & new_magnitude) { etaE.change_magnitude(new_magnitude); }
 
+	// Summary: Get the number of the class objects
+	inline const std::size_t & LCOE::get_count() { return count; }
+
 	// Summary: Investment cost including finance cost for construction at a predefined interest rate
 	inline double LCOE::I(Physical_Quantity & C, Physical_Quantity & LB, Coefficient & i,
 		Physical_Quantity & LT, Coefficient & r, Coefficient & d) {
@@ -586,6 +639,9 @@ namespace eu_subsidies_and_cost {
 
 	/* Inline functions of LCOH_CHP */
 
+	// Summary: Get the number of the class objects
+	inline const std::size_t & LCOH_CHP::get_count() { return count; }
+
 	// Summary: Getthe elelctricity price
 	inline const Physical_Quantity & LCOH_CHP::get_EP() const { return EP; }
 
@@ -593,10 +649,9 @@ namespace eu_subsidies_and_cost {
 	inline void LCOH_CHP::change_EP(const double & new_magnitude) { EP.change_magnitude(new_magnitude); }
 
 	// Summary: Annual fuel cost
-	inline double LCOH_CHP::F(Physical_Quantity & FC, Physical_Quantity & E, Physical_Quantity & H,
+	inline double LCOH_CHP::F(Physical_Quantity & FC, const double & E, const double & H,
 		Coefficient & etaE, Coefficient & etaH) {
-		return FC.get_magnitude() * (E.get_magnitude() + H.get_magnitude()) / 
-			(etaE.get_magnitude() + etaH.get_magnitude());
+		return FC.get_magnitude() * (E + H) / (etaE.get_magnitude() + etaH.get_magnitude());
 	}
 
 	// Summary: Revenue of the by-product
@@ -612,9 +667,9 @@ namespace eu_subsidies_and_cost {
 	//	for LCOH_CHP object, conversion efficiency in lower heating value (LHV) of heat (etaH)
 	// etaHE: for LCOE_CHP object, conversion efficiency in lower heating value (LHV) of heat (etaH);
 	//	for LCOH_CHP object, conversion efficiency in lower heating value (LHV) of electrcity (etaE)
-	inline double LCOH_CHP::bp_revenue(Physical_Quantity & HE, Physical_Quantity & HE_P,
+	inline double LCOH_CHP::bp_revenue(const double & HE, Physical_Quantity & HE_P,
 		Physical_Quantity & FLH_EH, Physical_Quantity & FLH_HE, Coefficient & etaEH, Coefficient & etaHE) {
-		return HE.get_magnitude() * HE_P.get_magnitude() * etaHE.get_magnitude() * 
+		return HE * HE_P.get_magnitude() * etaHE.get_magnitude() * 
 			FLH_HE.get_magnitude() / etaEH.get_magnitude() / FLH_EH.get_magnitude();
 	}
 
@@ -626,6 +681,9 @@ namespace eu_subsidies_and_cost {
 
 	// Summary: Change the heat price
 	inline void LCOE_CHP::change_HP(const double & new_magnitude) { HP.change_magnitude(new_magnitude); }
+	
+	// Summary: Get the number of the class objects
+	inline const std::size_t & LCOE_CHP::get_count() { return count; }
 
 }
 #endif // !__EUSAC__

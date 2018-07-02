@@ -52,7 +52,7 @@ public:
 	// Summary: Construct an address to store the file
 	// file_name: name of the file
 	// directory: directory of the succeeding files, default is "./" 
-	// format: format of the succeeding files, default is ".csv" 
+	// format: format of the succeeding files, default is "csv" 
 	// file_mode: file mode of the succeeding files, default is "std::ios_base::in"
 	File_Stream(const std::string & file_name, const std::string & directory, const std::string & format, 
 		const std::ios_base::openmode & file_mode);
