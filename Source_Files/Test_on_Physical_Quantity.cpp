@@ -40,7 +40,7 @@ void Test_on_Physical_Quantity(){
 	double F = escn::LCOE::F(escn::FC0, escn::etaE0, EH_A);
 
 	std::cout << "#############################################################################\n" 
-		<<  "Test on Physical_Quantity" 
+		<<  "Test on Physical_Quantity\n" 
 		<< "#############################################################################"
 	       	<< std::endl << std::endl;
 	std::cout << "Plant A Investment Data:" << std::endl;
@@ -50,7 +50,7 @@ void Test_on_Physical_Quantity(){
 	std::cout << "Operation and maintenance cost\tOM\t" << OM << std::endl;
 	std::cout << "Annual fuel cost\t\tF\t" << F << std::endl;
 
-	std::cout << "Interest rate:\t\t\t\t" << escn::i0 << std::endl;
-
+	std::cout << escn::i0 << std::endl;
+	std::cout << std::endl; 
 	// system("pause");
 }
