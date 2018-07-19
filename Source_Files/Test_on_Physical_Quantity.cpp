@@ -9,41 +9,35 @@ Institution: Control Group, UOM
 
 namespace escn = eu_subsidies_and_cost;
 
+extern const escn::Physical_Quantity &escn::C0;
+extern const escn::Physical_Quantity &escn::LB0;
+extern const escn::Physical_Quantity &escn::LT0;
+extern const escn::Physical_Quantity &escn::FOM0;
+extern const escn::Physical_Quantity &escn::VOM0;
+extern const escn::Physical_Quantity &escn::P_E0;
+extern const escn::Physical_Quantity &escn::P_H0;
+extern const escn::Physical_Quantity &escn::FC0;
+extern const escn::Physical_Quantity &escn::REV0;
+extern const escn::Physical_Quantity &escn::dv0;
+extern const escn::Coefficient &escn::d0;
+extern const escn::Coefficient &escn::r0;
+extern const escn::Coefficient &escn::i0;
+extern const escn::Physical_Quantity &escn::FLH_E0;
+extern const escn::Physical_Quantity &escn::FLH_H0;
+extern const escn::Coefficient &escn::etaE0;
+extern const escn::Coefficient &escn::etaH0;
+extern const escn::Physical_Quantity &escn::HP0;
+
 void Test_on_Physical_Quantity(){
-
-	extern const escn::Physical_Quantity &C0;
-	extern const escn::Physical_Quantity &LB0;
-	extern const escn::Physical_Quantity &LT0;
-	extern const escn::Physical_Quantity &FOM0;
-	extern const escn::Physical_Quantity &VOM0;
-	extern const escn::Physical_Quantity &P_E0;
-	extern const escn::Physical_Quantity &P_H0;
-
-	// FC is the cost based on the thermal energy input
-	extern const escn::Physical_Quantity &FC0;
-
-	extern const escn::Physical_Quantity &REV0;
-	extern const escn::Physical_Quantity &dv0;
-
-	extern const escn::Coefficient d0;
-	extern const escn::Coefficient r0;
-	extern const escn::Coefficient i0;
-
-	extern const escn::Physical_Quantity FLH_E0;
-	extern const escn::Physical_Quantity FLH_H0;
-	extern const escn::Coefficient etaE0;
-	extern const escn::Coefficient etaH0;
-
-	// heat price is estimated by the cost of fuel and the boiler efficiency
-	extern const escn::Physical_Quantity HP0;
  
 	// Construct hypothetic plant investments
-	escn::LCOE plantA(C0, LB0, LT0, FOM0, VOM0, FC0, r0, i0, REV0, dv0, d0, P_E0, FLH_E0, etaE0);
-	double alpha_A = escn::LCOE::alpha(LT0, r0);
-	double EH_A = escn::LCOE::EH(P_E0, FLH_E0);
-	double I_A = escn::LCOE::I(C0, LB0, i0, LT0, r0,d0);
-	double OM = escn::LCOE::OM(FOM0, VOM0, EH_A, REV0, dv0);
-	double F = escn::LCOE::F(FC0, etaE0, EH_A);
+	escn::LCOE plantA(escn::C0, escn::LB0, escn::LT0, escn::FOM0, escn::VOM0, escn::FC0, escn::r0, escn::i0, escn::REV0,
+		       	escn::dv0, escn::d0, escn::P_E0, escn::FLH_E0, escn::etaE0);
+	double alpha_A = escn::LCOE::alpha(escn::LT0, escn::r0);
+	double EH_A = escn::LCOE::EH(escn::P_E0, escn::FLH_E0);
+	double I_A = escn::LCOE::I(escn::C0, escn::LB0, escn::i0, escn::LT0, escn::r0,escn::d0);
+	double OM = escn::LCOE::OM(escn::FOM0, escn::VOM0, EH_A, escn::REV0, escn::dv0);
+	double F = escn::LCOE::F(escn::FC0, escn::etaE0, EH_A);
 
 	std::cout << "#############################################################################\n" 
 		<<  "Test on Physical_Quantity" 
