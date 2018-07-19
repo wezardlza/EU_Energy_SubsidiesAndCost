@@ -21,7 +21,7 @@ void test(T temp)
 {
 	cout << temp << endl;
 }
-void main()
+int main()
 {
 	test<int>(12);  //普通模板函数
 	A aa(12); //请注意这一行

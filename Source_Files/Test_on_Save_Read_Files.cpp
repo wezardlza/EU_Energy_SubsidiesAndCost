@@ -31,8 +31,13 @@ extern const escn::Coefficient &escn::etaH0;
 extern const escn::Physical_Quantity &escn::EP0;
 extern const escn::Physical_Quantity &escn::HP0;
 
-int main()
+void  Test_on_Save_Read_Files()
 {
+
+	std::cout << "#############################################################################\n" 
+		<<  "Test on Save_File and Read_File" 
+		<< "#############################################################################"
+	       	<< std::endl;
 
 	// Set the cammand window size
 	// system("mode con cols=170 lines=45  ");
@@ -49,6 +54,9 @@ int main()
 	TEST ON SAVING DEFAULT PLANT SPECIFICATIONS
 ***********************************************************************************************************************/
 
+	std::cout << "=============================================================================\n"
+		<< "Test on output file stream for LCOE Plant\n"
+		<< "-----------------------------------------------------------------------------" << std::endl;
 	// Check the functions of constructor and destructor
 	std::cout << "Note: There exist some constant Coefficient and Physical_Quantity instances"
 		"\ndefined and imported from other source files." << std::endl;
@@ -215,7 +223,7 @@ TEST ON SAVING MODIFIED PLANT SPECIFICATIONS
 	std::cout << "The levelised cost of plantA is: " << (x1)<< " kGBP/MWh" << std::endl;
 	std::cout << "The levelised cost of plantB is: " << (x2) << " kGBP/MWh" << std::endl;
 	std::cout << "The levelised cost of plantC is: " << (x3) << " kGBP/MWh" << std::endl;
-	std::cout << "The levelised cost of plantD is: " << (x4) << " kGBP/MWh" << std::endl;
+	std::cout << "The levelised cost of plantD is: " << (x4) << " kGBP/MWh" << std::endl<< std::endl;
 
 /***********************************************************************************************************************
 TEST ON SAVING MODIFIED PLANT SPECIFICATIONS
@@ -454,8 +462,5 @@ TEST ON READING MODIFIED PLANT SPECIFICATIONS
 	Read_File sf_read(fs.file);
 	sf_read.table_init();
 	sf_read.print_table();
-
-
-
-	system("pause");
+	// system("pause");
 }

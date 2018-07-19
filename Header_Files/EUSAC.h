@@ -210,19 +210,19 @@ namespace eu_subsidies_and_cost {
 
 		inline static const std::size_t & get_count ();
 
-		inline static double alpha(Physical_Quantity & LT, Coefficient & r);
+		inline static double alpha(const Physical_Quantity & LT, const Coefficient & r);
 
-		inline static double EH(Physical_Quantity & P_EH, Physical_Quantity & FLH);
+		inline static double EH(const Physical_Quantity & P_EH, const Physical_Quantity & FLH);
 
 		/*--------------------------------------------------------------------------------------------------------------
 		methods possibly hidden
 		--------------------------------------------------------------------------------------------------------------*/
 
-		inline static double I(Physical_Quantity & C, Physical_Quantity & LB, Coefficient & i);
+		inline static double I(const Physical_Quantity & C, const Physical_Quantity & LB, const Coefficient & i);
 
-		inline static double OM(Physical_Quantity & FOM, Physical_Quantity & VOM, const double & EH);
+		inline static double OM(const Physical_Quantity & FOM, const Physical_Quantity & VOM, const double & EH);
 
-		inline static double F(Physical_Quantity & FC, Coefficient & eta, const double & EH);
+		inline static double F(const Physical_Quantity & FC, const Coefficient & eta, const double & EH);
 		
 		/*------------------------------------------------------------------------------------------------------------*/
 
@@ -341,11 +341,11 @@ namespace eu_subsidies_and_cost {
 		methods possibly hidden
 		--------------------------------------------------------------------------------------------------------------*/
 
-		inline static double I(Physical_Quantity & C, Physical_Quantity & LB, Coefficient & i, 
-			Physical_Quantity & LT, Coefficient & r, Coefficient & d);
+		inline static double I(const Physical_Quantity & C, const Physical_Quantity & LB, const Coefficient & i, 
+			const Physical_Quantity & LT, const Coefficient & r, const Coefficient & d);
 
-		inline static double OM(Physical_Quantity & FOM, Physical_Quantity & VOM, const double & EH, 
-			Physical_Quantity & REV, Physical_Quantity & dv);
+		inline static double OM(const Physical_Quantity & FOM, const Physical_Quantity & VOM, const double & EH, 
+			const Physical_Quantity & REV, const Physical_Quantity & dv);
 		
 		/*------------------------------------------------------------------------------------------------------------*/
 
@@ -430,11 +430,11 @@ namespace eu_subsidies_and_cost {
 
 		inline static const std::size_t & get_count();
 
-		inline static double F(Physical_Quantity & FC, const double & E, const double & H, Coefficient & etaE,
-			Coefficient & etaH);
+		inline static double F(const Physical_Quantity & FC, const double & E, const double & H, const Coefficient & etaE,
+			const Coefficient & etaH);
 
-		inline static double bp_revenue(const double & HE, Physical_Quantity & HE_P,
-			Physical_Quantity & FLH_EH, Physical_Quantity & FLH_HE, Coefficient & etaEH, Coefficient & etaHE);
+		inline static double bp_revenue(const double & HE, const Physical_Quantity & HE_P,
+			const Physical_Quantity & FLH_EH, const Physical_Quantity & FLH_HE, const Coefficient & etaEH, const Coefficient & etaHE);
 
 		/* Overloaded operators */
 
@@ -571,17 +571,17 @@ namespace eu_subsidies_and_cost {
 	inline const std::size_t & LCOH::get_count() { return count; }
 
 	// Summary: Capital recovery factor
-	inline double LCOH::alpha(Physical_Quantity & LT, Coefficient & r) {
+	inline double LCOH::alpha(const Physical_Quantity & LT, const Coefficient & r) {
 		return r.get_magnitude() / (1 - std::pow(1 + r.get_magnitude(), -LT.get_magnitude()));
 	}
 
 	// Summary: Electricity or heat produced annually
-	inline double LCOH::EH(Physical_Quantity & P_EH, Physical_Quantity & FLH) {
+	inline double LCOH::EH(const Physical_Quantity & P_EH, const Physical_Quantity & FLH) {
 		return P_EH.get_magnitude() * FLH.get_magnitude();
 	}
 
 	// Summary: Investment cost including finance cost for construction at a predefined interest rate
-	inline double LCOH::I(Physical_Quantity & C, Physical_Quantity & LB, Coefficient & i) {
+	inline double LCOH::I(const Physical_Quantity & C, const Physical_Quantity & LB, const Coefficient & i) {
 		double s(0.0);
 		double base(1.0 + i.get_magnitude());
 		for (int temp = 0; temp < LB.get_magnitude(); ++temp) {
@@ -591,12 +591,12 @@ namespace eu_subsidies_and_cost {
 	}
 
 	// Summary: Operation and maintainance cost
-	inline double LCOH::OM(Physical_Quantity & FOM, Physical_Quantity & VOM, const double & EH) {
+	inline double LCOH::OM(const Physical_Quantity & FOM, const Physical_Quantity & VOM, const double & EH) {
 		return FOM.get_magnitude() + VOM.get_magnitude() * EH;
 	}
 
 	// Summary: Annual fuel cost
-	inline double LCOH::F(Physical_Quantity & FC, Coefficient & eta, const double & EH) {
+	inline double LCOH::F(const Physical_Quantity & FC, const Coefficient & eta, const double & EH) {
 		return FC.get_magnitude() * EH / eta.get_magnitude();
 	}
 
@@ -625,14 +625,14 @@ namespace eu_subsidies_and_cost {
 	inline const std::size_t & LCOE::get_count() { return count; }
 
 	// Summary: Investment cost including finance cost for construction at a predefined interest rate
-	inline double LCOE::I(Physical_Quantity & C, Physical_Quantity & LB, Coefficient & i,
-		Physical_Quantity & LT, Coefficient & r, Coefficient & d) {
+	inline double LCOE::I(const Physical_Quantity & C, const Physical_Quantity & LB, const Coefficient & i,
+		const Physical_Quantity & LT, const Coefficient & r, const Coefficient & d) {
 		return LCOH::I(C, LB, i) * (1 + d.get_magnitude() / std::pow(1.0 + r.get_magnitude(), LT.get_magnitude()));
 	}
 
 	// Summary: Operation and maintainance cost
-	inline double LCOE::OM(Physical_Quantity & FOM, Physical_Quantity & VOM, const double & EH,
-		Physical_Quantity & REV, Physical_Quantity & dv) {
+	inline double LCOE::OM(const Physical_Quantity & FOM, const Physical_Quantity & VOM, const double & EH,
+		const Physical_Quantity & REV, const Physical_Quantity & dv) {
 		return FOM.get_magnitude() + (VOM.get_magnitude() - REV.get_magnitude() + dv.get_magnitude())* EH;
 	}
 
@@ -649,8 +649,8 @@ namespace eu_subsidies_and_cost {
 	inline void LCOH_CHP::change_EP(const double & new_magnitude) { EP.change_magnitude(new_magnitude); }
 
 	// Summary: Annual fuel cost
-	inline double LCOH_CHP::F(Physical_Quantity & FC, const double & E, const double & H,
-		Coefficient & etaE, Coefficient & etaH) {
+	inline double LCOH_CHP::F(const Physical_Quantity & FC, const double & E, const double & H,
+		const Coefficient & etaE, const Coefficient & etaH) {
 		return FC.get_magnitude() * (E + H) / (etaE.get_magnitude() + etaH.get_magnitude());
 	}
 
@@ -667,8 +667,8 @@ namespace eu_subsidies_and_cost {
 	//	for LCOH_CHP object, conversion efficiency in lower heating value (LHV) of heat (etaH)
 	// etaHE: for LCOE_CHP object, conversion efficiency in lower heating value (LHV) of heat (etaH);
 	//	for LCOH_CHP object, conversion efficiency in lower heating value (LHV) of electrcity (etaE)
-	inline double LCOH_CHP::bp_revenue(const double & HE, Physical_Quantity & HE_P,
-		Physical_Quantity & FLH_EH, Physical_Quantity & FLH_HE, Coefficient & etaEH, Coefficient & etaHE) {
+	inline double LCOH_CHP::bp_revenue(const double & HE, const Physical_Quantity & HE_P,
+		const Physical_Quantity & FLH_EH, const Physical_Quantity & FLH_HE, const Coefficient & etaEH, const Coefficient & etaHE) {
 		return HE * HE_P.get_magnitude() * etaHE.get_magnitude() * 
 			FLH_HE.get_magnitude() / etaEH.get_magnitude() / FLH_EH.get_magnitude();
 	}

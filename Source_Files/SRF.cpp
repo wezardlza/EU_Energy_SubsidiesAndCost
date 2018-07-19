@@ -7,12 +7,12 @@ This file defines the saving and reading methods of .csv document.
 #include "../Header_Files/SRF.h"
 #include <sys/types.h>
 #include <sys/stat.h>
-#define __WINDOWS__ 
+// #define __WINDOWS__ 
 #ifdef __WINDOWS__
 #include <io.h> 
 #include <direct.h>
 #endif
-//#define __LINUX__ 
+#define __LINUX__ 
 #ifdef __LINUX__
 #include <sys/types.h>
 #include <sys/io.h> 
