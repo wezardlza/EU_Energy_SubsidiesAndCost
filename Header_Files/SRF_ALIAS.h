@@ -11,6 +11,7 @@ This file defines alias names of the SRF.h.
 #define __SRF_ALIAS__
 
 #include "../Header_Files/ZAMATH_ALIAS.h"
+#include <string>
 
 typedef std::string                                  CELL;
 typedef T_ROW<CELL>                                  ROW;

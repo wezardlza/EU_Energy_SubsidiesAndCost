@@ -10,32 +10,32 @@ This file tests the reading and saving functions.
 
 namespace escn = eu_subsidies_and_cost;
 
+// Default investment plant specifications
+extern const escn::Physical_Quantity &escn::C0;
+extern const escn::Physical_Quantity &escn::LB0;
+extern const escn::Physical_Quantity &escn::LT0;
+extern const escn::Physical_Quantity &escn::FOM0;
+extern const escn::Physical_Quantity &escn::VOM0;
+extern const escn::Physical_Quantity &escn::P_E0;
+extern const escn::Physical_Quantity &escn::P_H0;
+extern const escn::Physical_Quantity &escn::FC0;
+extern const escn::Physical_Quantity &escn::REV0;
+extern const escn::Physical_Quantity &escn::dv0;
+extern const escn::Physical_Quantity &escn::FLH_E0;
+extern const escn::Physical_Quantity &escn::FLH_H0;
+extern const escn::Coefficient &escn::d0;
+extern const escn::Coefficient &escn::r0;
+extern const escn::Coefficient &escn::i0;
+extern const escn::Coefficient &escn::etaE0;
+extern const escn::Coefficient &escn::etaH0;
+extern const escn::Physical_Quantity &escn::EP0;
+extern const escn::Physical_Quantity &escn::HP0;
+
 int main()
 {
 
 	// Set the cammand window size
 	// system("mode con cols=170 lines=45  ");
-
-	// Default investment plant specifications
-	extern const escn::Physical_Quantity &escn::C0;
-	extern const escn::Physical_Quantity &escn::LB0;
-	extern const escn::Physical_Quantity &escn::LT0;
-	extern const escn::Physical_Quantity &escn::FOM0;
-	extern const escn::Physical_Quantity &escn::VOM0;
-	extern const escn::Physical_Quantity &escn::P_E0;
-	extern const escn::Physical_Quantity &escn::P_H0;
-	extern const escn::Physical_Quantity &escn::FC0;
-	extern const escn::Physical_Quantity &escn::REV0;
-	extern const escn::Physical_Quantity &escn::dv0;
-	extern const escn::Physical_Quantity &escn::FLH_E0;
-	extern const escn::Physical_Quantity &escn::FLH_H0;
-	extern const escn::Coefficient &escn::d0;
-	extern const escn::Coefficient &escn::r0;
-	extern const escn::Coefficient &escn::i0;
-	extern const escn::Coefficient &escn::etaE0;
-	extern const escn::Coefficient &escn::etaH0;
-	extern const escn::Physical_Quantity &escn::EP0;
-	extern const escn::Physical_Quantity &escn::HP0;
 
 	escn::Physical_Quantity C(escn::C0.get_symbol(), escn::C0.get_term(), 4.0, escn::C0.get_unit());
 
@@ -212,10 +212,10 @@ TEST ON SAVING MODIFIED PLANT SPECIFICATIONS
 	auto x3 = plantC.run();
 	auto x4 = plantD.run();
 
-	std::cout << "The levelised cost of plantA is: " << (plantA.run()) << " kGBP/MWh" << std::endl;
-	std::cout << "The levelised cost of plantB is: " << (plantB.run()) << " kGBP/MWh" << std::endl;
-	std::cout << "The levelised cost of plantC is: " << (plantC.run()) << " kGBP/MWh" << std::endl;
-	std::cout << "The levelised cost of plantD is: " << (plantD.run()) << " kGBP/MWh" << std::endl;
+	std::cout << "The levelised cost of plantA is: " << (x1)<< " kGBP/MWh" << std::endl;
+	std::cout << "The levelised cost of plantB is: " << (x2) << " kGBP/MWh" << std::endl;
+	std::cout << "The levelised cost of plantC is: " << (x3) << " kGBP/MWh" << std::endl;
+	std::cout << "The levelised cost of plantD is: " << (x4) << " kGBP/MWh" << std::endl;
 
 /***********************************************************************************************************************
 TEST ON SAVING MODIFIED PLANT SPECIFICATIONS

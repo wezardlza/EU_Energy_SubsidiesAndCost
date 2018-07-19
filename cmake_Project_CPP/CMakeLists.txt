@@ -1,0 +1,5 @@
+cmake_minimum_required(VERSION 2.8.12)
+project(EUSAC_CPP)
+add_definitions(-std=c++11)
+add_executable(EUSAC ../Source_Files/ZAMATH.cpp ../Source_Files/SRF.cpp ../Source_Files/EUSAC.cpp ../Source_Files/Test_on_Save_Read_Files.cpp)
+set( CMAKE_EXPORT_COMPILE_COMMANDS ON )

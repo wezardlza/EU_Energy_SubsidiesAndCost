@@ -67,8 +67,8 @@ namespace eu_subsidies_and_cost {
 		static const std::size_t & get_count();
 
 	protected:
-		const std::string term;
 		const std::string symbol;
+		const std::string term;
 		double magnitude;
 
 	private:
@@ -241,7 +241,7 @@ namespace eu_subsidies_and_cost {
 		/* Virtual functions*/
 
 		// Summary: Calculate LCOH value of the specified class instance
-		virtual const double & run();
+		virtual double run();
 
 		// Summary: Save the protected object initialization arguments
 		virtual std::ostream & save_public(std::ostream & outfile) const;
@@ -352,7 +352,7 @@ namespace eu_subsidies_and_cost {
 		/* Virtual functions*/
 
 		// Summary: Calculate LCOE value of the specified class instance
-		virtual const double & run() override;
+		virtual double run() override;
 
 		// Summary: Save the protected object initialization arguments
 		virtual std::ostream & save_public(std::ostream & outfile) const override;
@@ -452,7 +452,7 @@ namespace eu_subsidies_and_cost {
 		/* Virual functions */
 
 		// Summary: Calculate LCOH_CHP value of the specified class instance
-		virtual const double & run() override;
+		virtual double run() override;
 
 		// Summary: Save the protected object initialization arguments
 		virtual std::ostream & save_public(std::ostream & outfile) const override;
@@ -533,7 +533,7 @@ namespace eu_subsidies_and_cost {
 		/* Virtual functions */
 
 		// Summary: Calculate LCOE_CHP value of the specified class instance
-		virtual const double & run() override;
+		virtual double run() override;
 
 	private:
 		Physical_Quantity HP;

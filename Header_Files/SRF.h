@@ -152,7 +152,7 @@ public:
 	~Save_File();
 
 	// Summary: Assign the Save_File object a new output stream pointer member
-		std::ostream * new_outfile(std::ostream & new_ostream);
+	std::ostream * new_outfile(std::ostream & new_ostream);
 
 	std::ostream * outfile;
 	

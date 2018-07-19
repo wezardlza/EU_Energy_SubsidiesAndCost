@@ -4,13 +4,20 @@ Institution: Control Group, UOM
 
 This file defines the saving and reading methods of .csv document.
 ***********************************************************************************************************************/
- 
 #include "../Header_Files/SRF.h"
 #include <sys/types.h>
 #include <sys/stat.h>
-#include <direct.h> 
+// #define __WINDOWS__ 
+#ifdef __WINDOWS__
 #include <io.h> 
-#include <xiosbase>
+#endif
+#define __LINUX__ 
+#ifdef __LINUX__
+#include <sys/types.h>
+#include <sys/io.h> 
+#include <stdio.h>
+#include <unistd.h>
+#endif
 #include <stdexcept>
 
 
@@ -26,27 +33,40 @@ File_Address::~File_Address() { --count; }
 /* Member functions */
 
 const std::string File_Address::file_address() const {
-	struct _stat fileStat;
-	if ((_stat(directory.c_str(), & fileStat) == 0) && (fileStat.st_mode & _S_IFDIR))
+	struct stat fileStat;
+	if ((stat(directory.c_str(), & fileStat) == 0) && (fileStat.st_mode & S_IFDIR))
 	{
 		std::cout << CONST_LABEL::INFO << "Directory: \"" << directory << "\" already exists." << std::endl;;
 	}
 	else
 	{
-		int i = _mkdir(directory.c_str());
-		if (i = 1) {
+#ifdef __WINDOWS__ 
+		int i = mkdir(directory.c_str());
+		if (i == 1) {
 			std::cout << CONST_LABEL::INFO << "Directory: \"" << directory << "\" is created." << std::endl;
 		}
 		else
 		{
 			throw std::runtime_error(CONST_LABEL::ERRO + "Fail to create the directory: \""  + directory + "\" is created.");
 		}
+#else
+#ifdef __LINUX__ 
+		int i = mkdir(directory.c_str(), S_IRWXU);
+		if (i == 0) {
+			std::cout << CONST_LABEL::INFO << "Directory: \"" << directory << "\" is created." << std::endl;
+		}
+		else
+		{
+			throw std::runtime_error(CONST_LABEL::ERRO + "Fail to create the directory: \""  + directory + "\" is created.");
+		}
+#endif
+#endif
 	}
 	return directory + file_name + "." + format;	
 }
 
 bool File_Address::is_file_acessible(const std::string & file_address) {
-	bool b(_access(file_address.c_str(), 0) != -1);
+	bool b(access(file_address.c_str(), 0) != -1);
 	if (b) {
 		std::cout << CONST_LABEL::INFO << "File: \"" << file_address 
 			<< "\" already exists \nand is cleared." << std::endl;
@@ -157,7 +177,7 @@ Class 'Read_File'
 
 Read_File::Read_File(std::istream & infile) : infile(& infile) { ++count; }
 
-Read_File::~Read_File() { count; }
+Read_File::~Read_File() { count--; }
 
 /* Static function */
 
@@ -239,7 +259,7 @@ void Read_File::print_table() {
 	}
 
 	std::cout.setf(std::ios::left);
-	CELL::size_type x(Basic_Maths::max<CELL::size_type>(cs_vec));
+	// CELL::size_type x(Basic_Maths::max<CELL::size_type>(cs_vec));
 	for (TABLE_INDEX i = 0; i != table.size(); ++i) {
 		for (ROW_INDEX j = 0; j != table[i].size(); j++) {
 

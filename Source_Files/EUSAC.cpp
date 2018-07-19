@@ -9,7 +9,8 @@ Institution: Control Group, UOM
 #include "../Header_Files/EUSAC.h"
 #include "../Header_Files/SRF.h"
 #include "../Header_Files/ZAMATH.h"
-#include <typeinfo.h>
+#include <typeinfo>
+#include <stdexcept>
 
 namespace eu_subsidies_and_cost {
 
@@ -186,7 +187,7 @@ namespace eu_subsidies_and_cost {
 	
 	std::istream & operator >>(Read_File & log, LCOH & object) {
 		std::string str;
-		std::vector<std::istringstream> vec;
+		std::vector<std::istringstream *> vec;
 
 		// Obatin the class name
 		std::getline(*log.infile, str);
@@ -198,21 +199,21 @@ namespace eu_subsidies_and_cost {
 		
 		while (std::getline(*log.infile, str))
 		{
-			std::istringstream ins;
-			ins.str(str);
+			std::istringstream *ins = nullptr;
+			ins->str(str);
 			vec.push_back(std::move(ins));			
 		}
-		vec[0] >> object.C;
-		vec[1] >> object.LB;
-		vec[2] >> object.LT;
-		vec[3] >> object.FOM;
-		vec[4] >> object.VOM;
-		vec[5] >> object.FC;
-		vec[6] >> object.r;
-		vec[7] >> object.i;
-		vec[8] >> object.P_H;
-		vec[9] >> object.FLH_H;
-		vec[10] >> object.etaH;
+		*vec[0] >> object.C;
+		*vec[1] >> object.LB;
+		*vec[2] >> object.LT;
+		*vec[3] >> object.FOM;
+		*vec[4] >> object.VOM;
+		*vec[5] >> object.FC;
+		*vec[6] >> object.r;
+		*vec[7] >> object.i;
+		*vec[8] >> object.P_H;
+		*vec[9] >> object.FLH_H;
+		*vec[10] >> object.etaH;
 		return *log.infile;
 	}
 
@@ -225,7 +226,7 @@ namespace eu_subsidies_and_cost {
 
 	/* Vitual functions */
 
-	const double & LCOH::run() {
+	double LCOH::run() {
 		const double & alpha_ = alpha(LT, r);
 		const double & I_ = I(C, LB, i);
 		const double & EH_ = EH(P_H, FLH_H);
@@ -254,7 +255,7 @@ namespace eu_subsidies_and_cost {
 	}
 	
 	const std::string & LCOH::find_class_id(std::string & str) {
-		std::size_t i = str.find_first_of('#', 0);
+		int i = str.find_first_of('#', 0);
 		if (i != -1) {
 			str.erase(0, i + 1);
 			Read_File::Trim(str);
@@ -303,27 +304,27 @@ namespace eu_subsidies_and_cost {
 	// Summary: Read the object from the existing file
 	std::istream & operator >>(Read_File & log, LCOE & object) {
 		std::string str;
-		std::vector<std::istringstream> vec;
+		std::vector<std::istringstream *> vec;
 		while (std::getline(*log.infile, str))
 		{
-			std::istringstream ins;
-			ins.str(str);
+			std::istringstream * ins = nullptr;
+			ins->str(str);
 			vec.push_back(std::move(ins));
 		}
-		vec[0] >> object.C;
-		vec[1] >> object.LB;
-		vec[2] >> object.LT;
-		vec[3] >> object.FOM;
-		vec[4] >> object.VOM;
-		vec[5] >> object.FC;
-		vec[6] >> object.r;
-		vec[7] >> object.i;
-		vec[8] >> object.REV;
-		vec[9] >> object.dv;
-		vec[10] >> object.d;
-		vec[11] >> object.P_E;
-		vec[12] >> object.FLH_E;
-		vec[13] >> object.etaE;
+		*vec[0] >> object.C;
+		*vec[1] >> object.LB;
+		*vec[2] >> object.LT;
+		*vec[3] >> object.FOM;
+		*vec[4] >> object.VOM;
+		*vec[5] >> object.FC;
+		*vec[6] >> object.r;
+		*vec[7] >> object.i;
+		*vec[8] >> object.REV;
+		*vec[9] >> object.dv;
+		*vec[10] >> object.d;
+		*vec[11] >> object.P_E;
+		*vec[12] >> object.FLH_E;
+		*vec[13] >> object.etaE;
 		return *log.infile;
 
 	}
@@ -331,7 +332,7 @@ namespace eu_subsidies_and_cost {
 
 	/* Virtual functions */
 	
-	const double & LCOE::run() {
+	double LCOE::run() {
 		const double & alpha_ = alpha(LT, r);
 		const double & I_ = I(C, LB, i, LT, r, d);
 		const double & EH_ = EH(P_E, FLH_E);
@@ -389,28 +390,28 @@ namespace eu_subsidies_and_cost {
 	// Summary: Read the object from the existing file
 	std::istream & operator >>(Read_File & log, LCOH_CHP & object) {
 		std::string str;
-		std::vector<std::istringstream> vec;
+		std::vector<std::istringstream *> vec;
 		while (std::getline(*log.infile, str))
 		{
-			std::istringstream ins;
-			ins.str(str);
+			std::istringstream * ins = nullptr;
+			ins->str(str);
 			vec.push_back(std::move(ins));
 		}
-		vec[0] >> object.C;
-		vec[1] >> object.LB;
-		vec[2] >> object.LT;
-		vec[3] >> object.FOM;
-		vec[4] >> object.VOM;
-		vec[5] >> object.FC;
-		vec[6] >> object.r;
-		vec[7] >> object.i;
-		vec[8] >> object.P_E;
-		vec[9] >> object.P_H;
-		vec[10] >> object.FLH_E;
-		vec[11] >> object.FLH_H;
-		vec[12] >> object.etaE;
-		vec[13] >> object.etaH;
-		vec[14] >> object.EP;
+		*vec[0] >> object.C;
+		*vec[1] >> object.LB;
+		*vec[2] >> object.LT;
+		*vec[3] >> object.FOM;
+		*vec[4] >> object.VOM;
+		*vec[5] >> object.FC;
+		*vec[6] >> object.r;
+		*vec[7] >> object.i;
+		*vec[8] >> object.P_E;
+		*vec[9] >> object.P_H;
+		*vec[10] >> object.FLH_E;
+		*vec[11] >> object.FLH_H;
+		*vec[12] >> object.etaE;
+		*vec[13] >> object.etaH;
+		*vec[14] >> object.EP;
 		return *log.infile;
 	}
 
@@ -421,7 +422,7 @@ namespace eu_subsidies_and_cost {
 		return (alpha * I + OM + F) / EH - bp_revenue;
 	}
 
-	const double & LCOH_CHP::run() {
+	double LCOH_CHP::run() {
 		const double & alpha_ = alpha(LT, r);
 		const double & I_ = I(C, LB, i);
 		const double & E_ = EH(P_E, FLH_E);
@@ -486,34 +487,34 @@ namespace eu_subsidies_and_cost {
 	// Summary: Read the object from the existing file
 	std::istream & operator >>(Read_File & log, LCOE_CHP & object) {
 		std::string str;
-		std::vector<std::istringstream> vec;
+		std::vector<std::istringstream *> vec;
 		while (std::getline(*log.infile, str))
 		{
-			std::istringstream ins;
-			ins.str(str);
+			std::istringstream * ins = nullptr;
+			ins->str(str);
 			vec.push_back(std::move(ins));
 		}
-		vec[0] >> object.C;
-		vec[1] >> object.LB;
-		vec[2] >> object.LT;
-		vec[3] >> object.FOM;
-		vec[4] >> object.VOM;
-		vec[5] >> object.FC;
-		vec[6] >> object.r;
-		vec[7] >> object.i;
-		vec[8] >> object.P_E;
-		vec[9] >> object.P_H;
-		vec[10] >> object.FLH_E;
-		vec[11] >> object.FLH_H;
-		vec[12] >> object.etaE;
-		vec[13] >> object.etaH;
-		vec[14] >> object.HP;
+		*vec[0] >> object.C;
+		*vec[1] >> object.LB;
+		*vec[2] >> object.LT;
+		*vec[3] >> object.FOM;
+		*vec[4] >> object.VOM;
+		*vec[5] >> object.FC;
+		*vec[6] >> object.r;
+		*vec[7] >> object.i;
+		*vec[8] >> object.P_E;
+		*vec[9] >> object.P_H;
+		*vec[10] >> object.FLH_E;
+		*vec[11] >> object.FLH_H;
+		*vec[12] >> object.etaE;
+		*vec[13] >> object.etaH;
+		*vec[14] >> object.HP;
 		return *log.infile;
 	}
 
 	/* Virtual functions */
 	
-	const double & LCOE_CHP::run() {
+	double LCOE_CHP::run() {
 		const double & alpha_ = alpha(LT, r);
 		const double & I_ = I(C, LB, i);
 		const double & E_ = EH(P_E, FLH_E);
@@ -581,26 +582,26 @@ namespace eu_subsidies_and_cost {
 	/*##################################################################################################################
 	Cosntant values
 	==================================================================================================================*/
-	extern const Physical_Quantity & C0 = Physical_Quantity("C", "capital cost", 287000.0, "kGBP");
-	extern const Physical_Quantity & LB0 = Physical_Quantity("LB", "cosntruction period", 5.0, "yr");
-	extern const Physical_Quantity & LT0 = Physical_Quantity("LT", "project duration", 20.0, "yr");
-	extern const Physical_Quantity & FOM0 = Physical_Quantity("FOM", "fixed OM cost", 0.0, "kGBP/yr");
-	extern const Physical_Quantity & VOM0 = Physical_Quantity("VOM", "variable OM cost", 0.0002038, "kGBP/MWh");
-	extern const Physical_Quantity & FC0 = Physical_Quantity("FC", "fuel costs per unit of enengy input",
+	const Physical_Quantity & C0 = Physical_Quantity("C", "capital cost", 287000.0, "kGBP");
+	const Physical_Quantity & LB0 = Physical_Quantity("LB", "cosntruction period", 5.0, "yr");
+	const Physical_Quantity & LT0 = Physical_Quantity("LT", "project duration", 20.0, "yr");
+	const Physical_Quantity & FOM0 = Physical_Quantity("FOM", "fixed OM cost", 0.0, "kGBP/yr");
+	const Physical_Quantity & VOM0 = Physical_Quantity("VOM", "variable OM cost", 0.0002038, "kGBP/MWh");
+	const Physical_Quantity & FC0 = Physical_Quantity("FC", "fuel costs per unit of enengy input",
 		0.008, "kGBP/MWh");
-	extern const Physical_Quantity & REV0 = Physical_Quantity("REV", "variable by-product revenue", 0.0, "kGBP/MWh");
-	extern const Physical_Quantity & dv0 = Physical_Quantity("dv", "", 0.0, "kGBP/MWh");
-	extern const Physical_Quantity & P_E0 = Physical_Quantity("P_E", "electricity capacity", 650, "MW");
-	extern const Physical_Quantity & P_H0 = Physical_Quantity("P_H", "heat capacity", 650, "MW");
-	extern const Physical_Quantity & FLH_E0 = Physical_Quantity("FLH_E", "full load hours of electrcity", 0.0, "h");
-	extern const Physical_Quantity & FLH_H0 = Physical_Quantity("FLH_H", "full load hours of heat", 8000.0, "h");
-	extern const Physical_Quantity & EP0 = Physical_Quantity("EP", 
+	const Physical_Quantity & REV0 = Physical_Quantity("REV", "variable by-product revenue", 0.0, "kGBP/MWh");
+	const Physical_Quantity & dv0 = Physical_Quantity("dv", "", 0.0, "kGBP/MWh");
+	const Physical_Quantity & P_E0 = Physical_Quantity("P_E", "electricity capacity", 650, "MW");
+	const Physical_Quantity & P_H0 = Physical_Quantity("P_H", "heat capacity", 650, "MW");
+	const Physical_Quantity & FLH_E0 = Physical_Quantity("FLH_E", "full load hours of electrcity", 0.0, "h");
+	const Physical_Quantity & FLH_H0 = Physical_Quantity("FLH_H", "full load hours of heat", 8000.0, "h");
+	const Physical_Quantity & EP0 = Physical_Quantity("EP", 
 		"wholesale electricity price", 0.03, "kGBP/MWh");
-	extern const Coefficient & r0 = Coefficient("r", "weighted average cost of capital (WACC)", 0.075);
-	extern const Coefficient & i0 = Coefficient("i", "interest rate over the construction loan", 0.05);
-	extern const Coefficient & d0 = Coefficient("d", "decommisioning cost factor", 0.15);
-	extern const Coefficient & etaE0 = Coefficient("etaE", "conversion efficiency in LHV of electricity", 1.0);
-	extern const Coefficient & etaH0 = Coefficient("etaH", "conversion efficiency in LHV of heat", 0.90);
-	extern const Physical_Quantity & HP0 = Physical_Quantity("HP",
+	const Coefficient & r0 = Coefficient("r", "weighted average cost of capital (WACC)", 0.075);
+	const Coefficient & i0 = Coefficient("i", "interest rate over the construction loan", 0.05);
+	const Coefficient & d0 = Coefficient("d", "decommisioning cost factor", 0.15);
+	const Coefficient & etaE0 = Coefficient("etaE", "conversion efficiency in LHV of electricity", 1.0);
+	const Coefficient & etaH0 = Coefficient("etaH", "conversion efficiency in LHV of heat", 0.90);
+	const Physical_Quantity & HP0 = Physical_Quantity("HP",
 		"wholesale heat price", FC0.get_magnitude() / etaH0.get_magnitude(), "Euros/MWh");
 }
