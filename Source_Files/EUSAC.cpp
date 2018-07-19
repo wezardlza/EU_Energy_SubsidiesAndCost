@@ -187,7 +187,6 @@ namespace eu_subsidies_and_cost {
 	
 	std::istream & operator >>(Read_File & log, LCOH & object) {
 		std::string str;
-		std::vector<std::istringstream *> vec;
 
 		// Obatin the class name
 		std::getline(*log.infile, str);
@@ -197,23 +196,50 @@ namespace eu_subsidies_and_cost {
 				CONST_LABEL::ERRO + "File: The file cannot assign the value of an object for " + class_id);
 		}
 		
-		while (std::getline(*log.infile, str))
-		{
-			std::istringstream *ins = nullptr;
-			ins->str(str);
-			vec.push_back(std::move(ins));			
-		}
-		*vec[0] >> object.C;
-		*vec[1] >> object.LB;
-		*vec[2] >> object.LT;
-		*vec[3] >> object.FOM;
-		*vec[4] >> object.VOM;
-		*vec[5] >> object.FC;
-		*vec[6] >> object.r;
-		*vec[7] >> object.i;
-		*vec[8] >> object.P_H;
-		*vec[9] >> object.FLH_H;
-		*vec[10] >> object.etaH;
+		std::getline(*log.infile, str);
+		std::istringstream ins(str);
+		ins >> object.C;
+
+		std::getline(*log.infile, str);
+		ins.str(str);
+		ins >> object.LB;
+
+		std::getline(*log.infile, str);
+		ins.str(str);
+		ins >> object.LT;
+
+		std::getline(*log.infile, str);
+		ins.str(str);
+		ins >> object.FOM;
+
+		std::getline(*log.infile, str);
+		ins.str(str);
+		ins >> object.VOM;
+
+		std::getline(*log.infile, str);
+		ins.str(str);
+		ins >> object.FC;
+
+		std::getline(*log.infile, str);
+		ins.str(str);
+		ins >> object.r;
+
+		std::getline(*log.infile, str);
+		ins.str(str);
+		ins >> object.i;
+
+		std::getline(*log.infile, str);
+		ins.str(str);
+		ins >> object.P_H;
+
+		std::getline(*log.infile, str);
+		ins.str(str);
+		ins >> object.FLH_H;
+
+		std::getline(*log.infile, str);
+		ins.str(str);
+		ins >> object.etaH;
+
 		return *log.infile;
 	}
 
@@ -255,8 +281,8 @@ namespace eu_subsidies_and_cost {
 	}
 	
 	const std::string & LCOH::find_class_id(std::string & str) {
-		int i = str.find_first_of('#', 0);
-		if (i != -1) {
+		std::string::size_type i = str.find_first_of('#', 0);
+		if (i != std::string::npos) {
 			str.erase(0, i + 1);
 			Read_File::Trim(str);
 		}
@@ -304,27 +330,71 @@ namespace eu_subsidies_and_cost {
 	// Summary: Read the object from the existing file
 	std::istream & operator >>(Read_File & log, LCOE & object) {
 		std::string str;
-		std::vector<std::istringstream *> vec;
-		while (std::getline(*log.infile, str))
-		{
-			std::istringstream * ins = nullptr;
-			ins->str(str);
-			vec.push_back(std::move(ins));
+
+		// Obatin the class name
+		std::getline(*log.infile, str);
+		std::string class_id = typeid(object).name();
+		if (LCOH::find_class_id(str) != class_id) {
+			throw std::runtime_error(
+				CONST_LABEL::ERRO + "File: The file cannot assign the value of an object for " + class_id);
 		}
-		*vec[0] >> object.C;
-		*vec[1] >> object.LB;
-		*vec[2] >> object.LT;
-		*vec[3] >> object.FOM;
-		*vec[4] >> object.VOM;
-		*vec[5] >> object.FC;
-		*vec[6] >> object.r;
-		*vec[7] >> object.i;
-		*vec[8] >> object.REV;
-		*vec[9] >> object.dv;
-		*vec[10] >> object.d;
-		*vec[11] >> object.P_E;
-		*vec[12] >> object.FLH_E;
-		*vec[13] >> object.etaE;
+
+		std::getline(*log.infile, str);
+		std::istringstream ins(str);
+		ins >> object.C;
+
+		std::getline(*log.infile, str);
+		ins.str(str);
+		ins >> object.LB;
+
+		std::getline(*log.infile, str);
+		ins.str(str);
+		ins >> object.LT;
+
+		std::getline(*log.infile, str);
+		ins.str(str);
+		ins >> object.FOM;
+
+		std::getline(*log.infile, str);
+		ins.str(str);
+		ins >> object.VOM;
+
+		std::getline(*log.infile, str);
+		ins.str(str);
+		ins >> object.FC;
+
+		std::getline(*log.infile, str);
+		ins.str(str);
+		ins >> object.r;
+
+		std::getline(*log.infile, str);
+		ins.str(str);
+		ins >> object.i;
+		
+		std::getline(*log.infile, str);
+		ins.str(str);
+		ins >> object.REV;
+
+		std::getline(*log.infile, str);
+		ins.str(str);
+		ins >> object.dv;
+		
+		std::getline(*log.infile, str);
+		ins.str(str);
+		ins >> object.d;
+
+		std::getline(*log.infile, str);
+		ins.str(str);
+		ins >> object.P_E;
+
+		std::getline(*log.infile, str);
+		ins.str(str);
+		ins >> object.FLH_E;
+
+		std::getline(*log.infile, str);
+		ins.str(str);
+		ins >> object.etaE;
+
 		return *log.infile;
 
 	}
@@ -390,28 +460,75 @@ namespace eu_subsidies_and_cost {
 	// Summary: Read the object from the existing file
 	std::istream & operator >>(Read_File & log, LCOH_CHP & object) {
 		std::string str;
-		std::vector<std::istringstream *> vec;
-		while (std::getline(*log.infile, str))
-		{
-			std::istringstream * ins = nullptr;
-			ins->str(str);
-			vec.push_back(std::move(ins));
+		
+		// Obatin the class name
+		std::getline(*log.infile, str);
+		std::string class_id = typeid(object).name();
+		if (LCOH::find_class_id(str) != class_id) {
+			throw std::runtime_error(
+				CONST_LABEL::ERRO + "File: The file cannot assign the value of an object for " + class_id);
 		}
-		*vec[0] >> object.C;
-		*vec[1] >> object.LB;
-		*vec[2] >> object.LT;
-		*vec[3] >> object.FOM;
-		*vec[4] >> object.VOM;
-		*vec[5] >> object.FC;
-		*vec[6] >> object.r;
-		*vec[7] >> object.i;
-		*vec[8] >> object.P_E;
-		*vec[9] >> object.P_H;
-		*vec[10] >> object.FLH_E;
-		*vec[11] >> object.FLH_H;
-		*vec[12] >> object.etaE;
-		*vec[13] >> object.etaH;
-		*vec[14] >> object.EP;
+
+		std::getline(*log.infile, str);
+		std::istringstream ins(str);
+		ins >> object.C;
+
+		std::getline(*log.infile, str);
+		ins.str(str);
+		ins >> object.LB;
+
+		std::getline(*log.infile, str);
+		ins.str(str);
+		ins >> object.LT;
+
+		std::getline(*log.infile, str);
+		ins.str(str);
+		ins >> object.FOM;
+
+		std::getline(*log.infile, str);
+		ins.str(str);
+		ins >> object.VOM;
+
+		std::getline(*log.infile, str);
+		ins.str(str);
+		ins >> object.FC;
+
+		std::getline(*log.infile, str);
+		ins.str(str);
+		ins >> object.r;
+
+		std::getline(*log.infile, str);
+		ins.str(str);
+		ins >> object.i;
+
+		std::getline(*log.infile, str);
+		ins.str(str);
+		ins >> object.P_E;
+
+		std::getline(*log.infile, str);
+		ins.str(str);
+		ins >> object.P_H;
+
+		std::getline(*log.infile, str);
+		ins.str(str);
+		ins >> object.FLH_E;
+
+		std::getline(*log.infile, str);
+		ins.str(str);
+		ins >> object.FLH_H;
+
+		std::getline(*log.infile, str);
+		ins.str(str);
+		ins >> object.etaE;
+
+		std::getline(*log.infile, str);
+		ins.str(str);
+		ins >> object.etaH;
+
+		std::getline(*log.infile, str);
+		ins.str(str);
+		ins >> object.EP;
+
 		return *log.infile;
 	}
 
@@ -487,28 +604,75 @@ namespace eu_subsidies_and_cost {
 	// Summary: Read the object from the existing file
 	std::istream & operator >>(Read_File & log, LCOE_CHP & object) {
 		std::string str;
-		std::vector<std::istringstream *> vec;
-		while (std::getline(*log.infile, str))
-		{
-			std::istringstream * ins = nullptr;
-			ins->str(str);
-			vec.push_back(std::move(ins));
+		
+		// Obatin the class name
+		std::getline(*log.infile, str);
+		std::string class_id = typeid(object).name();
+		if (LCOH::find_class_id(str) != class_id) {
+			throw std::runtime_error(
+				CONST_LABEL::ERRO + "File: The file cannot assign the value of an object for " + class_id);
 		}
-		*vec[0] >> object.C;
-		*vec[1] >> object.LB;
-		*vec[2] >> object.LT;
-		*vec[3] >> object.FOM;
-		*vec[4] >> object.VOM;
-		*vec[5] >> object.FC;
-		*vec[6] >> object.r;
-		*vec[7] >> object.i;
-		*vec[8] >> object.P_E;
-		*vec[9] >> object.P_H;
-		*vec[10] >> object.FLH_E;
-		*vec[11] >> object.FLH_H;
-		*vec[12] >> object.etaE;
-		*vec[13] >> object.etaH;
-		*vec[14] >> object.HP;
+
+		std::getline(*log.infile, str);
+		std::istringstream ins(str);
+		ins >> object.C;
+
+		std::getline(*log.infile, str);
+		ins.str(str);
+		ins >> object.LB;
+
+		std::getline(*log.infile, str);
+		ins.str(str);
+		ins >> object.LT;
+
+		std::getline(*log.infile, str);
+		ins.str(str);
+		ins >> object.FOM;
+
+		std::getline(*log.infile, str);
+		ins.str(str);
+		ins >> object.VOM;
+
+		std::getline(*log.infile, str);
+		ins.str(str);
+		ins >> object.FC;
+
+		std::getline(*log.infile, str);
+		ins.str(str);
+		ins >> object.r;
+
+		std::getline(*log.infile, str);
+		ins.str(str);
+		ins >> object.i;
+
+		std::getline(*log.infile, str);
+		ins.str(str);
+		ins >> object.P_E;
+
+		std::getline(*log.infile, str);
+		ins.str(str);
+		ins >> object.P_H;
+
+		std::getline(*log.infile, str);
+		ins.str(str);
+		ins >> object.FLH_E;
+
+		std::getline(*log.infile, str);
+		ins.str(str);
+		ins >> object.FLH_H;
+
+		std::getline(*log.infile, str);
+		ins.str(str);
+		ins >> object.etaE;
+
+		std::getline(*log.infile, str);
+		ins.str(str);
+		ins >> object.etaH;
+
+		std::getline(*log.infile, str);
+		ins.str(str);
+		ins >> object.HP;
+
 		return *log.infile;
 	}
 
