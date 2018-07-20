@@ -2,8 +2,8 @@
 Author: Ziang Li
 Institution: Control Group, UOM
 
-	This file defines the members of the classes of LCOH, LCOE, LCOH_CHP and LCOE_CHP which are used for the levelised 
-	cost of heat/electricty with/without the combined heat and power plant.
+	This file defines the members of the classes of LCOH, LCOE, LCOH_CHP and LCOE_CHP which are used for the 
+	levelised cost of heat/electricty with/without the combined heat and power plant.
 ***********************************************************************************************************************/
 
 #include "../Header_Files/EUSAC.h"
@@ -15,9 +15,9 @@ Institution: Control Group, UOM
 namespace eu_subsidies_and_cost {
 
 
-	/*##################################################################################################################
+	/*##############################################################################################################
 	Class 'Coefficient' 
-	==================================================================================================================*/
+	==============================================================================================================*/
 	/* Friend */
 
 	std::ostream & operator <<(std::ostream & outfile, const Coefficient & object) {
@@ -100,9 +100,9 @@ namespace eu_subsidies_and_cost {
 	Coefficient::~Coefficient() { --count; }
 
 	
-	/*##################################################################################################################
+	/*##############################################################################################################
 	Class 'Physical_Quantity'
-	==================================================================================================================*/
+	==============================================================================================================*/
 	/* Friends */
 
 	std::ostream & operator <<(std::ostream & outfile, const Physical_Quantity & object) {
@@ -158,7 +158,8 @@ namespace eu_subsidies_and_cost {
 
 	/* Constructor */
 	Physical_Quantity::Physical_Quantity(
-		const std::string & symbol, const std::string & term, const double & magnitude, const std::string & unit) :
+		const std::string & symbol, const std::string & term, const double & magnitude,
+	       	const std::string & unit) :
 		Coefficient::Coefficient(symbol, term, magnitude), unit(unit) {
 		++count;
 	}
@@ -173,9 +174,9 @@ namespace eu_subsidies_and_cost {
 	Physical_Quantity::~Physical_Quantity() { --count; }
 
 
-	/*##################################################################################################################
+	/*##############################################################################################################
 	Class 'LCOH' 
-	==================================================================================================================*/
+	==============================================================================================================*/
 	/* Friends */
 
 	std::ostream & operator <<(Save_File & log, const LCOH & object) {
@@ -193,7 +194,8 @@ namespace eu_subsidies_and_cost {
 		std::string class_id = typeid(object).name();
 		if (LCOH::find_class_id(str) != class_id) {
 			throw std::runtime_error(
-				CONST_LABEL::ERRO + "File: The file cannot assign the value of an object for " + class_id);
+				CONST_LABEL::ERRO + "File: The file cannot assign the value of an object for "
+			       	+ class_id);
 		}
 		
 		std::getline(*log.infile, str);
@@ -288,7 +290,8 @@ namespace eu_subsidies_and_cost {
 		}
 		else
 		{
-			throw std::runtime_error(CONST_LABEL::ERRO + "No sharp sign located. The data is not class-specified.");
+			throw std::runtime_error(CONST_LABEL::ERRO
+				       	+ "No sharp sign located. The data is not class-specified.");
 		}
 		return str;
 	}
@@ -298,7 +301,8 @@ namespace eu_subsidies_and_cost {
 
 	LCOH::LCOH(const Physical_Quantity & C, const Physical_Quantity & LB, const Physical_Quantity & LT, 
 		const Physical_Quantity & FOM, const Physical_Quantity & VOM, const Physical_Quantity & FC, 
-		const Coefficient & r, const Coefficient & i, const Physical_Quantity & P_H, const Physical_Quantity & FLH_H, 
+		const Coefficient & r, const Coefficient & i, const Physical_Quantity & P_H, 
+		const Physical_Quantity & FLH_H, 
 		const Coefficient & etaH) : 
 		C(C), LB(LB), LT(LT), FOM(FOM), VOM(VOM), FC(FC), r(r), i(i), P_H(P_H), FLH_H(FLH_H), etaH(etaH){
 		++count;
@@ -315,9 +319,9 @@ namespace eu_subsidies_and_cost {
 	LCOH::~LCOH() { --count; }
 
 
-	/*##################################################################################################################
+	/*##############################################################################################################
 	Class 'LCOE' 
-	==================================================================================================================*/
+	==============================================================================================================*/
 	/* Friends */
 	
 	/*std::ostream & operator <<(Save_File & log, const LCOE & object) {
@@ -336,7 +340,8 @@ namespace eu_subsidies_and_cost {
 		std::string class_id = typeid(object).name();
 		if (LCOE::find_class_id(str) != class_id) {
 			throw std::runtime_error(
-				CONST_LABEL::ERRO + "File: The file cannot assign the value of an object for " + class_id);
+				CONST_LABEL::ERRO + "File: The file cannot assign the value of an object for "
+			       	+ class_id);
 		}
 
 		std::getline(*log.infile, str);
@@ -430,9 +435,9 @@ namespace eu_subsidies_and_cost {
 	
 	LCOE::LCOE(const Physical_Quantity & C, const Physical_Quantity & LB, const Physical_Quantity & LT, 
 		const Physical_Quantity & FOM, const Physical_Quantity & VOM, const Physical_Quantity & FC, 
-		const Coefficient & r, const Coefficient & i, const Physical_Quantity & REV, const Physical_Quantity & dv, 
-		const Coefficient & d, const Physical_Quantity & P_E, const Physical_Quantity & FLH_E , 
-		const Coefficient & etaE) :
+		const Coefficient & r, const Coefficient & i, const Physical_Quantity & REV, 
+		const Physical_Quantity & dv, const Coefficient & d, const Physical_Quantity & P_E, 
+		const Physical_Quantity & FLH_E , const Coefficient & etaE) :
 		LCOH::LCOH(C, LB, LT, FOM, VOM, FC, r, i), REV(REV), dv(dv), d(d), P_E(P_E), FLH_E(FLH_E), etaE(etaE) {
 		++count;
 	}
@@ -445,9 +450,9 @@ namespace eu_subsidies_and_cost {
 	LCOE::~LCOE() { --count; }
 
 
-	/*##################################################################################################################
+	/*##############################################################################################################
 	Class 'LCOH_CHP'
-	==================================================================================================================*/
+	==============================================================================================================*/
 	/* Friends */
 	
 	/*std::ostream & operator <<(Save_File & log, const LCOH_CHP & object) {
@@ -466,7 +471,8 @@ namespace eu_subsidies_and_cost {
 		std::string class_id = typeid(object).name();
 		if (LCOH_CHP::find_class_id(str) != class_id) {
 			throw std::runtime_error(
-				CONST_LABEL::ERRO + "File: The file cannot assign the value of an object for " + class_id);
+				CONST_LABEL::ERRO + "File: The file cannot assign the value of an object for " 
+				+ class_id);
 		}
 
 		std::getline(*log.infile, str);
@@ -589,9 +595,9 @@ namespace eu_subsidies_and_cost {
 	LCOH_CHP::~LCOH_CHP() { --count; }
 
 
-	/*##################################################################################################################
+	/*##############################################################################################################
 	Class 'LCOE_CHP'
-	==================================================================================================================*/
+	==============================================================================================================*/
 	/* Friends */
 	
 	/*std::ostream & operator <<(Save_File & log, const LCOE_CHP & object) {
@@ -610,7 +616,8 @@ namespace eu_subsidies_and_cost {
 		std::string class_id = typeid(object).name();
 		if (LCOE_CHP::find_class_id(str) != class_id) {
 			throw std::runtime_error(
-				CONST_LABEL::ERRO + "File: The file cannot assign the value of an object for " + class_id);
+				CONST_LABEL::ERRO + "File: The file cannot assign the value of an object for " 
+				+ class_id);
 		}
 
 		std::getline(*log.infile, str);
@@ -723,9 +730,9 @@ namespace eu_subsidies_and_cost {
 	LCOE_CHP::~LCOE_CHP() { --count; }
 
 
-	/*##################################################################################################################
+	/*##############################################################################################################
 	Static counters of each class
-	==================================================================================================================*/
+	==============================================================================================================*/
 	std::size_t Coefficient::n_attributes(3);
 	
 	std::size_t Physical_Quantity::n_attributes(4);
@@ -743,9 +750,9 @@ namespace eu_subsidies_and_cost {
 	std::size_t LCOE_CHP::count(0);
 
 
-	/*##################################################################################################################
+	/*##############################################################################################################
 	Cosntant values
-	==================================================================================================================*/
+	==============================================================================================================*/
 	const Physical_Quantity & C0 = Physical_Quantity("C", "capital cost", 287000.0, "kGBP");
 	const Physical_Quantity & LB0 = Physical_Quantity("LB", "cosntruction period", 5.0, "yr");
 	const Physical_Quantity & LT0 = Physical_Quantity("LT", "project duration", 20.0, "yr");

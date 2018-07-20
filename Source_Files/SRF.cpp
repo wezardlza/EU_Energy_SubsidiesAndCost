@@ -48,7 +48,8 @@ const std::string File_Address::file_address() const {
 		}
 		else
 		{
-			throw std::runtime_error(CONST_LABEL::ERRO + "Fail to create the directory: \""  + directory + "\" is created.");
+			throw std::runtime_error(CONST_LABEL::ERRO + "Fail to create the directory: \""  + directory 
+					+ "\" is created.");
 		}
 #endif
 #ifdef __LINUX__ 
@@ -58,7 +59,8 @@ const std::string File_Address::file_address() const {
 		}
 		else
 		{
-			throw std::runtime_error(CONST_LABEL::ERRO + "Fail to create the directory: \"" + directory + "\" is created.");
+			throw std::runtime_error(CONST_LABEL::ERRO + "Fail to create the directory: \"" + directory 
+					+ "\" is created.");
 		}
 #endif
 	}

@@ -31,9 +31,9 @@ extern const escn::Physical_Quantity &escn::HP0;
 void Test_on_Physical_Quantity(){
  
 	// Construct hypothetic plant investments
-	escn::LCOE plantA(escn::C0, escn::LB0, escn::LT0, escn::FOM0, escn::VOM0, escn::FC0, escn::r0, escn::i0, escn::REV0,
-		       	escn::dv0, escn::d0, escn::P_E0, escn::FLH_E0, escn::etaE0);
-	double alpha_A = escn::LCOE::alpha(escn::LT0, escn::r0);
+	escn::LCOE plantA(escn::C0, escn::LB0, escn::LT0, escn::FOM0, escn::VOM0, escn::FC0, escn::r0, escn::i0, 
+			escn::REV0, escn::dv0, escn::d0, escn::P_E0, escn::FLH_E0, escn::etaE0);
+ 	double alpha_A = escn::LCOE::alpha(escn::LT0, escn::r0);
 	double EH_A = escn::LCOE::EH(escn::P_E0, escn::FLH_E0);
 	double I_A = escn::LCOE::I(escn::C0, escn::LB0, escn::i0, escn::LT0, escn::r0,escn::d0);
 	double OM = escn::LCOE::OM(escn::FOM0, escn::VOM0, EH_A, escn::REV0, escn::dv0);

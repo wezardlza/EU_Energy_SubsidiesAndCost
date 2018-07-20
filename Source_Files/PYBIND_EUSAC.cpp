@@ -55,7 +55,8 @@ PYBIND11_MODULE(EUSAC, m) {
 		"\nname: name of the file ")
 		.def_readwrite_static("directory", &File_Address::directory, 
 			"directory of the succeeding files, default is \"./ \"")
-		.def_readwrite_static("format", &File_Address::format, "format of the succeeding files, default is \".csv\"")
+		.def_readwrite_static("format", &File_Address::format, 
+				"format of the succeeding files, default is \".csv\"")
 		.def_readwrite("file_name", &File_Address::file_name, "name of the file ")
 		.def("file_address", &File_Address::file_address)
 		.def_static("is_file_acessible", &File_Address::is_file_acessible)
@@ -126,7 +127,8 @@ PYBIND11_MODULE(EUSAC, m) {
 	/* Class Coefficient */
 
 	coefficient.def(py::init<const std::string &, const std::string &, const double &>(),
-			"Summary: Construct a coefficient, related the calculation of some levelised cost of an energy project"
+			"Summary: Construct a coefficient, related the calculation of some levelised cost of an "
+			"energy project"
 			"\nParameters:"
 			"\narg0 symbol: the symbol or abbrevation of the object"
 			"\narg1 term: the additional explantions of the object"
@@ -134,9 +136,12 @@ PYBIND11_MODULE(EUSAC, m) {
 		.def(py::init<escn::Coefficient &>(), "Summary: Define a cefficient with copy constructor")
 		.def(py::init<>(), "Default coefficient")
 		.def("get_symbol", &escn::Coefficient::get_symbol, "Summary: Get the symbol of the physical quantity")
-		.def("get_term", &escn::Coefficient::get_term, "Summary: Get the physical explanation of the coefficient")
-		.def("get_magnitude", &escn::Coefficient::get_magnitude, "Summary: Get the magnitude of the coefficient")
-		.def("change_magnitude", &escn::Coefficient::change_magnitude, "Summary: Rewrite the magnitude")
+		.def("get_term", &escn::Coefficient::get_term, 
+				"Summary: Get the physical explanation of the coefficient")
+		.def("get_magnitude", &escn::Coefficient::get_magnitude, 
+				"Summary: Get the magnitude of the coefficient")
+		.def("change_magnitude", &escn::Coefficient::change_magnitude, 
+				"Summary: Rewrite the magnitude")
 		.def_static("get_count", &escn::Coefficient::get_count, "Summary: Get the number of the class objects")
 		.def_property_readonly("symbol", &escn::Coefficient::get_symbol, "symbol of the physical quantity")
 		.def_property_readonly("term", &escn::Coefficient::get_term, "physical explanation of the coefficient")
@@ -162,7 +167,8 @@ PYBIND11_MODULE(EUSAC, m) {
 		.def(py::init<escn::Physical_Quantity &>(), "Summary: Define a physical quantity with copy constructor")
 		.def(py::init<>(), "Default physical quantity")
 		.def("get_unit", &escn::Physical_Quantity::get_unit, "Summary: Get the unit of the physical quantity")
-		.def_static("get_count", &escn::Physical_Quantity::get_count, "Summary: Get the number of the class objects")
+		.def_static("get_count", &escn::Physical_Quantity::get_count, 
+				"Summary: Get the number of the class objects")
 		.def("get_unit", &escn::Physical_Quantity::get_unit, "Summary: Get the unit of the physical quantity")
 
 		.def("cprint", [](escn::Physical_Quantity & pq) {
@@ -188,7 +194,8 @@ PYBIND11_MODULE(EUSAC, m) {
 		.def("FLH_H0", []() {return escn::FLH_H0; },
 			"Default equivalent full load hours for heat production")
 		.def("EP0", []() {return escn::EP0; },
-			"Defacult electricity price a CHP intallation receives for electricity production as by-product")
+			"Defacult electricity price a CHP intallation receives "
+			"for electricity production as by-product")
 		.def("r0;", []() {return escn::r0; }, "Default weighted average cost of capital (WACC)")
 		.def("i0;", []() {return escn::i0; }, "Default interest rate over the construction loan")
 		.def("d0;", []() {return escn::d0; }, "Default decommisioning cost factor")
@@ -240,13 +247,13 @@ PYBIND11_MODULE(EUSAC, m) {
 		
 		.def("alpha", &escn::LCOH::alpha, "Summary: Capital recovery factor")
 		.def("EH", &escn::LCOH::EH, "Summary: Electricity or heat produced annually")
-		.def("I", &escn::LCOH::I, 
-			"Summary: Investment cost including finance cost for construction at a predefined interest rate")
+		.def("I", &escn::LCOH::I, "Summary: Investment cost including finance cost for construction at a "
+				"predefined interest rate")
 		.def("OM", &escn::LCOH::OM, "Summary: Operation and maintainance cost")
 		.def("F", &escn::LCOH::F, "Summary: Annual fuel cost")
 
-		.def("__call__", [](escn::LCOH & self, double & alpha, const double & I, const double & OM, const double & F,
-			const double & EH) {return self(alpha, I, OM, F, EH); })
+		.def("__call__", [](escn::LCOH & self, double & alpha, const double & I, const double & OM, 
+					const double & F, const double & EH) {return self(alpha, I, OM, F, EH); })
 		.def("get_count", &escn::LCOH::get_count, "Summary: Get the number of the class objects")
 
 		.def_readwrite("C", &escn::LCOH::C, "captial cost")
@@ -262,6 +269,4 @@ PYBIND11_MODULE(EUSAC, m) {
 		Save_File sf(std::cout); 
 		sf << lcoh_object; })
 		;										
-		
-
 }
